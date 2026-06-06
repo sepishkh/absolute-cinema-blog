@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    margin: 1;
+}
+
+h1 {
+    color:black;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 24px;
+    text-align: center;
+}
+
+nav {
+    color: cornflowerblue;
+    text-align: center;
+}
+
+.article-card {
+    background: white;
+    border: 5px solid black;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 0 0 calc(24% - 15px); 
+    box-sizing: border-box;
+}
+
+.article-title {
+    color:blueviolet;
+}
+
+.article-body {
+    font-size:23;
+}
+
+.article-author {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.author-username {
+    font-weight: lighter;
+}
+
+.blog {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 20px auto;
+    gap: 30px;
+    border-radius: 8px;
+}
+
