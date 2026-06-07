@@ -29,11 +29,9 @@ $stmt = $sqldb->pdo->prepare("SELECT
                             INNER JOIN users ON posts.author_id = users.id
                             WHERE post_id = :view_id");
 
-if($stmt === false) die("Fucked up");
-$res = $stmt->execute(
+$stmt->execute(
     array(":view_id" => $view_id)
 );
-if($res === false) die("Another fuck up");
 $content = $stmt->fetch(PDO::FETCH_ASSOC);
 if($content == NULL) {
     include "404.php";

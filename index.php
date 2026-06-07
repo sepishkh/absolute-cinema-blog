@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
-<!-- TODO: Better UI -->
 <!-- TODO: Proper Error Handling -->
+<!-- TODO: Better UI -->
 <!-- TODO: Think about UX -->
 
 <?php
@@ -13,9 +13,7 @@ $sqldb = new SQLDB();
 $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
 $res = $sqldb->pdo->query("SELECT COUNT(*) FROM posts");
-if($res) {
-    $post_count = $res->fetchColumn();
-}
+$post_count = $res->fetchColumn();
 
 $res = $sqldb->pdo->query("SELECT
                                 posts.id AS post_id,
@@ -30,9 +28,7 @@ $res = $sqldb->pdo->query("SELECT
                                 users.avatar_id
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id");
-if($res === false) {
-    die("Error: Couldn't query the database.");
-}
+
 ?>
 
 
