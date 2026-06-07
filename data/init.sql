@@ -17,9 +17,10 @@ CREATE TABLE users (
     id          INTEGER PRIMARY KEY NOT NULL,
     first_name  VARCHAR NOT NULL,
     last_name   VARCHAR,
-    email       VARCHAR NOT NULL,
+    email       VARCHAR UNIQUE NOT NULL,
     password    VARCHAR NOT NULL,
     role        INTEGER NOT NULL,
+    created_at  VARCHAR,
     avatar_id   INTEGER,
     FOREIGN KEY (avatar_id) REFERENCES avatars (id)
 );
@@ -30,7 +31,8 @@ CREATE TABLE avatars (
 );
 
 INSERT INTO users (first_name, last_name, email, password, role) VALUES
-('Sarah', 'Connor', 'sarahreviews@gmail.com', '$2y$10$xyzPlaceHolderHash1...', 2),
+('Jesus', 'Christ', 'admin@admin.com', 'admin', 2),
+('Sarah', 'Connor', 'sarahreviews@gmail.com', '$2y$10$xyzPlaceHolderHash1...', 1),
 ('Marcus', 'Brody', 'marcusfilms@yahoo.com', '$2y$10$xyzPlaceHolderHash2...', 1),
 ('Elena', 'Fisher', 'elenascreen@gmail.com', '$2y$10$xyzPlaceHolderHash3...', 1),
 ('David', 'Fincher', 'b_blanc_fan@outlook.com', '$2y$10$xyzPlaceHolderHash4...', 1),

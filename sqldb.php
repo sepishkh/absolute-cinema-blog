@@ -2,6 +2,7 @@
 
 // TODO: Proper Error Handling
 // TODO: Type Checking
+// TODO: Feature to run custom fucntion after connecting
 
 class SQLDB {
     private $root;
