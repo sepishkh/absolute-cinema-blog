@@ -39,7 +39,7 @@ if($res === false) {
 <html>
 
 <head>
-    <title> SiteMan </title>
+    <title> Absolute Cinema </title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -65,8 +65,9 @@ if($res === false) {
 
         <h3>Categories</h3>
         <ul>
-            <li>PHP Tutorials</li>
-            <li>Web Design</li>
+            <li>Movies</li>
+            <li>TV Shows</li>
+            <li>Upcoming</li>
         </ul>
     </main>
 </body>
