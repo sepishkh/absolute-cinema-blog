@@ -2,6 +2,12 @@
 
 <?php
 
+$view_id = $_GET['view'];
+if($view_id == NULL || empty(trim($view_id))) {
+    include "404.php";
+    exit;
+}
+
 require_once "paths.php";
 require_once "sqldb.php";
 
@@ -24,12 +30,15 @@ $stmt = $sqldb->pdo->prepare("SELECT
                             WHERE post_id = :view_id");
 
 if($stmt === false) die("Fucked up");
-$view_id = $_GET['view'];
 $res = $stmt->execute(
     array(":view_id" => $view_id)
 );
 if($res === false) die("Another fuck up");
 $content = $stmt->fetch(PDO::FETCH_ASSOC);
+if($content == NULL) {
+    include "404.php";
+    exit;
+}
 
 ?>
 
