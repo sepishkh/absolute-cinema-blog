@@ -26,7 +26,7 @@ $res = $sqldb->pdo->query("SELECT
                                 posts.is_updated,
                                 users.first_name,
                                 users.last_name,
-                                users.username,
+                                users.email,
                                 users.avatar_id
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id");
@@ -54,7 +54,7 @@ if($res === false) {
                 <h2 class="article-title"><?php echo htmlspecialchars($row['title'], ENT_HTML5, "UTF-8") ?></h2>
                 <p class="article-body"><?php echo htmlspecialchars($row['intro'], ENT_HTML5, "UTF-8") ?></p>
                 <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
-                <p class="author-username"> @<?php echo htmlspecialchars($row['username'], ENT_HTML5, "UTF-8") ?></p>
+                <p class="author-email"> <?php echo htmlspecialchars($row['email'], ENT_HTML5, "UTF-8") ?></p>
                 <p class="article-date"> <?php 
                     $date = DateTime::createFromFormat("Y-m-d", $row['created_at']);
                     echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 

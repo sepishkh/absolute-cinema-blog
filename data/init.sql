@@ -17,7 +17,7 @@ CREATE TABLE users (
     id          INTEGER PRIMARY KEY NOT NULL,
     first_name  VARCHAR NOT NULL,
     last_name   VARCHAR,
-    username    VARCHAR UNIQUE NOT NULL,
+    email       VARCHAR NOT NULL,
     password    VARCHAR NOT NULL,
     role        INTEGER NOT NULL,
     avatar_id   INTEGER,
@@ -29,12 +29,12 @@ CREATE TABLE avatars (
     filepath    VARCHAR NOT NULL
 );
 
-INSERT INTO users (first_name, last_name, username, password, role) VALUES
-('Sarah', 'Connor', 'sarah_reviews', '$2y$10$xyzPlaceHolderHash1...', 2),
-('Marcus', 'Brody', 'marcus_films', '$2y$10$xyzPlaceHolderHash2...', 1),
-('Elena', 'Fisher', 'elena_screen', '$2y$10$xyzPlaceHolderHash3...', 1),
-('David', 'Fincher', 'b_blanc_fan', '$2y$10$xyzPlaceHolderHash4...', 1),
-('Amara', NULL, 'amara_watches', '$2y$10$xyzPlaceHolderHash5...', 0);
+INSERT INTO users (first_name, last_name, email, password, role) VALUES
+('Sarah', 'Connor', 'sarahreviews@gmail.com', '$2y$10$xyzPlaceHolderHash1...', 2),
+('Marcus', 'Brody', 'marcusfilms@yahoo.com', '$2y$10$xyzPlaceHolderHash2...', 1),
+('Elena', 'Fisher', 'elenascreen@gmail.com', '$2y$10$xyzPlaceHolderHash3...', 1),
+('David', 'Fincher', 'b_blanc_fan@outlook.com', '$2y$10$xyzPlaceHolderHash4...', 1),
+('Amara', NULL, 'amara_watches@gmail.com', '$2y$10$xyzPlaceHolderHash5...', 0);
 
 INSERT INTO posts (title, intro, body, author_id, created_at, is_updated) VALUES
 (
