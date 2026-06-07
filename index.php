@@ -55,7 +55,10 @@ if($res === false) {
                 <p class="article-body"><?php echo htmlspecialchars($row['intro'], ENT_HTML5, "UTF-8") ?></p>
                 <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
                 <p class="author-username"> @<?php echo htmlspecialchars($row['username'], ENT_HTML5, "UTF-8") ?></p>
-                <p class="article-date"> <?php echo htmlspecialchars($row['created_at'], ENT_HTML5, "UTF-8") ?></p>
+                <p class="article-date"> <?php 
+                    $date = DateTime::createFromFormat("Y-m-d", $row['created_at']);
+                    echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
+                ?></p>
                 <p> <a href="view.php?view=<?php echo $row['post_id'] ?>">Read More</a></p>
             </article>
         <?php endwhile ?>
