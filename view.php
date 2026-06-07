@@ -38,6 +38,9 @@ $content = $stmt->fetch(PDO::FETCH_ASSOC);
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <header>
+            <?php require "header.php" ?>
+        </header>
         <h1> <?php echo htmlspecialchars($content['title'], ENT_HTML5, "UTF-8") ?> </h1>
         <p class="article-author"> <?php echo htmlspecialchars($content['first_name'], ENT_HTML5, "UTF-8") . ' ' . 
                                               htmlspecialchars($content['last_name'], ENT_HTML5, "UTF-8") . " - @" . 
