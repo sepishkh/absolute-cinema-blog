@@ -52,3 +52,7 @@ nav {
     border-radius: 8px;
 }
 
+.header-title {
+    text-decoration: none;
+    color: black;
+}
