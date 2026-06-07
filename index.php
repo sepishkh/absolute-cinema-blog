@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 
+<!-- TODO: Robust Login/Logout system -->
 <!-- TODO: Proper Error Handling -->
 <!-- TODO: Better UI -->
 <!-- TODO: Think about UX -->
 
 <?php
+
+require_once "common.php";
+
+if(isset($_GET["logout"])) {
+    Logout();
+}
 
 require_once "paths.php";
 require_once "sqldb.php";

@@ -4,11 +4,14 @@
 
 <?php
 
+require_once "common.php";
+
 $email_required_error = "Email address is required";
-$password_required_error = "Paswwrod is required";
+$password_required_error = "Password is required";
 
 $email = $_POST['email'];
 $pass = $_POST['password'];
+$logged_in = Login($email, $pass);
 
 ?>
 
@@ -33,7 +36,12 @@ $pass = $_POST['password'];
         Password: 
             <input type="password" name="password">
             <span class="error">* <?php echo $password_required_error ?></span><br><br>
-        <input type="submit">
+        <input type="submit"><br>
+        <?php if($logged_in) : ?>
+            <span class="success"> Login Success </span><br>
+        <?php else : ?>
+            <span class="error">Login Failed</span><br>
+        <?php endif ?>
     </form>
 
 </body>

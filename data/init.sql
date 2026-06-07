@@ -32,11 +32,11 @@ CREATE TABLE avatars (
 
 INSERT INTO users (first_name, last_name, email, password, role) VALUES
 ('Jesus', 'Christ', 'admin@admin.com', 'admin', 2),
-('Sarah', 'Connor', 'sarahreviews@gmail.com', '$2y$10$xyzPlaceHolderHash1...', 1),
-('Marcus', 'Brody', 'marcusfilms@yahoo.com', '$2y$10$xyzPlaceHolderHash2...', 1),
-('Elena', 'Fisher', 'elenascreen@gmail.com', '$2y$10$xyzPlaceHolderHash3...', 1),
-('David', 'Fincher', 'b_blanc_fan@outlook.com', '$2y$10$xyzPlaceHolderHash4...', 1),
-('Amara', NULL, 'amara_watches@gmail.com', '$2y$10$xyzPlaceHolderHash5...', 0);
+('Sarah', 'Connor', 'sarahreviews@gmail.com', 'pass', 1),
+('Marcus', 'Brody', 'marcusfilms@yahoo.com', 'xyz', 1),
+('Elena', 'Fisher', 'elenascreen@gmail.com', '123', 1),
+('David', 'Fincher', 'b_blanc_fan@outlook.com', 'poop', 1),
+('Amara', NULL, 'amara_watches@gmail.com', 'charlie', 0);
 
 INSERT INTO posts (title, intro, body, author_id, created_at, is_updated) VALUES
 (
