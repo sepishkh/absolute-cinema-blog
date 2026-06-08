@@ -35,3 +35,29 @@ function Login($email, $pass) {
         return false;
     }
 }
+
+function IsError($var, $submit) {
+    return ($submit != NULL && ($var == NULL || $var == false));
+}
+
+function Signup($fname, $lname, $email, $pass) {
+    if(!$fname || !$email || !$pass) {
+        return false;
+    }
+    require_once "paths.php";
+    require_once "sqldb.php";
+    $sqldb = new SQLDB();
+    $sqldb->Connect($DB_PATH);
+    $stmt = $sqldb->pdo->prepare("INSERT 
+                                    INTO users 
+                                    (first_name, last_name, email, password, role) 
+                                    VALUES (:fname, :lname, :email, :pass, :role)");
+    $res = $stmt->execute(array(
+        ":fname" => $fname,
+        ":lname" => $lname,
+        ":email" => $email,
+        ":pass" => $pass,
+        ":role" => 0
+    ));
+    return $res;
+}

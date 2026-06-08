@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 
-<!-- TODO: Validate Email and Password as text -->
-
 <?php
 
 require_once "common.php";
 
+$fname = $_POST['first_name'];
+$lname = $_POST['last_name'];
 $email = $_POST['email'];
 $pass = $_POST['password'];
 $submit = $_POST['submit'];
+$signed = NULL;
 
-$logged_in = Login($email, $pass);
+if($submit) {
+    Logout();
+    $signed = Signup($fname, $lname, $email, $pass);
+}
 
 ?>
 
 <html>
 
 <head>
-    <title> Login </title>
+    <title> Sign Up </title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -27,8 +31,17 @@ $logged_in = Login($email, $pass);
         <?php require "header.php" ?>
     </header>
 
-    <h2> Login </h2>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8")?>" method="post">
+    <h2> Sign up </h2>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8") ?>" method="post">
+        First Name:
+            <input type="text" name="first_name">
+            <?php if (IsError($fname, $submit)) : ?>
+                <span class="error">*First Name is required</span>
+            <?php endif ?>
+            <p></p>
+        Last Name:
+            <input type="text" name="last_name">
+            <span>Optional</span><p></p>
         Email: 
             <input type="email" name="email">
             <?php if(IsError($email, $submit)) : ?>
@@ -43,10 +56,10 @@ $logged_in = Login($email, $pass);
             <p></p>
         <input type="submit" name="submit"><br>
         <?php if($submit) : ?>
-            <?php if($logged_in) : ?>
-                <span class="success">Login Successful</span>
+            <?php if($signed) : ?>
+                <span class="success">Sign up Successful. Go to <a href="login.php">Login</a> page</span>
             <?php else : ?>
-                <span class="error">Login Failed</span>
+                <span class="error">Sign up Failed</span>
             <?php endif ?>
         <?php endif ?>
     </form>
