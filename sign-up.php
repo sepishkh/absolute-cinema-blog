@@ -56,11 +56,19 @@ if($submit) {
             <p></p>
         <input type="submit" name="submit"><br>
         <?php if($submit) : ?>
-            <?php if($signed) : ?>
-                <span class="success">Sign up Successful. Go to <a href="login.php">Login</a> page</span>
-            <?php else : ?>
-                <span class="error">Sign up Failed</span>
-            <?php endif ?>
+            <?php switch($signed) :
+                case NULL: ?>
+                    <span class="success">Sign up Successful. Go to <a href="login.php">Login</a> page</span>
+            <?php   break;
+                case false:  ?>
+                    <span class="error">Sign up Failed</span>
+            <?php   break;
+                case 23000: ?>
+                    <span class="error">Email already registered</span>
+            <?php   break;
+                default: ?>
+                    <span class="error">Erorr</span>
+            <?php endswitch ?>
         <?php endif ?>
     </form>
 

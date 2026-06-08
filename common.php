@@ -42,7 +42,7 @@ function IsError($var, $submit) {
 
 function Signup($fname, $lname, $email, $pass) {
     if(!$fname || !$email || !$pass) {
-        return false;
+        return 1;
     }
     require_once "paths.php";
     require_once "sqldb.php";
@@ -52,12 +52,16 @@ function Signup($fname, $lname, $email, $pass) {
                                     INTO users 
                                     (first_name, last_name, email, password, role) 
                                     VALUES (:fname, :lname, :email, :pass, :role)");
-    $res = $stmt->execute(array(
-        ":fname" => $fname,
-        ":lname" => $lname,
-        ":email" => $email,
-        ":pass" => $pass,
-        ":role" => 0
-    ));
-    return $res;
+    try {
+        $stmt->execute(array(
+            ":fname" => $fname,
+            ":lname" => $lname,
+            ":email" => $email,
+            ":pass" => $pass,
+            ":role" => 0
+        ));
+    } catch(PDOException $e) {
+        return $e->getCode();
+    }
+    return NULL;
 }
