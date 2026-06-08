@@ -6,12 +6,15 @@
 
 require_once "common.php";
 
-$email_required_error = "Email address is required";
-$password_required_error = "Password is required";
-
 $email = $_POST['email'];
 $pass = $_POST['password'];
+$submit = $_POST['submit'];
+
 $logged_in = Login($email, $pass);
+
+function IsError($var, $submit) {
+    return ($submit != NULL && $var == NULL);
+}
 
 ?>
 
@@ -32,15 +35,23 @@ $logged_in = Login($email, $pass);
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8")?>" method="post">
         Email: 
             <input type="email" name="email">
-            <span class="error">* <?php echo $email_required_error ?></span><br><br>
+            <?php if(IsError($email, $submit)) : ?>
+                <span class="error">*Email address is required</span>
+            <?php endif ?>
+            <p></p>
         Password: 
             <input type="password" name="password">
-            <span class="error">* <?php echo $password_required_error ?></span><br><br>
-        <input type="submit"><br>
-        <?php if($logged_in) : ?>
-            <span class="success"> Login Success </span><br>
-        <?php else : ?>
-            <span class="error">Login Failed</span><br>
+            <?php if(IsError($pass, $submit)) : ?>
+                <span class="error">*Password is required</span>
+            <?php endif ?>
+            <p></p>
+        <input type="submit" name="submit"><br>
+        <?php if($submit) : ?>
+            <?php if($logged_in) : ?>
+                <span class="success">Login Successful</span>
+            <?php else : ?>
+                <span class="error">Login Failed</span>
+            <?php endif ?>
         <?php endif ?>
     </form>
 
