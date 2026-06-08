@@ -65,3 +65,12 @@ function Signup($fname, $lname, $email, $pass) {
     }
     return NULL;
 }
+
+function GetRole($val) {
+    switch($val) {
+        case 2: return "god";
+        case 1: return "admin";
+        case 0: return "user";
+    }
+    return NULL;
+}

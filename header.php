@@ -5,7 +5,7 @@
 </a>
 <nav>
     <?php if(IsLoggedIn()) : ?>
-        <a href="login.php"> <?php echo htmlspecialchars(GetUsername(), ENT_HTML5, "UTF-8") ?></a> | <a href="index.php?logout=true"> Log Out </a>
+        <a href="profile.php"> <?php echo htmlspecialchars(GetUsername(), ENT_HTML5, "UTF-8") ?></a> | <a href="index.php?logout=true"> Log Out </a>
     <?php else : ?>
         <a href="login.php">Login</a> | <a href="sign-up.php">Sign up</a>
     <?php endif ?>
