@@ -12,7 +12,7 @@ require_once "paths.php";
 require_once "sqldb.php";
 
 $sqldb = new SQLDB();
-$sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+$sqldb->Connect($DB_PATH);
 
 $stmt = $sqldb->pdo->prepare("SELECT 
                                 posts.id AS post_id,

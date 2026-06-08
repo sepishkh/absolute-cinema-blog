@@ -22,7 +22,7 @@ function Login($email, $pass) {
     require_once "sqldb.php";
 
     $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $sqldb->Connect($DB_PATH);
 
     $stmt = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
     $stmt->execute(array(":email" => $email));

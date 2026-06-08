@@ -35,7 +35,7 @@ class SQLDB {
         }
         if($foreign_key_enable) $this->pdo->exec('PRAGMA foreign_keys = ON;');
         $schema_file = "$this->root/$schema_path";
-        // if (filesize($this->db_file) > 0) return;
+        if (filesize($this->db_file) > 0) return;
         if(file_exists($schema_file)) {
             $schema = file_get_contents($schema_file);
             try {
