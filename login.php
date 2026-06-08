@@ -4,7 +4,7 @@
 
 <?php
 
-require_once "common.php";
+require_once "utilz.php";
 
 $email = $_POST['email'];
 $pass = $_POST['password'];

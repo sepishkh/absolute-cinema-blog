@@ -1,4 +1,4 @@
-<?php require_once "common.php" ?>
+<?php require_once "utilz.php" ?>
 
 <a href="index.php">
     <h1 class="header-title"> Absolute Cinema </h1>

@@ -7,7 +7,7 @@
 
 <?php
 
-require_once "common.php";
+require_once "utilz.php";
 
 if(isset($_GET["logout"])) {
     Logout();

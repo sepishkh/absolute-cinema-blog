@@ -2,7 +2,7 @@
 
 <?php
 
-require_once "common.php";
+require_once "utilz.php";
 
 $fname = $_POST['first_name'];
 $lname = $_POST['last_name'];
