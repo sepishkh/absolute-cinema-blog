@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<!-- TODO: Remove unnecessary ifs when shwoing required error messages -->
+
 <?php
 
 require_once "utilz.php";

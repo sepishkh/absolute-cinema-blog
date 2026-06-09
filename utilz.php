@@ -74,3 +74,38 @@ function GetRole($val) {
     }
     return NULL;
 }
+
+function NewPost($title, $intro, $body, $author_email) {
+    if(!$title || !$intro || !$body || !$author_email) {
+        return array(1, 0);
+    }
+    require_once "paths.php";
+    require_once "sqldb.php";
+    $sqldb = new SQLDB();
+    $sqldb->Connect($DB_PATH);
+    $stmt = $sqldb->pdo->prepare("SELECT id
+                                    FROM users
+                                    WHERE email=:email");
+    $stmt->execute(array(":email" => $author_email));
+    $id = $stmt->fetchColumn();
+    if(!$id) {
+        return array(2, 0);
+    } else {
+        $stmt = $sqldb->pdo->prepare("INSERT 
+                                        INTO posts
+                                        (title, intro, body, author_id, created_at)
+                                        VALUES (:title, :intro, :body, :author_id, :created_at)");
+        try {
+        $stmt->execute(array(
+            ":title" => $title,
+            ":intro" => $intro,
+            ":body" => $body,
+            ":author_id" => $id,
+            ":created_at" => date("Y-m-d")
+        ));
+        } catch(PDOException $e) {
+            return array($e->getCode(), 0);
+        }
+        return array(0, $sqldb->pdo->lastInsertId());
+    }
+}

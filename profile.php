@@ -31,9 +31,6 @@ if(IsLoggedIn()) {
 
 }
 
-require_once "paths.php";
-require_once "sqldb.php";
-
 ?>
 
 <html>
@@ -55,9 +52,17 @@ require_once "sqldb.php";
         <?php exit(); ?>
         <?php endif ?>
 
-        <h2> <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name'], ENT_HTML5, "UTF-8") ?> </h2>
-        <h3> <?= htmlspecialchars($user['email'], ENT_HTML5, "UTF-8") ?></h3>
-        <h4> Role: <?= GetRole(htmlspecialchars($user['role'], ENT_HTML5, "UTF-8")) ?>
+        <div class="header-align">
+            <div>
+                <h2> <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name'], ENT_HTML5, "UTF-8") ?> </h2>
+                <h3> <?= htmlspecialchars($user['email'], ENT_HTML5, "UTF-8") ?></h3>
+                <h4> Role: <?= GetRole(htmlspecialchars($user['role'], ENT_HTML5, "UTF-8")) ?> </h4>
+            </div>
+            <a href="new.php"> 
+                <button type="button" href="new.php" class="create-post"> Create Post</button>
+            </a>
+        </div>
+
         <?php if($posts == NULL) : ?>
             <h4>No Posts Yet</h4>
         <?php else : ?>

@@ -75,3 +75,23 @@ header {
 .success {
     color: green;
 }
+
+.header-align {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 50px;
+}
+
+.create-post {
+    align-items: right;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    height: fit-content;    /* Ensures the button only takes up as much height as its own text needs */
+}
