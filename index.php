@@ -49,6 +49,7 @@ $res = $sqldb->pdo->query("SELECT
 <body>
     <header>
         <?php require 'header.php' ?>
+        <img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner">
     </header>
 
     <main class="blog">

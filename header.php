@@ -11,4 +11,3 @@
 <nav>
     <a href="index.php">Home</a> | <a href="posts.php">All Posts</a> | <a href="categories">Categories</a>
 </nav>
-<img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner">
