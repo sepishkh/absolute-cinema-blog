@@ -12,22 +12,21 @@ require_once "paths.php";
 require_once "sqldb.php";
 
 $sqldb = new SQLDB();
-$sqldb->Connect($DB_PATH);
+$sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
 $stmt = $sqldb->pdo->prepare("SELECT 
                                 posts.id AS post_id,
                                 posts.title, 
                                 posts.intro, 
                                 posts.body, 
-                                posts.created_at, 
-                                posts.is_updated,
+                                posts.created_at,
                                 users.first_name,
                                 users.last_name,
                                 users.email,
                                 users.avatar_id
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE post_id = :view_id");
+                            WHERE post_id = :view_id AND approval=1");
 
 $stmt->execute(
     array(":view_id" => $view_id)

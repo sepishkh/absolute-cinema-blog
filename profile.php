@@ -11,7 +11,7 @@ if(IsLoggedIn()) {
     require_once "paths.php";
 
     $sqldb = new SQLDB();
-    $sqldb->Connect($DB_PATH);
+    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
     $stmt = $sqldb->pdo->prepare("SELECT * 
                                     FROM users
@@ -77,6 +77,20 @@ if(IsLoggedIn()) {
                             echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                         ?></p>
                         <p> <a href="view.php?view=<?php echo $row['id'] ?>">Read More</a></p>
+                        <p> <?php switch($row['approval']) :
+                                case -1: ?>
+                                    <span class="error">Disapproved</span>
+                            <?php   break;
+                                case 0:  ?>
+                                    <span class="waiting">Waiting for approval</span>
+                            <?php   break;
+                                case 1: ?>
+                                    <span class="success">Approved</span>
+                            <?php   break;
+                                default: ?>
+                                    <span class="error">Error</span>
+                            <?php endswitch ?>
+                        </p>
                     </article>
                 <?php endwhile ?>
         <?php endif ?>

@@ -9,8 +9,8 @@ CREATE TABLE posts (
     body        VARCHAR NOT NULL,
     author_id   INTEGER NOT NULL,
     created_at  VARCHAR NOT NULL,
-    is_updated  VARCHAR,
-    FOREIGN KEY (author_id) REFERENCES  users (id)
+    approval    INTEGER NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES users (id)
 );
 
 CREATE TABLE users (
@@ -38,7 +38,7 @@ INSERT INTO users (first_name, last_name, email, password, role) VALUES
 ('David', 'Fincher', 'b_blanc_fan@outlook.com', 'poop', 1),
 ('Amara', NULL, 'amara_watches@gmail.com', 'charlie', 0);
 
-INSERT INTO posts (title, intro, body, author_id, created_at, is_updated) VALUES
+INSERT INTO posts (title, intro, body, author_id, created_at, approval) VALUES
 (
     'Dune: Part Two - A Cinematic Triumph',
     'Denis Villeneuve delivers a sci-fi masterpiece that demands the biggest screen possible.',

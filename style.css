@@ -76,6 +76,10 @@ header {
     color: green;
 }
 
+.waiting {
+    color: steelblue;
+}
+
 .header-align {
     display: flex;
     align-items: center;

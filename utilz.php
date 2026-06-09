@@ -22,7 +22,7 @@ function Login($email, $pass) {
     require_once "sqldb.php";
 
     $sqldb = new SQLDB();
-    $sqldb->Connect($DB_PATH);
+    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
     $stmt = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
     $stmt->execute(array(":email" => $email));
@@ -47,7 +47,7 @@ function Signup($fname, $lname, $email, $pass) {
     require_once "paths.php";
     require_once "sqldb.php";
     $sqldb = new SQLDB();
-    $sqldb->Connect($DB_PATH);
+    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
     $stmt = $sqldb->pdo->prepare("INSERT 
                                     INTO users 
                                     (first_name, last_name, email, password, role) 
@@ -82,26 +82,27 @@ function NewPost($title, $intro, $body, $author_email) {
     require_once "paths.php";
     require_once "sqldb.php";
     $sqldb = new SQLDB();
-    $sqldb->Connect($DB_PATH);
-    $stmt = $sqldb->pdo->prepare("SELECT id
+    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $stmt = $sqldb->pdo->prepare("SELECT id, role
                                     FROM users
                                     WHERE email=:email");
     $stmt->execute(array(":email" => $author_email));
-    $id = $stmt->fetchColumn();
-    if(!$id) {
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if(!$user['id']) {
         return array(2, 0);
     } else {
         $stmt = $sqldb->pdo->prepare("INSERT 
                                         INTO posts
-                                        (title, intro, body, author_id, created_at)
-                                        VALUES (:title, :intro, :body, :author_id, :created_at)");
+                                        (title, intro, body, author_id, created_at, approval)
+                                        VALUES (:title, :intro, :body, :author_id, :created_at, :approval)");
         try {
         $stmt->execute(array(
             ":title" => $title,
             ":intro" => $intro,
             ":body" => $body,
-            ":author_id" => $id,
-            ":created_at" => date("Y-m-d")
+            ":author_id" => $user['id'],
+            ":created_at" => date("Y-m-d"),
+            ":approval" => (($user['role'] == 2) ? 1 : 0)
         ));
         } catch(PDOException $e) {
             return array($e->getCode(), 0);

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<!-- TODO: Fix intro being required rule -->
+
 <?php
 
 require_once "utilz.php";
