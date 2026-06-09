@@ -26,7 +26,33 @@ if(IsLoggedIn()) {
         $posts = $sqldb->pdo->prepare("SELECT *
                                         FROM posts
                                         WHERE author_id=:id");
-        $posts->execute(array(":id" => $user['id']));
+        $posts->execute(array(":id" => $user["id"]));
+        if($user["role"] > 0) {
+            $waiting = $sqldb->pdo->query("SELECT
+                                        posts.id AS post_id,
+                                        posts.title, 
+                                        posts.intro, 
+                                        posts.created_at,
+                                        posts.approval,
+                                        users.first_name,
+                                        users.last_name,
+                                        users.email
+                                        FROM posts
+                                        INNER JOIN users ON posts.author_id = users.id
+                                        WHERE approval=0");
+            $disapproved = $sqldb->pdo->query("SELECT
+                                        posts.id AS post_id,
+                                        posts.title, 
+                                        posts.intro, 
+                                        posts.created_at,
+                                        posts.approval,
+                                        users.first_name,
+                                        users.last_name,
+                                        users.email
+                                        FROM posts
+                                        INNER JOIN users ON posts.author_id = users.id
+                                        WHERE approval=-1");
+        }
     }
 
 }
@@ -35,7 +61,7 @@ if(IsLoggedIn()) {
 
 <html>
     <head>
-        <title><?=(IsLoggedIn() ? $user['first_name'] : "")?> Profile</title>
+        <title><?=(IsLoggedIn() ? $user["first_name"] : "")?> Profile</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -54,9 +80,9 @@ if(IsLoggedIn()) {
 
         <div class="header-align">
             <div>
-                <h2> <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name'], ENT_HTML5, "UTF-8") ?> </h2>
-                <h3> <?= htmlspecialchars($user['email'], ENT_HTML5, "UTF-8") ?></h3>
-                <h4> Role: <?= GetRole(htmlspecialchars($user['role'], ENT_HTML5, "UTF-8")) ?> </h4>
+                <h2> <?= htmlspecialchars($user["first_name"] . " " . $user["last_name"], ENT_HTML5, "UTF-8") ?> </h2>
+                <h3> <?= htmlspecialchars($user["email"], ENT_HTML5, "UTF-8") ?></h3>
+                <h4> Role: <?= GetRole(htmlspecialchars($user["role"], ENT_HTML5, "UTF-8")) ?> </h4>
             </div>
             <a href="new.php"> 
                 <button type="button" href="new.php" class="create-post"> Create Post</button>
@@ -66,18 +92,19 @@ if(IsLoggedIn()) {
         <?php if($posts == NULL) : ?>
             <h4>No Posts Yet</h4>
         <?php else : ?>
-            <main class="blog">
+            <h2>My Posts</h2>
+            <div class="blog">
                 <?php while(($row = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
                     <article class="article-card">
-                        <h2 class="article-title"><?php echo htmlspecialchars($row['title'], ENT_HTML5, "UTF-8") ?></h2>
-                        <p class="article-body"><?php echo htmlspecialchars($row['intro'], ENT_HTML5, "UTF-8") ?></p>
-                        <p class="author-email"> <?php echo htmlspecialchars($row['email'], ENT_HTML5, "UTF-8") ?></p>
+                        <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
+                        <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
+                        <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                         <p class="article-date"> <?php 
-                            $date = DateTime::createFromFormat("Y-m-d", $row['created_at']);
+                            $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
                             echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                         ?></p>
-                        <p> <a href="view.php?view=<?php echo $row['id'] ?>">Read More</a></p>
-                        <p> <?php switch($row['approval']) :
+                        <p> <a href="view.php?view=<?php echo $row["id"] ?>">Read More</a></p>
+                        <p> <?php switch($row["approval"]) :
                                 case -1: ?>
                                     <span class="error">Disapproved</span>
                             <?php   break;
@@ -93,7 +120,69 @@ if(IsLoggedIn()) {
                         </p>
                     </article>
                 <?php endwhile ?>
+            </div>
+            <br>
+            <?php if($user["role"] > 0) : ?>
+                <h2>Waiting for approval</h2>
+                <div class="blog">
+                    <?php while(($row = $waiting->fetch(PDO::FETCH_ASSOC))) : ?>
+                        <article class="article-card">
+                            <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
+                            <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="article-date"> <?php 
+                                $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
+                                echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
+                            ?></p>
+                            <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
+                            <p> <?php switch($row["approval"]) :
+                                    case -1: ?>
+                                        <span class="error">Disapproved</span>
+                                <?php   break;
+                                    case 0:  ?>
+                                        <span class="waiting">Waiting for approval</span>
+                                <?php   break;
+                                    case 1: ?>
+                                        <span class="success">Approved</span>
+                                <?php   break;
+                                    default: ?>
+                                        <span class="error">Error</span>
+                                <?php endswitch ?>
+                            </p>
+                        </article>
+                    <?php endwhile ?>
+                </div>
+                <p></p>
+                <h2>Disapproved</h2>
+                <div class="blog">
+                    <?php while(($row = $disapproved->fetch(PDO::FETCH_ASSOC))) : ?>
+                        <article class="article-card">
+                            <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
+                            <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="article-date"> <?php 
+                                $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
+                                echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
+                            ?></p>
+                            <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
+                            <p> <?php switch($row["approval"]) :
+                                    case -1: ?>
+                                        <span class="error">Disapproved</span>
+                                <?php   break;
+                                    case 0:  ?>
+                                        <span class="waiting">Waiting for approval</span>
+                                <?php   break;
+                                    case 1: ?>
+                                        <span class="success">Approved</span>
+                                <?php   break;
+                                    default: ?>
+                                        <span class="error">Error</span>
+                                <?php endswitch ?>
+                            </p>
+                        </article>
+                    <?php endwhile ?>
+                </div>
+            <?php endif ?>
         <?php endif ?>
     </body>
 </html>
-

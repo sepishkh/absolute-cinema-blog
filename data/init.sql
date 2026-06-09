@@ -43,13 +43,13 @@ INSERT INTO posts (title, intro, body, author_id, created_at, approval) VALUES
     'Dune: Part Two - A Cinematic Triumph',
     'Denis Villeneuve delivers a sci-fi masterpiece that demands the biggest screen possible.',
     '<p>Rarely does a sequel eclipse its predecessor so completely, but Dune: Part Two manages to pull off the impossible. From the breathtaking vistas of Arrakis to the hauntingly beautiful cinematography, every frame feels like a painting. Timothée Chalamet gives a career-defining performance as Paul Atreides transitions from a reluctant messiah to a terrifying force of nature.</p><p>What truly sets this film apart is its impeccable sound design and Hans Zimmer''s thunderous score, which practically shakes the theater seats. It balances complex political intrigue with visceral, jaw-dropping action sequences that will leave you breathless. If you love science fiction, this isn''t just a must-watch—it''s a historical cinematic event.</p>',
-    3, '2026-02-18', 0
+    3, '2026-02-18', -1
 ),
 (
     'The Bear: Season 3 - Still Cooking at High Heat',
     'The chaotic kitchen drama returns with high anxiety, brilliant acting, and deeply emotional stakes.',
     '<p>Yes, Chef! The most stressful show on television is back, and it hasn''t lost a single step. Season 3 dives deeper into the psychological trauma of running a fine-dining establishment while trying to maintain a shred of humanity. Jeremy Allen White continues to sweat charisma and agony in equal measure, leading a flawless ensemble cast.</p><p>While the pacing slows down slightly compared to the frantic rush of Season 2, the character development is richer than ever. It''s a beautiful, exhausting, and ultimately rewarding look at grief, passion, and perfectionism. Just make sure to take a deep breath before hitting play.</p>',
-    1, '2026-02-28', 1
+    1, '2026-02-28', -1
 ),
 (
     'Cyberpunk: Edgerunners - A Neon-Soaked Masterpiece',

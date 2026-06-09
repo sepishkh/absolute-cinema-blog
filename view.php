@@ -2,6 +2,8 @@
 
 <?php
 
+require_once "utilz.php";
+
 $view_id = $_GET['view'];
 if($view_id == NULL || empty(trim($view_id))) {
     include "404.php";
@@ -20,13 +22,14 @@ $stmt = $sqldb->pdo->prepare("SELECT
                                 posts.intro, 
                                 posts.body, 
                                 posts.created_at,
+                                posts.approval,
                                 users.first_name,
                                 users.last_name,
                                 users.email,
                                 users.avatar_id
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE post_id = :view_id AND approval=1");
+                            WHERE post_id = :view_id");
 
 $stmt->execute(
     array(":view_id" => $view_id)
@@ -35,6 +38,22 @@ $content = $stmt->fetch(PDO::FETCH_ASSOC);
 if($content == NULL) {
     include "404.php";
     exit;
+}
+if($content["approval"] != 1) {
+    if(IsLoggedIn()) {
+        $stmt = $sqldb->pdo->prepare("SELECT * 
+                                        FROM users
+                                        WHERE email=:email");
+        $stmt->execute(array(":email" => GetUsername()));
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($user["role"] == 0) {
+            include "404.php";
+            exit;
+        }
+    } else {
+        include "404.php";
+        exit;
+    }
 }
 
 ?>
