@@ -28,7 +28,7 @@ if($submit) {
 <body>
 
     <header>
-        <?php require "header.php" ?>
+        <?php require_once "header.php" ?>
     </header>
 
     <h2> Sign up </h2>

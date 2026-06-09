@@ -43,7 +43,9 @@ require_once "sqldb.php";
     </head>
 
     <body>
-        <?php require_once "header.php" ?>
+        <header>
+            <?php require_once "header.php" ?>
+        </header>
         <?php if(!IsLoggedIn()) : ?>
             <h1> Please <a href="login.php">Login</a> first.</h1>
         <?php exit(); ?>
