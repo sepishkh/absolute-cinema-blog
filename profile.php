@@ -98,7 +98,6 @@ if(IsLoggedIn()) {
                     <article class="article-card">
                         <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                         <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                        <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                         <p class="article-date"> <?php 
                             $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
                             echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
@@ -129,6 +128,7 @@ if(IsLoggedIn()) {
                         <article class="article-card">
                             <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                             <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
                             <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                             <p class="article-date"> <?php 
                                 $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
@@ -159,6 +159,7 @@ if(IsLoggedIn()) {
                         <article class="article-card">
                             <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                             <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
+                            <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
                             <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                             <p class="article-date"> <?php 
                                 $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
