@@ -54,7 +54,6 @@ if(IsLoggedIn()) {
                                         WHERE approval=-1");
         }
     }
-
 }
 
 ?>

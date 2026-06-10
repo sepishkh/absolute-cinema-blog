@@ -58,6 +58,27 @@ if(isset($_GET["approved"]) && $user["role"] != 0) {
     $stmt->execute(array(":approval" => (int)$_GET["approved"], ":id" => (int)$view_id));
 }
 
+$comments_t = "comment_" . $view_id;
+try {
+    $stmt2 = $sqldb->pdo->prepare("SELECT
+                                {$comments_t}.id AS cid,
+                                {$comments_t}.comment,
+                                {$comments_t}.approval,
+                                {$comments_t}.created_at,
+                                {$comments_t}.author_id,
+                                users.id AS uid,
+                                users.first_name,
+                                users.last_name,
+                                users.email
+                                FROM {$comments_t}
+                                INNER JOIN users ON uid = {$comments_t}.author_id
+                                WHERE {$comments_t}.approval=1
+                            ");
+    $stmt2->execute();
+} catch(PDOException $e) {
+    $stmt2 = NULL;
+}
+
 ?>
 
 <html>
@@ -81,7 +102,41 @@ if(isset($_GET["approved"]) && $user["role"] != 0) {
                                               htmlspecialchars($content['email'], ENT_HTML5, "UTF-8") ?></p>
         <p class="article-date"> <?php echo htmlspecialchars($content['created_at'], ENT_HTML5, "UTF-8") ?> </p>
         <p class="article-body"> <?php echo htmlspecialchars($content['intro'], ENT_HTML5, "UTF-8") ?></p>
-        <p class="article-cont"> <?php echo $content['body'] ?></p>
-
+        <p class="article-cont"> <?php echo $content['body'] ?></p>   
+        <p></p>
+        <h3>Comments</h3>
+        <div class="admin-comments_t-container">
+            <?php while(($comment = $stmt2->fetch(PDO::FETCH_ASSOC))) : ?>
+                <div class="comment-card">    
+                    <div class="comment-avatar">
+                        <div class="avatar-circle">U</div>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-author"><?= $comment["first_name"] . " " . $comment["last_name"] ?></span>
+                            <span class="comment-date">
+                                <?php
+                                    $date = DateTime::createFromFormat("Y-m-d", $comment['created_at']);
+                                    echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8")
+                                ?> 
+                            </span>
+                        </div>
+                        <p class="comment-text"><?= $comment["comment"] ?></p>
+                        <div class="comment-actions">
+                            <form action="process-comment.php" method="POST" class="action-form">
+                                <input type="hidden" name="comment_id" value="12">
+                                <input type="hidden" name="status" value="approve">
+                                <button type="submit" class="btn btn-approve">Approve</button>
+                            </form>
+                            <form action="process-comment.php" method="POST" class="action-form">
+                                <input type="hidden" name="comment_id" value="12">
+                                <input type="hidden" name="status" value="disapprove">
+                                <button type="submit" class="btn btn-disapprove">Disapprove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile ?>
+        </div>
     </body>
 </html>

@@ -109,3 +109,105 @@ header {
     width: 100%;              /* Stretches the container full width */
     padding: 20px 0;
 }
+
+/* Container holding the vertical stack */
+.admin-comments-container {
+    max-width: 800px;
+    margin-left: 10px; margin-right: auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Individual Comment Row Layout */
+.comment-card {
+    display: flex;              /* Places avatar on left, content text on right */
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e0e0e0; /* Clean dividing line between stacked comments */
+}
+
+/* YouTube Style Avatar Customization */
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #607d8b;
+    color: white;
+    border-radius: 50%;         /* Makes it a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Right content box layout stacking top-to-bottom */
+.comment-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+/* Metadata alignment styling */
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-author {
+    font-weight: bold;
+    font-size: 14px;
+    color: #0f0f0f;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #606060;
+}
+
+.comment-text {
+    margin: 0;
+    font-size: 14px;
+    color: #0f0f0f;
+    line-height: 1.4;
+}
+
+/* Admin Panel Horizontal Buttons Placement */
+.comment-actions {
+    display: flex;
+    gap: 10px;                  /* Spaces out your forms side-by-side */
+    margin-top: 8px;
+}
+
+.action-form {
+    display: inline-block;
+}
+
+/* Core Dashboard Button Styling */
+.btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-approve {
+    background-color: #2e7d32;  /* Clean Admin Green */
+    color: white;
+}
+
+.btn-approve:hover {
+    background-color: #1b5e20;
+}
+
+.btn-disapprove {
+    background-color: #c62828;  /* Warning Admin Red */
+    color: white;
+}
+
+.btn-disapprove:hover {
+    background-color: #b71c1c;
+}
