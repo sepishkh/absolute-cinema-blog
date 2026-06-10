@@ -105,6 +105,28 @@ try {
         <p class="article-cont"> <?php echo $content['body'] ?></p>   
         <p></p>
         <h3>Comments</h3>
+        <?php if(IsLoggedIn()) : ?>
+            <div class="comment-input-container">
+                <h3>Leave a Comment</h3>
+                <form action="submit-comment.php" method="POST" class="comment-form">
+                    <input type="hidden" name="item_id" value="12">
+                    <div class="form-group">
+                        <label Bir="comment_body" class="visually-hidden">Write your comment:</label>
+                        <textarea
+                            id="comment_body" 
+                            name="comment_text" 
+                            rows="4" 
+                            placeholder="Join the discussion... Add your thoughts here" 
+                            required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-submit">Submit Comment</button>
+                    </div>
+                </form>
+            </div>
+        <?php else : ?>
+            <h4> Please <a href="login.php">Login</a> to comment.</h4>
+        <?php endif ?>
         <div class="admin-comments_t-container">
             <?php while(($comment = $stmt2->fetch(PDO::FETCH_ASSOC))) : ?>
                 <div class="comment-card">    

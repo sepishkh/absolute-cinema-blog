@@ -211,3 +211,88 @@ header {
 .btn-disapprove:hover {
     background-color: #b71c1c;
 }
+
+/* Container layout matching the exact left-alignment of your admin panel */
+.comment-input-container {
+    max-width: 800px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 40px;        /* Matches the left alignment buffer */
+    margin-right: auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
+
+.comment-input-container h3 {
+    font-size: 18px;
+    color: #0f0f0f;
+    margin-bottom: 16px;
+}
+
+/* Form structure stacking elements vertically */
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+}
+
+/* Textarea customization styled to fit modern text boxes */
+.comment-form textarea {
+    width: 100%;
+    box-sizing: border-box;   /* Prevents padding from breaking width math */
+    padding: 12px;
+    font-size: 14px;
+    color: #0f0f0f;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;         /* Allows the user to expand height, but not stretch width */
+    line-height: 1.4;
+}
+
+/* Accent highlight when a reader clicks inside the text box */
+.comment-form textarea:focus {
+    outline: none;
+    border-color: #607d8b;    /* Matches your avatar color scheme */
+    box-shadow: 0 0 4px rgba(96, 125, 139, 0.2);
+}
+
+/* Pushes the button to line up clean under the textbox */
+.form-actions {
+    display: flex;
+    justify-content: flex-start; /* Aligns button to the left side of the input field */
+}
+
+/* Submit Action Button styling adopting the exact button footprint */
+.btn-submit {
+    padding: 8px 18px;        /* Slightly larger target for public submissions */
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #607d8b; /* Primary slate blue theme accent */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-submit:hover {
+    background-color: #455a64; /* Darkens cleanly on mouse hover */
+}
+
+/* Hides label safely away from browsers but keeps it intact for screen readers */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
