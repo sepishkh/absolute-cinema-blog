@@ -99,3 +99,13 @@ header {
     cursor: pointer;
     height: fit-content;    /* Ensures the button only takes up as much height as its own text needs */
 }
+
+.approves {
+    display: flex;            /* Activates layout engine */
+    justify-content: center;  /* Centers the buttons horizontally */
+    align-items: center;      /* Centers the buttons vertically (if container has height) */
+    gap: 15px;                /* Adds clean spacing between the two buttons */
+    
+    width: 100%;              /* Stretches the container full width */
+    padding: 20px 0;
+}

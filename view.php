@@ -39,21 +39,23 @@ if($content == NULL) {
     include "404.php";
     exit;
 }
-if($content["approval"] != 1) {
-    if(IsLoggedIn()) {
-        $stmt = $sqldb->pdo->prepare("SELECT * 
-                                        FROM users
-                                        WHERE email=:email");
-        $stmt->execute(array(":email" => GetUsername()));
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($user["role"] == 0) {
-            include "404.php";
-            exit;
-        }
-    } else {
-        include "404.php";
-        exit;
-    }
+
+$stmt = $sqldb->pdo->prepare("SELECT * 
+                                FROM users
+                                WHERE email=:email");
+$stmt->execute(array(":email" => GetUsername()));
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if($content["email"] != GetUsername() && $content["approval"] != 1 && $user["role"] == 0) {
+    include "404.php";
+    exit;
+}
+
+if(isset($_GET["approved"]) && $user["role"] != 0) {
+    $stmt = $sqldb->pdo->prepare("UPDATE posts
+                                    SET approval=:approval
+                                    WHERE id=:id");
+    $stmt->execute(array(":approval" => (int)$_GET["approved"], ":id" => (int)$view_id));
 }
 
 ?>
@@ -68,6 +70,12 @@ if($content["approval"] != 1) {
             <?php require_once "header.php" ?>
         </header>
         <h1> <?php echo htmlspecialchars($content['title'], ENT_HTML5, "UTF-8") ?> </h1>
+        <?php if($user["role"] != 0) : ?>
+            <div class="approves">
+                <a href="view.php?view=<?=$view_id?>&approved=1"> <button> Approve </button></a>
+                <a href="view.php?view=<?=$view_id?>&approved=-1"> <button> Disapprove </button></a>
+            </div>
+        <?php endif ?>
         <p class="article-author"> <?php echo htmlspecialchars($content['first_name'], ENT_HTML5, "UTF-8") . " " . 
                                               htmlspecialchars($content['last_name'], ENT_HTML5, "UTF-8") . " - " . 
                                               htmlspecialchars($content['email'], ENT_HTML5, "UTF-8") ?></p>
