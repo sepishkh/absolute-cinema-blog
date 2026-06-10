@@ -30,8 +30,7 @@ $res = $sqldb->pdo->query("SELECT
                                 posts.created_at, 
                                 users.first_name,
                                 users.last_name,
-                                users.email,
-                                users.avatar_id
+                                users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
                             WHERE approval=1");

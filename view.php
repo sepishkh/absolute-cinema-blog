@@ -25,8 +25,7 @@ $stmt = $sqldb->pdo->prepare("SELECT
                                 posts.approval,
                                 users.first_name,
                                 users.last_name,
-                                users.email,
-                                users.avatar_id
+                                users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
                             WHERE post_id = :view_id");
@@ -109,7 +108,8 @@ try {
             <div class="comment-input-container">
                 <h3>Leave a Comment</h3>
                 <form action="submit-comment.php" method="POST" class="comment-form">
-                    <input type="hidden" name="item_id" value="12">
+                    <input type="hidden" name="view_id" value="<?=$view_id?>">
+                    <input type="hidden" name="author_id" value="<?=$user["id"]?>">
                     <div class="form-group">
                         <label Bir="comment_body" class="visually-hidden">Write your comment:</label>
                         <textarea
