@@ -60,20 +60,22 @@ if(isset($_GET["approved"]) && $user["role"] != 0) {
 $comments_t = "comment_" . $view_id;
 try {
     $stmt2 = $sqldb->pdo->prepare("SELECT
-                                {$comments_t}.id AS cid,
-                                {$comments_t}.comment,
-                                {$comments_t}.approval,
-                                {$comments_t}.created_at,
-                                {$comments_t}.author_id,
+                                $comments_t.id AS cid,
+                                $comments_t.comment,
+                                $comments_t.approval,
+                                $comments_t.created_at,
+                                $comments_t.author_id,
                                 users.id AS uid,
                                 users.first_name,
                                 users.last_name,
                                 users.email
-                                FROM {$comments_t}
-                                INNER JOIN users ON uid = {$comments_t}.author_id
-                                WHERE {$comments_t}.approval=1
+                                FROM $comments_t
+                                INNER JOIN users ON uid = $comments_t.author_id
+                                WHERE $comments_t.approval=1 OR $comments_t.approval=:control
                             ");
-    $stmt2->execute();
+    $stmt2->execute(array(
+        ":control" => ($user["role"] > 0) ? 0 : NULL
+    ));
 } catch(PDOException $e) {
     $stmt2 = NULL;
 }
@@ -90,7 +92,7 @@ try {
             <?php require_once "header.php" ?>
         </header>
         <h1> <?php echo htmlspecialchars($content['title'], ENT_HTML5, "UTF-8") ?> </h1>
-        <?php if($user["role"] != 0) : ?>
+        <?php if($user["role"] > 0) : ?>
             <div class="approves">
                 <a href="view.php?view=<?=$view_id?>&approved=1"> <button> Approve </button></a>
                 <a href="view.php?view=<?=$view_id?>&approved=-1"> <button> Disapprove </button></a>
@@ -144,18 +146,22 @@ try {
                             </span>
                         </div>
                         <p class="comment-text"><?= $comment["comment"] ?></p>
-                        <div class="comment-actions">
-                            <form action="process-comment.php" method="POST" class="action-form">
-                                <input type="hidden" name="comment_id" value="12">
-                                <input type="hidden" name="status" value="approve">
-                                <button type="submit" class="btn btn-approve">Approve</button>
-                            </form>
-                            <form action="process-comment.php" method="POST" class="action-form">
-                                <input type="hidden" name="comment_id" value="12">
-                                <input type="hidden" name="status" value="disapprove">
-                                <button type="submit" class="btn btn-disapprove">Disapprove</button>
-                            </form>
-                        </div>
+                        <?php if($user["role"] > 0 && $comment["approval"] == 0) : ?>
+                            <div class="comment-actions">
+                                <form action="process-comment.php" method="POST" class="action-form">
+                                    <input type="hidden" name="comment_id" value="<?=$comment["cid"]?>">
+                                    <input type="hidden" name="status" value="1">
+                                    <input type="hidden" name="view_id" value="<?=$view_id?>">
+                                    <button type="submit" class="btn btn-approve">Approve</button>
+                                </form>
+                                <form action="process-comment.php" method="POST" class="action-form">
+                                    <input type="hidden" name="comment_id" value="<?=$comment["cid"]?>">
+                                    <input type="hidden" name="status" value="-1">
+                                    <input type="hidden" name="view_id" value="<?=$view_id?>">
+                                    <button type="submit" class="btn btn-disapprove">Disapprove</button>
+                                </form>
+                            </div>
+                        <?php endif ?>
                     </div>
                 </div>
             <?php endwhile ?>

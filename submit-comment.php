@@ -20,7 +20,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
                             ":approval" => 0,
                             ":created_at" => date("Y-m-d")              
     ));
+    header("Location: view.php?view=" . $view_id);
+    exit;
 }
-
-header("Location: view.php?view=" . $view_id);
-exit;
