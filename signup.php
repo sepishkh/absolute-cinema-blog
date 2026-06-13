@@ -6,8 +6,8 @@
 
 require_once "utilz.php";
 
-$fname = $_POST['first_name'];
-$lname = $_POST['last_name'];
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
 $email = $_POST['email'];
 $pass = $_POST['password'];
 $submit = $_POST['submit'];
@@ -36,7 +36,7 @@ if($submit) {
     <h2> Sign up </h2>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8") ?>" method="post">
         First Name:
-            <input type="text" name="first_name">
+            <input type="text" name="fname">
             <?php if (IsError($fname, $submit)) : ?>
                 <span class="error">*First Name is required</span>
             <?php endif ?>

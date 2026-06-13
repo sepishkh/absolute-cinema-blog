@@ -32,10 +32,10 @@ if(IsLoggedIn()) {
                                         posts.id AS post_id,
                                         posts.title, 
                                         posts.intro, 
-                                        posts.created_at,
+                                        posts.creation_date,
                                         posts.approval,
-                                        users.first_name,
-                                        users.last_name,
+                                        users.fname,
+                                        users.lname,
                                         users.email
                                         FROM posts
                                         INNER JOIN users ON posts.author_id = users.id
@@ -44,10 +44,10 @@ if(IsLoggedIn()) {
                                         posts.id AS post_id,
                                         posts.title, 
                                         posts.intro, 
-                                        posts.created_at,
+                                        posts.creation_date,
                                         posts.approval,
-                                        users.first_name,
-                                        users.last_name,
+                                        users.fname,
+                                        users.lname,
                                         users.email
                                         FROM posts
                                         INNER JOIN users ON posts.author_id = users.id
@@ -60,7 +60,7 @@ if(IsLoggedIn()) {
 
 <html>
     <head>
-        <title><?=(IsLoggedIn() ? $user["first_name"] : "")?> Profile</title>
+        <title><?=(IsLoggedIn() ? $user["fname"] : "")?> Profile</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
@@ -79,7 +79,7 @@ if(IsLoggedIn()) {
 
         <div class="header-align">
             <div>
-                <h2> <?= htmlspecialchars($user["first_name"] . " " . $user["last_name"], ENT_HTML5, "UTF-8") ?> </h2>
+                <h2> <?= htmlspecialchars($user["fname"] . " " . $user["lname"], ENT_HTML5, "UTF-8") ?> </h2>
                 <h3> <?= htmlspecialchars($user["email"], ENT_HTML5, "UTF-8") ?></h3>
                 <h4> Role: <?= GetRole(htmlspecialchars($user["role"], ENT_HTML5, "UTF-8")) ?> </h4>
             </div>
@@ -98,7 +98,7 @@ if(IsLoggedIn()) {
                         <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                         <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
                         <p class="article-date"> <?php 
-                            $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
+                            $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
                             echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                         ?></p>
                         <p> <a href="view.php?view=<?php echo $row["id"] ?>">Read More</a></p>
@@ -127,10 +127,10 @@ if(IsLoggedIn()) {
                         <article class="article-card">
                             <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                             <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
+                            <p class="article-author"> <?php echo htmlspecialchars($row['fname'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['lname'], ENT_HTML5, "UTF-8")?></p>
                             <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                             <p class="article-date"> <?php 
-                                $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
+                                $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
                                 echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                             ?></p>
                             <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
@@ -158,10 +158,10 @@ if(IsLoggedIn()) {
                         <article class="article-card">
                             <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                             <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
+                            <p class="article-author"> <?php echo htmlspecialchars($row['fname'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
                             <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
                             <p class="article-date"> <?php 
-                                $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
+                                $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
                                 echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                             ?></p>
                             <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>

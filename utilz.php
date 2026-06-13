@@ -50,7 +50,7 @@ function Signup($fname, $lname, $email, $pass) {
     $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
     $stmt = $sqldb->pdo->prepare("INSERT 
                                     INTO users 
-                                    (first_name, last_name, email, password, role) 
+                                    (fname, last_name, email, password, role) 
                                     VALUES (:fname, :lname, :email, :pass, :role)");
     try {
         $stmt->execute(array(
@@ -93,15 +93,15 @@ function NewPost($title, $intro, $body, $author_email) {
     } else {
         $stmt = $sqldb->pdo->prepare("INSERT 
                                         INTO posts
-                                        (title, intro, body, author_id, created_at, approval)
-                                        VALUES (:title, :intro, :body, :author_id, :created_at, :approval)");
+                                        (title, intro, body, author_id, creation_date, approval)
+                                        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval)");
         try {
         $stmt->execute(array(
             ":title" => $title,
             ":intro" => $intro,
             ":body" => $body,
             ":author_id" => $user['id'],
-            ":created_at" => date("Y-m-d"),
+            ":creation_date" => date("Y-m-d"),
             ":approval" => (($user['role'] == 2) ? 1 : 0)
         ));
         } catch(PDOException $e) {
@@ -114,7 +114,7 @@ function NewPost($title, $intro, $body, $author_email) {
                                             comment     VARCHAR NOT NULL,
                                             author_id   INTEGER NOT NULL,
                                             approval    INTEGER NOT NULL,
-                                            created_at  VARCHAR,
+                                            creation_date  VARCHAR,
                                             FOREIGN KEY (author_id) REFERENCES users (id))");
         $stmt->execute();
         return array(0, $new_id);
@@ -133,4 +133,12 @@ function Escape($text) {
 function FormatDate($date) {
     $d = strtotime($date);
     return date("M d, Y", $d);
+}
+
+function GetCategory($category) {
+    switch($category) {
+        case 0: return "Movie";
+        case 1: return "TV Show";
+        case 2: return "Theatre";
+    }
 }

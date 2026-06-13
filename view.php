@@ -21,10 +21,10 @@ $stmt = $sqldb->pdo->prepare("SELECT
                                 posts.title, 
                                 posts.intro, 
                                 posts.body, 
-                                posts.created_at,
+                                posts.creation_date,
                                 posts.approval,
-                                users.first_name,
-                                users.last_name,
+                                users.fname,
+                                users.lname,
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
@@ -63,10 +63,10 @@ try {
                                 $comments_t.id AS cid,
                                 $comments_t.comment,
                                 $comments_t.approval,
-                                $comments_t.created_at,
+                                $comments_t.creation_date,
                                 $comments_t.author_id,
                                 users.id AS uid,
-                                users.first_name,
+                                users.fname,
                                 users.last_name,
                                 users.email
                                 FROM $comments_t
@@ -98,10 +98,10 @@ try {
                 <a href="view.php?view=<?=$view_id?>&approved=-1"> <button> Disapprove </button></a>
             </div>
         <?php endif ?>
-        <p class="article-author"> <?php echo htmlspecialchars($content['first_name'], ENT_HTML5, "UTF-8") . " " . 
+        <p class="article-author"> <?php echo htmlspecialchars($content['fname'], ENT_HTML5, "UTF-8") . " " . 
                                               htmlspecialchars($content['last_name'], ENT_HTML5, "UTF-8") . " - " . 
                                               htmlspecialchars($content['email'], ENT_HTML5, "UTF-8") ?></p>
-        <p class="article-date"> <?php echo htmlspecialchars($content['created_at'], ENT_HTML5, "UTF-8") ?> </p>
+        <p class="article-date"> <?php echo htmlspecialchars($content['creation_date'], ENT_HTML5, "UTF-8") ?> </p>
         <p class="article-body"> <?php echo htmlspecialchars($content['intro'], ENT_HTML5, "UTF-8") ?></p>
         <p class="article-cont"> <?php echo $content['body'] ?></p>   
         <p></p>
@@ -137,10 +137,10 @@ try {
                     </div>
                     <div class="comment-content">
                         <div class="comment-header">
-                            <span class="comment-author"><?= $comment["first_name"] . " " . $comment["last_name"] ?></span>
+                            <span class="comment-author"><?= $comment["fname"] . " " . $comment["last_name"] ?></span>
                             <span class="comment-date">
                                 <?php
-                                    $date = DateTime::createFromFormat("Y-m-d", $comment['created_at']);
+                                    $date = DateTime::createFromFormat("Y-m-d", $comment['creation_date']);
                                     echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8")
                                 ?> 
                             </span>

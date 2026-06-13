@@ -23,9 +23,10 @@ $res = $sqldb->pdo->query("SELECT
                                 posts.title, 
                                 posts.intro, 
                                 posts.body, 
-                                posts.created_at, 
-                                users.first_name,
-                                users.last_name,
+                                posts.creation_date,
+                                posts.category,
+                                users.fname,
+                                users.lname,
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
@@ -50,12 +51,11 @@ $res = $sqldb->pdo->query("SELECT
 
     <main class="content-wrapper">
         <h1 class="page-title">Latest Reviews</h1>
-
         <div class="reviews-grid">
             <?php while(($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
                 <article class="review-card">
                     <div class="card-thumbnail">
-                        <span class="category-badge">Movie</span>
+                        <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
                         <div class="thumbnail-placeholder">🍿</div>
                     </div>
                     
@@ -66,16 +66,15 @@ $res = $sqldb->pdo->query("SELECT
                         <p class="card-intro"><?= Escape($post["intro"]) ?></p>
                         <div class="card-meta">
                             <span class="author-name" title="<?= Escape($post["email"]) ?>">
-                                <?= Escape($post["first_name"] . " " . $post["last_name"]) ?>
+                                <?= Escape($post["fname"] . " " . $post["lname"]) ?>
                             </span>
                             <span class="meta-divider">•</span>
-                            <time datetime="<?= $post["created_at"] ?>" class="creation-date"><?= FormatDate($post["created_at"]) ?></time>
+                            <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
                         </div>
                     </div>
                 </article>
             <?php endwhile ?>
         </div>
-
     </main>
 </body>
 </html>
