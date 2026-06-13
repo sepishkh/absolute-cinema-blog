@@ -464,3 +464,253 @@ body {
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   6. AUTHENTICATION PAGES (SIGNUP / LOGIN)
+   ========================================================================== */
+
+/* Page background adjustment */
+.auth-page {
+    background-color: var(--bg-dark);
+}
+
+/* Centering the registration box cleanly on the screen */
+.auth-container {
+    display: block;
+    max-width: 520px;
+    margin: 4rem auto;
+    padding: 0 1.5rem;
+}
+
+/* The card envelope containing the form */
+.auth-card {
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 2.5rem;
+    border: 1px solid #2d2d2d;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Form Structural Layout */
+.auth-form {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Handles splitting First and Last name side-by-side */
+.form-row-split {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 12px 0;
+    margin-left: -12px;
+    width: calc(100% + 24px);
+    margin-bottom: 1.25rem;
+}
+
+.form-row-split .form-group {
+    display: table-cell;
+    vertical-align: top;
+    margin-bottom: 0; /* Clear bottom margin inside the split table layout */
+}
+
+/* Labels */
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.required-asterisk {
+    color: var(--accent-red);
+}
+
+.optional-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: none;
+}
+
+/* Modern Minimalist Dark Inputs */
+.form-group input {
+    width: 100%;
+    background-color: #0f0f0f; /* Pitch black input backgrounds matching YouTube style */
+    color: var(--text-main);
+    border: 1px solid #3a3a3a;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+/* Focus and Active States */
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2); /* Soft crimson outer glow ring */
+    background-color: #151515;
+}
+
+/* Button layout tweaks inside forms */
+.btn-block {
+    width: 100%;
+    display: block;
+}
+
+.auth-submit-btn {
+    padding: 0.85rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1.5rem;
+}
+
+/* Form Footer Links */
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-top: 1px solid #2d2d2d;
+    padding-top: 1.5rem;
+}
+
+.auth-footer a {
+    color: var(--accent-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.1s ease;
+}
+
+.auth-footer a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Mobile Tweak: Stack Name inputs on small screens */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+    .form-row-split {
+        display: block;
+        margin-left: 0;
+        width: 100%;
+    }
+    .form-row-split .form-group {
+        display: block;
+        margin-bottom: 1.25rem;
+    }
+}
+
+/* ==========================================================================
+   7. ALERTS & NOTIFICATION SYSTEM (For Forms and Status Updates)
+   ========================================================================== */
+
+/* Base Alert Box Layout */
+.alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    animation: alertFadeIn 0.3s ease-in-out;
+}
+
+/* Internal icon alignment */
+.alert-icon {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.alert-content {
+    flex: 1; /* Forces text content to scale and take up the remaining width */
+}
+
+.alert-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Bullet list styling used specifically for multi-error readouts */
+.alert-list {
+    margin-top: 0.5rem;
+    padding-left: 1.25rem;
+}
+
+.alert-list li {
+    margin-bottom: 0.35rem;
+}
+
+/* --- Contextual Modifier States --- */
+
+/* State A: Danger / Error (Deep Crimson Palette) */
+.alert-danger {
+    background-color: rgba(192, 41, 43, 0.12); /* Subtle 12% opacity red tint */
+    border: 1px solid rgba(192, 41, 43, 0.4);   /* Soft crimson border */
+    color: #ff6b6b;                            /* Highly legible pastel red text */
+}
+
+.alert-danger .alert-icon,
+.alert-danger .alert-title {
+    color: #ff4d4d; /* Pop-out bright red for emphasis headers */
+}
+
+.alert-danger .alert-list li {
+    color: #ffb3b3; /* Softer red for long lists of errors */
+}
+
+/* State B: Success (Emerald Green Palette) */
+.alert-success {
+    background-color: rgba(46, 204, 113, 0.1);  /* Subtle 10% opacity green tint */
+    border: 1px solid rgba(46, 204, 113, 0.35); /* Soft emerald border */
+    color: #72eca4;                            /* Highly legible pastel green text */
+}
+
+.alert-success .alert-icon,
+.alert-success .alert-title {
+    color: #2ecc71; /* Pop-out bright green for success headlines */
+}
+
+/* CSS Animation for a smooth slide-down entrance when page loads */
+@keyframes alertFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

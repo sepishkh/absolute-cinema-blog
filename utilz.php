@@ -50,15 +50,16 @@ function Signup($fname, $lname, $email, $pass) {
     $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
     $stmt = $sqldb->pdo->prepare("INSERT 
                                     INTO users 
-                                    (fname, last_name, email, password, role) 
-                                    VALUES (:fname, :lname, :email, :pass, :role)");
+                                    (fname, lname, email, password, role, creation_date) 
+                                    VALUES (:fname, :lname, :email, :pass, :role, :creation_date)");
     try {
         $stmt->execute(array(
             ":fname" => $fname,
             ":lname" => $lname,
             ":email" => $email,
             ":pass" => $pass,
-            ":role" => 0
+            ":role" => 0,
+            ":creation_date" => date("Y-m-d H:i")
         ));
     } catch(PDOException $e) {
         return $e->getCode();

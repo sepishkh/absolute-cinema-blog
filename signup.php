@@ -4,76 +4,94 @@
 
 <?php
 
-require_once "utilz.php";
-
-$fname = $_POST['fname'];
-$lname = $_POST['lname'];
-$email = $_POST['email'];
-$pass = $_POST['password'];
-$submit = $_POST['submit'];
-$signed = NULL;
-
-if($submit) {
-    Logout();
-    $signed = Signup($fname, $lname, $email, $pass);
-}
+$status = $_GET["status"];
 
 ?>
 
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Sign Up </title>
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-
-    <header>
+<body class="auth-page">
+    <header class="main-header">
         <?php require_once "header.php" ?>
     </header>
 
-    <h2> Sign up </h2>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8") ?>" method="post">
-        First Name:
-            <input type="text" name="fname">
-            <?php if (IsError($fname, $submit)) : ?>
-                <span class="error">*First Name is required</span>
-            <?php endif ?>
-            <p></p>
-        Last Name:
-            <input type="text" name="last_name">
-            <span>Optional</span><p></p>
-        Email: 
-            <input type="email" name="email">
-            <?php if(IsError($email, $submit)) : ?>
-                <span class="error">*Email address is required</span>
-            <?php endif ?>
-            <p></p>
-        Password: 
-            <input type="password" name="password">
-            <?php if(IsError($pass, $submit)) : ?>
-                <span class="error">*Password is required</span>
-            <?php endif ?>
-            <p></p>
-        <input type="submit" name="submit"><br>
-        <?php if($submit) : ?>
-            <?php switch($signed) :
-                case NULL: ?>
-                    <span class="success">Sign up Successful. Go to <a href="login.php">Login</a> page</span>
-            <?php   break;
-                case false:  ?>
-                    <span class="error">Sign up Failed</span>
-            <?php   break;
-                case 23000: ?>
-                    <span class="error">Email already registered</span>
-            <?php   break;
-                default: ?>
-                    <span class="error">Erorr</span>
-            <?php endswitch ?>
-        <?php endif ?>
-    </form>
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Join AbsoluteCinema</h1>
+                <p>Create an account to start reviewing your favorite movies and TV shows.</p>
+            </div>
 
+            <?php if(isset($_GET["status"])) : ?>
+                <?php if($_GET['status'] === "success") : ?>
+                    <div class="alert-box alert-success">
+                        <div class="alert-icon">✔</div>
+                        <div class="alert-content">
+                            <p class="alert-title">Success!</p>
+                            <p>Your account has been created. Go to <a href="login.php">Login</a> page.</p>
+                        </div>
+                    </div>
+                <?php elseif($_GET["status"] == "23000") : ?>
+                    <div class="alert-box alert-danger">
+                        <div class="alert-icon">⚠</div>
+                        <div class="alert-content">
+                            <p class="alert-title">Registration Failed</p>
+                            <ul class="alert-list">
+                                <li>Email Already registered</li>
+                            </ul>
+                        </div>
+                    </div>
+                <?php else : ?>
+                    <div class="alert-box alert-danger">
+                        <div class="alert-icon">⚠</div>
+                        <div class="alert-content">
+                            <p class="alert-title">Registration Failed</p>
+                            <ul class="alert-list">
+                                <li>Error</li>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endif ?>
+            <?php endif ?>
+            <form action="signup-process.php" method="POST" class="auth-form">
+                
+                <div class="form-row-split">
+                    <div class="form-group">
+                        <label for="first_name">First Name <span class="required-asterisk">*</span></label>
+                        <input type="text" id="first_name" name="fname" placeholder="e.g. John" required autocomplete="given-name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name <span class="optional-label">(Optional)</span></label>
+                        <input type="text" id="last_name" name="lname" placeholder="e.g. Doe" autocomplete="family-name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required-asterisk">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required-asterisk">*</span></label>
+                    <input type="password" id="password" name="password" placeholder="Min. 8 characters" required autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block auth-submit-btn">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.php">Log In instead</a></p>
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>
