@@ -60,7 +60,7 @@ $status = $_GET["status"];
                     </div>
                 <?php endif ?>
             <?php endif ?>
-            <form action="signup-process.php" method="POST" class="auth-form">
+            <form action="process-signup.php" method="POST" class="auth-form">
                 
                 <div class="form-row-split">
                     <div class="form-group">
