@@ -25,7 +25,8 @@ if(IsLoggedIn()) {
     } else {
         $posts = $sqldb->pdo->prepare("SELECT *
                                         FROM posts
-                                        WHERE author_id=:id");
+                                        WHERE author_id=:id
+                                        ORDER BY creation_date, approval DESC");
         $posts->execute(array(":id" => $user["id"]));
         if($user["role"] > 0) {
             $waiting = $sqldb->pdo->query("SELECT
@@ -34,6 +35,7 @@ if(IsLoggedIn()) {
                                         posts.intro, 
                                         posts.creation_date,
                                         posts.approval,
+                                        posts.category,
                                         users.fname,
                                         users.lname,
                                         users.email
@@ -46,6 +48,7 @@ if(IsLoggedIn()) {
                                         posts.intro, 
                                         posts.creation_date,
                                         posts.approval,
+                                        posts.category,
                                         users.fname,
                                         users.lname,
                                         users.email
@@ -58,14 +61,16 @@ if(IsLoggedIn()) {
 
 ?>
 
-<html>
+<html lang="en">
     <head>
-        <title><?=(IsLoggedIn() ? $user["fname"] : "")?> Profile</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><?=(IsLoggedIn() ? $user["fname"] : "")?>Profile</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
-    <body>
-        <header>
+    <body class="profile-page">
+        <header class="main-header">
             <?php require_once "header.php" ?>
         </header>
         <?php if(!IsLoggedIn()) : ?>
@@ -77,112 +82,117 @@ if(IsLoggedIn()) {
         <?php exit(); ?>
         <?php endif ?>
 
-        <div class="header-align">
-            <div>
-                <h2> <?= htmlspecialchars($user["fname"] . " " . $user["lname"], ENT_HTML5, "UTF-8") ?> </h2>
-                <h3> <?= htmlspecialchars($user["email"], ENT_HTML5, "UTF-8") ?></h3>
-                <h4> Role: <?= GetRole(htmlspecialchars($user["role"], ENT_HTML5, "UTF-8")) ?> </h4>
-            </div>
-            <a href="new.php"> 
-                <button type="button" href="new.php" class="create-post"> Create Post</button>
-            </a>
-        </div>
-
-        <?php if($posts == NULL) : ?>
-            <h4>No Posts Yet</h4>
-        <?php else : ?>
-            <h2>My Posts</h2>
-            <div class="blog">
-                <?php while(($row = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
-                    <article class="article-card">
-                        <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
-                        <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                        <p class="article-date"> <?php 
-                            $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
-                            echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
-                        ?></p>
-                        <p> <a href="view.php?view=<?php echo $row["id"] ?>">Read More</a></p>
-                        <p> <?php switch($row["approval"]) :
-                                case -1: ?>
-                                    <span class="error">Disapproved</span>
-                            <?php   break;
-                                case 0:  ?>
-                                    <span class="waiting">Waiting for approval</span>
-                            <?php   break;
-                                case 1: ?>
-                                    <span class="success">Approved</span>
-                            <?php   break;
-                                default: ?>
-                                    <span class="error">Error</span>
-                            <?php endswitch ?>
-                        </p>
-                    </article>
-                <?php endwhile ?>
-            </div>
-            <br>
-            <?php if($user["role"] > 0) : ?>
-                <h2>Waiting for approval</h2>
-                <div class="blog">
-                    <?php while(($row = $waiting->fetch(PDO::FETCH_ASSOC))) : ?>
-                        <article class="article-card">
-                            <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
-                            <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-author"> <?php echo htmlspecialchars($row['fname'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['lname'], ENT_HTML5, "UTF-8")?></p>
-                            <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-date"> <?php 
-                                $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
-                                echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
-                            ?></p>
-                            <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
-                            <p> <?php switch($row["approval"]) :
-                                    case -1: ?>
-                                        <span class="error">Disapproved</span>
-                                <?php   break;
-                                    case 0:  ?>
-                                        <span class="waiting">Waiting for approval</span>
-                                <?php   break;
-                                    case 1: ?>
-                                        <span class="success">Approved</span>
-                                <?php   break;
-                                    default: ?>
-                                        <span class="error">Error</span>
-                                <?php endswitch ?>
-                            </p>
+        <main class="content-wrapper">
+            <section class="user-dashboard-header">
+                <div class="user-profile-meta">
+                    <div class="profile-avatar-large">
+                        <span><?= substr($user["fname"], 0, 1) ?></span>
+                    </div>
+                    <div class="user-details">
+                    <h1 class="user-name"><?= FullName($user["fname"], $user["lname"]) ?></h1>
+                        <p class="user-email"><?= Escape($user["email"]) ?></p>
+                        <span class="role-badge role-contributor"><?= GetRole($user["role"]) ?></span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-actions">
+                    <a href="new.php" class="btn btn-primary create-post-btn">+ Create New Post</a>
+                </div>
+            </section>
+            <hr class="section-divider">
+            <section class="my-posts-section">
+                <h2 class="page-title">My Posts</h2>
+                <div class="reviews-grid profile-post-grid">
+                    <?php while(($post = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
+                        <article class="review-card profile-card">
+                            <div class="card-thumbnail">
+                                <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
+                                <span class="status-badge status-<?= $post["approval"] ?>"><?= GetApproval($post["approval"]) ?></span>
+                                <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <h2 class="card-title">
+                                    <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
+                                </h2>
+                                <div class="card-meta">
+                                    <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
+                                    
+                                    <div class="post-actions-inline">
+                                        <a href="#" class="action-link edit-link">Edit</a>
+                                        <span class="meta-divider">|</span>
+                                        <a href="#" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
                         </article>
                     <?php endwhile ?>
                 </div>
-                <p></p>
-                <h2>Disapproved</h2>
-                <div class="blog">
-                    <?php while(($row = $disapproved->fetch(PDO::FETCH_ASSOC))) : ?>
-                        <article class="article-card">
-                            <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
-                            <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-author"> <?php echo htmlspecialchars($row['fname'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
-                            <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-date"> <?php 
-                                $date = DateTime::createFromFormat("Y-m-d", $row["creation_date"]);
-                                echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
-                            ?></p>
-                            <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
-                            <p> <?php switch($row["approval"]) :
-                                    case -1: ?>
-                                        <span class="error">Disapproved</span>
-                                <?php   break;
-                                    case 0:  ?>
-                                        <span class="waiting">Waiting for approval</span>
-                                <?php   break;
-                                    case 1: ?>
-                                        <span class="success">Approved</span>
-                                <?php   break;
-                                    default: ?>
-                                        <span class="error">Error</span>
-                                <?php endswitch ?>
-                            </p>
+            </section>
+            <hr class="section-divider">
+            <section class="my-posts-section">
+                <h2 class="page-title">Submitted: Waiting for approval</h2>
+                <div class="reviews-grid profile-post-grid">
+                    <?php while(($post = $waiting->fetch(PDO::FETCH_ASSOC))) : ?>
+                        <article class="review-card profile-card">
+                            <div class="card-thumbnail">
+                                <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
+                                <span class="status-badge status-<?= $post["approval"] ?>"><?= GetApproval($post["approval"]) ?></span>
+                                <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <h2 class="card-title">
+                                    <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
+                                </h2>
+                                <div class="card-meta">
+                                    <span class="author-name" title="<?= Escape($post["email"]) ?>">
+                                        <?= FullName($post["fname"], $post["lname"]) ?>
+                                    </span>
+                                    <span class="meta-divider">•</span>
+                                    <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
+                                    
+                                    <div class="post-actions-inline">
+                                        <a href="#" class="action-link edit-link">Edit</a>
+                                        <span class="meta-divider">|</span>
+                                        <a href="#" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
                         </article>
                     <?php endwhile ?>
                 </div>
-            <?php endif ?>
-        <?php endif ?>
-    </body>
+            </section>
+            <hr class="section-divider">
+            <section class="my-posts-section">
+                <h2 class="page-title">Disapproved</h2>
+                <div class="reviews-grid profile-post-grid">
+                    <?php while(($post = $disapproved->fetch(PDO::FETCH_ASSOC))) : ?>
+                        <article class="review-card profile-card">
+                            <div class="card-thumbnail">
+                                <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
+                                <span class="status-badge status-<?= $post["approval"] ?>"><?= GetApproval($post["approval"]) ?></span>
+                                <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
+                            </div>
+                            
+                            <div class="card-details">
+                                <h2 class="card-title">
+                                    <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
+                                </h2>
+                                <div class="card-meta">
+                                    <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
+                                    
+                                    <div class="post-actions-inline">
+                                        <a href="#" class="action-link edit-link">Edit</a>
+                                        <span class="meta-divider">|</span>
+                                        <a href="#" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    <?php endwhile ?>
+                </div>
+            </section>
+        </main>
+</body>
 </html>

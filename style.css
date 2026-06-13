@@ -279,3 +279,188 @@ body {
 .meta-divider {
     color: var(--text-muted);
 }
+
+/* ==========================================================================
+   5. USER PROFILE & DASHBOARD STYLES (Add to existing CSS)
+   ========================================================================== */
+
+/* Page-specific body tweak (optional) */
+.profile-page {
+    background-color: #080808; /* Slightly deeper dark for contrast */
+}
+
+/* 5.1 User Header Section */
+.user-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    flex-wrap: wrap; /* Good for mobile stacking */
+    gap: 1.5rem;
+}
+
+.user-profile-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Large placeholder avatar */
+.profile-avatar-large {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #2d2d2d, #1f1f1f);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    border: 2px solid #333;
+}
+
+.user-details .user-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.user-details .user-email {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+/* Role Badges (General styles) */
+.role-badge {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Specific Role: Contributor (Blueish/Muted) */
+.role-contributor {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+/* Create Post Button Tweak (Make it stand out) */
+.create-post-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 25px; /* Extra round */
+    box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2); /* Red glow */
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #2d2d2d;
+    margin-bottom: 2rem;
+}
+
+/* 5.2 My Posts Grid Modifications */
+
+/* Reusing .reviews-grid from homepage */
+.profile-post-grid {
+    gap: 2rem 1.2rem;
+}
+
+/* We reuse the card structure but hide author name */
+.profile-card .author-name,
+.profile-card .meta-divider:first-of-type {
+    display: none;
+}
+
+/* We might want profile card titles slightly smaller */
+.profile-card .card-title {
+    font-size: 1rem;
+}
+
+/* 5.3 Approval Status Badges on Cards */
+.status-badge {
+    position: absolute;
+    bottom: 10px; /* Positioned opposite category badge */
+    right: 10px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* Status: Approved (Green) */
+.status-1 {
+    background-color: rgba(39, 174, 96, 0.9); /* Slight transparency */
+    color: #ffffff;
+}
+
+/* Status: Pending (Yellow/Orange) */
+.status-0 {
+    background-color: rgba(243, 156, 18, 0.9);
+    color: #ffffff;
+}
+
+/* Status: Draft (Gray) */
+.status--1 {
+    background-color: rgba(192, 41, 43, 0.95); /* Vibrant but deep red to match the theme */
+    color: #ffffff;
+    /* border: 1px solid rgba(255, 255, 255, 0.2); Soft border to make it pop against dark thumbnails */
+}
+
+/* 5.4 Inline Post Actions (Alternative Idea) */
+.post-actions-inline {
+    margin-left: auto; /* Push actions to the right */
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.action-link {
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.1s ease;
+}
+
+.edit-link {
+    color: var(--text-muted);
+}
+.edit-link:hover {
+    color: var(--text-main);
+}
+
+.delete-link {
+    color: #a04040; /* Subdued red for danger */
+}
+.delete-link:hover {
+    color: #ff4444; /* Bright red on hover */
+}
+
+/* Mobile Tweak: Stack dashboard header vertically on small screens */
+@media (max-width: 600px) {
+    .user-dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center;
+    }
+    
+    .user-profile-meta {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .dashboard-actions {
+        width: 100%;
+    }
+    
+    .create-post-btn {
+        width: 100%;
+    }
+}

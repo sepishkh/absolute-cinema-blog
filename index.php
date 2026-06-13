@@ -30,7 +30,8 @@ $res = $sqldb->pdo->query("SELECT
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE approval=1");
+                            WHERE approval=1
+                            ORDER BY posts.creation_date DESC");
 
 ?>
 
@@ -56,7 +57,7 @@ $res = $sqldb->pdo->query("SELECT
                 <article class="review-card">
                     <div class="card-thumbnail">
                         <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
-                        <div class="thumbnail-placeholder">🍿</div>
+                        <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
                     </div>
                     
                     <div class="card-details">
@@ -66,7 +67,7 @@ $res = $sqldb->pdo->query("SELECT
                         <p class="card-intro"><?= Escape($post["intro"]) ?></p>
                         <div class="card-meta">
                             <span class="author-name" title="<?= Escape($post["email"]) ?>">
-                                <?= Escape($post["fname"] . " " . $post["lname"]) ?>
+                                <?= FullName($post["fname"], $post["lname"]) ?>
                             </span>
                             <span class="meta-divider">•</span>
                             <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>

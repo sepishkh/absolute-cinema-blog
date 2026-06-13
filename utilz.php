@@ -66,15 +66,6 @@ function Signup($fname, $lname, $email, $pass) {
     return NULL;
 }
 
-function GetRole($val) {
-    switch($val) {
-        case 2: return "god";
-        case 1: return "admin";
-        case 0: return "user";
-    }
-    return NULL;
-}
-
 function NewPost($title, $intro, $body, $author_email) {
     if(!$title || !$intro || !$body || !$author_email) {
         return array(1, 0);
@@ -140,5 +131,38 @@ function GetCategory($category) {
         case 0: return "Movie";
         case 1: return "TV Show";
         case 2: return "Theatre";
+        default: return "ERROR";
+    }
+}
+
+function FullName($fname, $lname) {
+    return Escape($fname . " " . $lname);
+}
+
+
+function GetRole($role) {
+    switch($role) {
+        case 2: return "god";
+        case 1: return "admin";
+        case 0: return "user";
+        default: return "ERROR";
+    }
+}
+
+function GetApproval($status) {
+    switch ($status) {
+        case -1: return "Disapproved";
+        case 0: return "Waiting for approval";
+        case 1: return "Approved";
+        default: return "ERROR";
+    }
+}
+
+function GetThumbnail($category) {
+    switch($category) {
+        case 0: return "🍿";
+        case 1: return "📺";
+        case 2: return "🎭";
+        default: return "ERROR";
     }
 }
