@@ -120,3 +120,17 @@ function NewPost($title, $intro, $body, $author_email) {
         return array(0, $new_id);
     }
 }
+
+function IsActive($page) {
+    $current = basename($_SERVER["SCRIPT_NAME"]);
+    return (($page === $current) ? "active" : "");
+}
+
+function Escape($text) {
+    return htmlspecialchars($text, ENT_HTML5, "UTF-8");
+}
+
+function FormatDate($date) {
+    $d = strtotime($date);
+    return date("M d, Y", $d);
+}

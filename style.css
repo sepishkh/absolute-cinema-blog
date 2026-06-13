@@ -1,298 +1,281 @@
+/* ==========================================================================
+   1. VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg-dark: #0f0f0f;       /* YouTube standard dark background */
+    --bg-card: #1f1f1f;       /* Slightly lighter gray for cards */
+    --text-main: #f1f1f1;     /* Primary text color */
+    --text-muted: #aaaaaa;    /* Secondary/meta text color */
+    --accent-red: #cc0000;    /* Vibrant red accent */
+    --accent-hover: #ff3333;  /* Lighter red for hover states */
+    --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-    margin: 1;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    line-height: 1.5;
+    padding-bottom: 3rem;
 }
 
-h1 {
-    color:black;
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 24px;
-    text-align: center;
+/* ==========================================================================
+   2. HEADER & NAVIGATION (Stacked Layout)
+   ========================================================================== */
+.main-header {
+    background-color: var(--bg-dark);
+    border-bottom: 1px solid #2d2d2d;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-nav {
-    color: cornflowerblue;
-    text-align: center;
-}
-
-.header-banner {
-    width: 100%;
-    max-width: 350px;
-}
-
-header {
+/* Container centers everything and stacks rows vertically */
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centers all 3 rows horizontally */
+    gap: 1.2rem;         /* Space between the three rows */
+}
+
+/* Base style for each row */
+.header-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.article-card {
-    background: white;
-    border: 5px solid black;
-    padding: 20px;
-    border-radius: 8px;
-    flex: 0 0 calc(24% - 15px); 
-    box-sizing: border-box;
-}
-
-.article-title {
-    color:#10296d;
-}
-
-.article-body {
-    font-size:23;
-}
-
-.article-author {
-    font-style: italic;
-    font-weight: bold;
-}
-
-.author-email {
-    font-weight: lighter;
-}
-
-.blog {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 20px auto;
-    gap: 30px;
-    border-radius: 8px;
-}
-
-.header-title {
+/* --- Row 1: Logo --- */
+.logo {
+    color: var(--text-main);
+    font-size: 2rem; /* Made slightly larger as it anchors the header */
+    font-weight: 800;
     text-decoration: none;
-    color: black;
+    letter-spacing: -1px;
+    text-transform: uppercase;
 }
 
-.error {
-    color: red;
+.logo span {
+    color: var(--accent-red);
 }
 
-.success {
-    color: green;
+/* --- Row 2: Modern Auth Buttons --- */
+.auth-row {
+    gap: 1rem; /* Space between Login and Signup buttons */
 }
 
-.waiting {
-    color: steelblue;
+/* Base button styles */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px; /* Modern pill-shaped buttons like YouTube */
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
-.header-align {
+/* Signup / Primary Style */
+.btn-primary {
+    background-color: var(--accent-red);
+    color: #ffffff;
+    border: 1px solid var(--accent-red);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    transform: translateY(-1px); /* Subtle modern lift effect */
+}
+
+/* Login / Secondary Style */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid #404040;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--text-main);
+}
+
+/* --- Row 3: Navigation Links --- */
+.nav-row {
+    gap: 2rem; /* Clean, spacious gaps between nav items */
+    border-top: 1px solid #1f1f1f; /* Soft divider line right above nav links */
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.nav-row .nav-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+/* Modern hover effect: draws a small red line underneath active/hovered links */
+.nav-row .nav-link:hover,
+.nav-row .nav-link.active {
+    color: var(--text-main);
+}
+
+.nav-row .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-red);
+    transition: width 0.2s ease;
+}
+
+.nav-row .nav-link:hover::after,
+.nav-row .nav-link.active::after {
+    width: 100%;
+}
+
+/* ==========================================================================
+   3. MAIN CONTENT & GRID SYSTEM
+   ========================================================================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Responsive Grid Layout */
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem 1.2rem; /* YouTube uses wider horizontal spacing than vertical */
+}
+
+/* ==========================================================================
+   4. YOUTUBE-STYLE CARD DESIGN
+   ========================================================================== */
+.review-card {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    padding: 50px;
+    flex-direction: column;
+    background-color: transparent; /* Flat design look like YouTube */
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
 }
 
-.create-post {
-    align-items: right;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    height: fit-content;    /* Ensures the button only takes up as much height as its own text needs */
+/* Thumbnail / Image Container */
+.card-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Strict widescreen proportions */
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.approves {
-    display: flex;            /* Activates layout engine */
-    justify-content: center;  /* Centers the buttons horizontally */
-    align-items: center;      /* Centers the buttons vertically (if container has height) */
-    gap: 15px;                /* Adds clean spacing between the two buttons */
-    
-    width: 100%;              /* Stretches the container full width */
-    padding: 20px 0;
-}
-
-/* Container holding the vertical stack */
-.admin-comments-container {
-    max-width: 800px;
-    margin-left: 10px; margin-right: auto;
-    padding: 0 20px;
-    font-family: Arial, sans-serif;
-}
-
-/* Individual Comment Row Layout */
-.comment-card {
-    display: flex;              /* Places avatar on left, content text on right */
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid #e0e0e0; /* Clean dividing line between stacked comments */
-}
-
-/* YouTube Style Avatar Customization */
-.avatar-circle {
-    width: 40px;
-    height: 40px;
-    background-color: #607d8b;
-    color: white;
-    border-radius: 50%;         /* Makes it a perfect circle */
+.thumbnail-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #1f1f1f, #2d2d2d);
 }
 
-/* Right content box layout stacking top-to-bottom */
-.comment-content {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-}
-
-/* Metadata alignment styling */
-.comment-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.comment-author {
-    font-weight: bold;
-    font-size: 14px;
-    color: #0f0f0f;
-}
-
-.comment-date {
-    font-size: 12px;
-    color: #606060;
-}
-
-.comment-text {
-    margin: 0;
-    font-size: 14px;
-    color: #0f0f0f;
-    line-height: 1.4;
-}
-
-/* Admin Panel Horizontal Buttons Placement */
-.comment-actions {
-    display: flex;
-    gap: 10px;                  /* Spaces out your forms side-by-side */
-    margin-top: 8px;
-}
-
-.action-form {
-    display: inline-block;
-}
-
-/* Core Dashboard Button Styling */
-.btn {
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-approve {
-    background-color: #2e7d32;  /* Clean Admin Green */
-    color: white;
-}
-
-.btn-approve:hover {
-    background-color: #1b5e20;
-}
-
-.btn-disapprove {
-    background-color: #c62828;  /* Warning Admin Red */
-    color: white;
-}
-
-.btn-disapprove:hover {
-    background-color: #b71c1c;
-}
-
-/* Container layout matching the exact left-alignment of your admin panel */
-.comment-input-container {
-    max-width: 800px;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    margin-left: 40px;        /* Matches the left alignment buffer */
-    margin-right: auto;
-    padding: 0 20px;
-    font-family: Arial, sans-serif;
-}
-
-.comment-input-container h3 {
-    font-size: 18px;
-    color: #0f0f0f;
-    margin-bottom: 16px;
-}
-
-/* Form structure stacking elements vertically */
-.comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-}
-
-.form-group {
-    width: 100%;
-}
-
-/* Textarea customization styled to fit modern text boxes */
-.comment-form textarea {
-    width: 100%;
-    box-sizing: border-box;   /* Prevents padding from breaking width math */
-    padding: 12px;
-    font-size: 14px;
-    color: #0f0f0f;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;         /* Allows the user to expand height, but not stretch width */
-    line-height: 1.4;
-}
-
-/* Accent highlight when a reader clicks inside the text box */
-.comment-form textarea:focus {
-    outline: none;
-    border-color: #607d8b;    /* Matches your avatar color scheme */
-    box-shadow: 0 0 4px rgba(96, 125, 139, 0.2);
-}
-
-/* Pushes the button to line up clean under the textbox */
-.form-actions {
-    display: flex;
-    justify-content: flex-start; /* Aligns button to the left side of the input field */
-}
-
-/* Submit Action Button styling adopting the exact button footprint */
-.btn-submit {
-    padding: 8px 18px;        /* Slightly larger target for public submissions */
-    font-size: 14px;
-    font-weight: bold;
-    background-color: #607d8b; /* Primary slate blue theme accent */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-submit:hover {
-    background-color: #455a64; /* Darkens cleanly on mouse hover */
-}
-
-/* Hides label safely away from browsers but keeps it intact for screen readers */
-.visually-hidden {
+.category-badge {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--text-main);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+    border-left: 3px solid var(--accent-red);
+}
+
+/* Card Typography & Layout */
+.card-details {
+    padding: 0.8rem 0.2rem; /* Minimal padding to mimic YouTube layout */
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Truncate titles to max 2 lines */
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
+}
+
+.card-title a {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color 0.1s ease;
+}
+
+.card-title a:hover {
+    color: var(--accent-red);
+}
+
+.card-intro {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Truncate description to max 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Meta Data section (Author, Email, Date) */
+.card-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.author-name {
+    color: var(--text-main);
+    font-weight: 500;
+    cursor: help; /* Shows that hovering reveals email title */
+}
+
+.author-name:hover {
+    color: var(--accent-hover);
+}
+
+.meta-divider {
+    color: var(--text-muted);
 }

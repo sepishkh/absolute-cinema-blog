@@ -15,12 +15,8 @@ if(isset($_GET["logout"])) {
 
 require_once "paths.php";
 require_once "sqldb.php";
-
 $sqldb = new SQLDB();
 $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
-
-$res = $sqldb->pdo->query("SELECT COUNT(*) FROM posts");
-$post_count = $res->fetchColumn();
 
 $res = $sqldb->pdo->query("SELECT
                                 posts.id AS post_id,
@@ -38,41 +34,48 @@ $res = $sqldb->pdo->query("SELECT
 ?>
 
 
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Absolute Cinema </title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <header>
+    <header class="main-header">
         <?php require_once 'header.php' ?>
-        <img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner">
+        <!-- <img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner"> -->
     </header>
 
-    <main class="blog">
-        <?php while(($row = $res->fetch(PDO::FETCH_ASSOC))) : ?>
-            <article class="article-card">
-                <h2 class="article-title"><?php echo htmlspecialchars($row['title'], ENT_HTML5, "UTF-8") ?></h2>
-                <p class="article-body"><?php echo htmlspecialchars($row['intro'], ENT_HTML5, "UTF-8") ?></p>
-                <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
-                <p class="author-email"> <?php echo htmlspecialchars($row['email'], ENT_HTML5, "UTF-8") ?></p>
-                <p class="article-date"> <?php 
-                    $date = DateTime::createFromFormat("Y-m-d", $row['created_at']);
-                    echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
-                ?></p>
-                <p> <a href="view.php?view=<?php echo $row['post_id'] ?>">Read More</a></p>
-            </article>
-        <?php endwhile ?>
+    <main class="content-wrapper">
+        <h1 class="page-title">Latest Reviews</h1>
 
-        <h3>Categories</h3>
-        <ul>
-            <li>Movies</li>
-            <li>TV Shows</li>
-            <li>Upcoming</li>
-        </ul>
+        <div class="reviews-grid">
+            <?php while(($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
+                <article class="review-card">
+                    <div class="card-thumbnail">
+                        <span class="category-badge">Movie</span>
+                        <div class="thumbnail-placeholder">🍿</div>
+                    </div>
+                    
+                    <div class="card-details">
+                        <h2 class="card-title">
+                            <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
+                        </h2>
+                        <p class="card-intro"><?= Escape($post["intro"]) ?></p>
+                        <div class="card-meta">
+                            <span class="author-name" title="<?= Escape($post["email"]) ?>">
+                                <?= Escape($post["first_name"] . " " . $post["last_name"]) ?>
+                            </span>
+                            <span class="meta-divider">•</span>
+                            <time datetime="<?= $post["created_at"] ?>" class="creation-date"><?= FormatDate($post["created_at"]) ?></time>
+                        </div>
+                    </div>
+                </article>
+            <?php endwhile ?>
+        </div>
+
     </main>
 </body>
-
 </html>
