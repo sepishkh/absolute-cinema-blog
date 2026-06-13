@@ -67,8 +67,8 @@ function Signup($fname, $lname, $email, $pass) {
     return NULL;
 }
 
-function NewPost($title, $intro, $body, $author_email) {
-    if(!$title || !$intro || !$body || !$author_email) {
+function NewPost($title, $intro, $body, $author_email, $category_id) {
+    if(!$title || !$intro || !$body || !$author_email || !$category_id) {
         return array(1, 0);
     }
     require_once "paths.php";
@@ -85,16 +85,17 @@ function NewPost($title, $intro, $body, $author_email) {
     } else {
         $stmt = $sqldb->pdo->prepare("INSERT 
                                         INTO posts
-                                        (title, intro, body, author_id, creation_date, approval)
-                                        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval)");
+                                        (title, intro, body, author_id, creation_date, approval, category)
+                                        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)");
         try {
         $stmt->execute(array(
             ":title" => $title,
             ":intro" => $intro,
             ":body" => $body,
             ":author_id" => $user['id'],
-            ":creation_date" => date("Y-m-d"),
-            ":approval" => (($user['role'] == 2) ? 1 : 0)
+            ":creation_date" => date("Y-m-d H:i"),
+            ":approval" => (($user['role'] == 2) ? 1 : 0),
+            ":category_id" => $category_id
         ));
         } catch(PDOException $e) {
             return array($e->getCode(), 0);
@@ -102,11 +103,11 @@ function NewPost($title, $intro, $body, $author_email) {
         $new_id = $sqldb->pdo->lastInsertId();
         $table_name = "comment_" . $new_id;
         $stmt = $sqldb->pdo->prepare("CREATE TABLE {$table_name} (
-                                            id          INTEGER PRIMARY KEY NOT NULL,
-                                            comment     VARCHAR NOT NULL,
-                                            author_id   INTEGER NOT NULL,
-                                            approval    INTEGER NOT NULL,
-                                            creation_date  VARCHAR,
+                                            id              INTEGER PRIMARY KEY NOT NULL,
+                                            comment         VARCHAR NOT NULL,
+                                            author_id       INTEGER NOT NULL,
+                                            approval        INTEGER NOT NULL,
+                                            creation_date   VARCHAR NOT NULL,
                                             FOREIGN KEY (author_id) REFERENCES users (id))");
         $stmt->execute();
         return array(0, $new_id);

@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 
 <!-- TODO: Fix intro being required rule -->
-
-<?php
-
-require_once "utilz.php";
-
-if(IsLoggedIn()) {
-    $title = $_POST['title'];
-    $intro = $_POST['intro'];
-    $body = $_POST['body'];
-    $submit = $_POST['submit'];
-    if ($submit) {
-        $ret = NewPost($title, $intro, $body, GetUsername());
-    }
-}
-
-?>
-
-
-<html>
+ 
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>New Post</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <header>
+        <header class="main-header">
             <?php require_once "header.php" ?>
         </header>
         <?php if(!IsLoggedIn()) : ?>
@@ -33,35 +18,62 @@ if(IsLoggedIn()) {
         <?php exit(); ?>
         <?php endif ?>
         <p></p>
-        <form action=<?=htmlspecialchars($_SERVER['PHP_SELF'], ENT_HTML5, "UTF-8")?> method="post">
-            Title:
-                <textarea name="title" rows="1" cols="70"></textarea>
-                <?php if (IsError($title, $submit)) : ?>
-                    <span class="error">*Title required</span>
+        <main class="content-wrapper">
+            <div class="editor-container">
+                
+                <div class="editor-header">
+                    <h1 class="page-title">Write a New Review</h1>
+                    <p class="editor-subtitle">Share your thoughts on recent movies or television series with the community.</p>
+                </div>
+                <?php if (isset($_GET["status"])) : ?>
+                    <div class="alert-box alert-danger">
+                        <div class="alert-icon">⚠</div>
+                        <div class="alert-content">
+                            <p class="alert-title">Review Submission Failed</p>
+                            <ul class="alert-list">
+                                <li>Error Creating Post</li>
+                            </ul>
+                        </div>
+                    </div>
                 <?php endif ?>
-                <p></p>
-            intro: 
-                <textarea name="intro" rows="3" cols="70"></textarea>
-                <?php if (IsError($intro, $submit)) : ?>
-                    <span class="error">*Intro required</span>
-                <?php endif ?>
-                <p></p>
-            Body:
-                <textarea name="body" rows="20" cols="70"></textarea>
-                <?php if (IsError($body, $submit)) : ?>
-                    <span class="error">*Body required</span>
-                <?php endif ?>
-                <p></p>
-            <input type="submit" name="submit"><br>
-            <?php if($submit) : ?>
-                <?php switch($ret[0]) :
-                    case 0: ?>
-                        <span class="success">Post successfuly created. <a href="view.php?view=<?=$ret[1]?>">View</a></span>
-                <?php   break;
-                    default: ?>
-                        <span class="error">Erorr creating your post</span>
-                <?php endswitch ?>
-            <?php endif ?>
-        </form>
+                <form action="process-new.php" method="POST" class="editor-form">
+                    
+                    <div class="form-group">
+                        <label for="post_title">Review Title <span class="required-asterisk">*</span></label>
+                        <input type="text" id="post_title" name="title" placeholder="e.g., The Batman (2022): A Gritty, Neo-Noir Masterpiece" required>
+                    </div>
+
+                    <div class="form-row-split">
+                        <div class="form-group">
+                            <label for="post_category">Category <span class="required-asterisk">*</span></label>
+                            <div class="select-wrapper">
+                                <select id="post_category" name="category_id" required>
+                                    <option value="" disabled selected>Select a category...</option>
+                                    <option value="0">Movie</option>
+                                    <option value="1">TV Show</option>
+                                    <option value="2">Theatre</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="post_intro">Short Intro <span class="required-asterisk">*</span></label>
+                            <input type="text" id="post_intro" name="intro" placeholder="A brief one or two-sentence hook for the homepage card..." required maxlength="200">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post_body">Article Body <span class="required-asterisk">*</span></label>
+                        <textarea id="post_body" name="body" rows="15" placeholder="Write your full review breakdown here. Analyze the plot, cinematography, performances, and overall score..." required></textarea>
+                    </div>
+
+                    <div class="editor-actions">
+                        <a href="profile.php" class="btn btn-secondary">Cancel & Discard</a>
+                        <button type="submit" class="btn btn-primary publish-btn">Submit Review for Approval</button>
+                    </div>
+
+                </form>
+            </div>
+        </main>
     </body>
 </html>

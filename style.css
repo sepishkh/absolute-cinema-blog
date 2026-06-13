@@ -714,3 +714,124 @@ body {
         transform: translateY(0);
     }
 }
+
+/* ==========================================================================
+   8. POST EDITOR PAGE
+   ========================================================================== */
+
+.editor-page {
+    background-color: var(--bg-dark);
+}
+
+.editor-container {
+    max-width: 850px; /* Slightly wider than login/signup for comfortable typing */
+    margin: 2rem auto;
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 3rem;
+    border: 1px solid #2d2d2d;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.editor-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid #2d2d2d;
+    padding-bottom: 1.5rem;
+}
+
+.editor-header .page-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.editor-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* Custom Textarea Adjustments */
+.form-group textarea {
+    width: 100%;
+    background-color: #0f0f0f;
+    color: var(--text-main);
+    border: 1px solid #3a3a3a;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    resize: vertical; /* Allows users to drag up/down, but blocks breaking layouts sideways */
+    min-height: 250px;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+    background-color: #151515;
+}
+
+/* Modernized Dropdown / Select styling */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-group select {
+    width: 100%;
+    background-color: #0f0f0f;
+    color: var(--text-main);
+    border: 1px solid #3a3a3a;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    appearance: none; /* Strips old native browser arrow shapes */
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaaaaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Leaves room for custom arrow icon */
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+}
+
+/* Alignment Cluster at the bottom of the editor form */
+.editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid #2d2d2d;
+    padding-top: 2rem;
+}
+
+.publish-btn {
+    padding: 0.85rem 2.5rem;
+    font-size: 1rem;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+/* Mobile Responsiveness for writing layouts */
+@media (max-width: 600px) {
+    .editor-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    .editor-actions {
+        flex-direction: column-reverse; /* Puts cancel button on bottom on mobile screen */
+        align-items: stretch;
+        gap: 1rem;
+    }
+    .editor-actions .btn {
+        width: 100%;
+    }
+}

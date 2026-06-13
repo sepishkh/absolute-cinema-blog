@@ -2,12 +2,6 @@
 
 <!-- TODO: Remove unnecessary ifs when shwoing required error messages -->
 
-<?php
-
-$status = $_GET["status"];
-
-?>
-
 <html lang="en">
 
 <head>
