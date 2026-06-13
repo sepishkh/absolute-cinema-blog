@@ -143,7 +143,7 @@ if(IsLoggedIn()) {
                             
                             <div class="card-details">
                                 <h2 class="card-title">
-                                    <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
+                                    <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
                                 </h2>
                                 <div class="card-meta">
                                     <span class="author-name" title="<?= Escape($post["email"]) ?>">
@@ -177,7 +177,7 @@ if(IsLoggedIn()) {
                             
                             <div class="card-details">
                                 <h2 class="card-title">
-                                    <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
+                                    <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
                                 </h2>
                                 <div class="card-meta">
                                     <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
