@@ -14,43 +14,59 @@ $logged_in = Login($email, $pass);
 
 ?>
 
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Login </title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
+    <header >
         <?php require_once "header.php" ?>
     </header>
 
-    <h2> Login </h2>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"], ENT_HTML5, "UTF-8")?>" method="post">
-        Email: 
-            <input type="email" name="email">
-            <?php if(IsError($email, $submit)) : ?>
-                <span class="error">*Email address is required</span>
-            <?php endif ?>
-            <p></p>
-        Password: 
-            <input type="password" name="password">
-            <?php if(IsError($pass, $submit)) : ?>
-                <span class="error">*Password is required</span>
-            <?php endif ?>
-            <p></p>
-        <input type="submit" name="submit"><br>
-        <?php if($submit) : ?>
-            <?php if($logged_in) : ?>
-                <span class="success">Login Successful</span>
-            <?php else : ?>
-                <span class="error">Login Failed</span>
-            <?php endif ?>
-        <?php endif ?>
-    </form>
+    <main class="auth-container">
+        <div class="auth-card">
+            
+            <div class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Log in to manage your movie reviews and join the community discussion.</p>
+            </div>
 
+            <?php if(isset($_GET["status"])) : ?>
+                <div class="alert-box alert-danger">
+                    <div class="alert-icon">⚠</div>
+                    <div class="alert-content">
+                        <p class="alert-title">Login Failed</p>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <form action="login-process.php" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
+                    <input type="email" id="login_email" name="email"
+                           placeholder="you@example.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <div class="label-row">
+                        <label for="login_password">Password <span class="required-asterisk">*</span></label>
+                    </div>
+                    <input type="password" id="login_password" name="password" 
+                           placeholder="Enter your account password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block auth-submit-btn">Log In</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>New to the platform? <a href="signup.php">Create an account instead</a></p>
+            </div>
+
+        </div>
+    </main>
 </body>
 
 </html>
