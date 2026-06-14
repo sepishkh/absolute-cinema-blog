@@ -835,3 +835,264 @@ body {
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   9. ARTICLE VIEW ENGINE & DISCUSSIONS
+   ========================================================================== */
+
+.article-container {
+    max-width: 800px; /* Highly optimized column width for text legibility */
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* 9.1 Administrative Actions Overlay Box */
+.admin-moderation-panel {
+    background-color: rgba(243, 156, 18, 0.08); /* Transparent amber warning tint */
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+}
+
+.moderation-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.moderation-meta h3 {
+    color: #f39c12;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.moderation-meta p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.moderation-actions .inline-form {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Specific Mod Action Button Formatting overrides */
+.btn-approve {
+    background-color: #27ae60;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-approve:hover { background-color: #2ecc71; }
+
+.btn-disapprove {
+    background-color: #c0392b;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-disapprove:hover { background-color: #e74c3c; }
+
+/* 9.2 Article Typography layout rules */
+.category-badge-inline {
+    color: var(--accent-red);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.article-main-title {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    font-weight: 800;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.article-short-intro {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    border-left: 3px solid var(--accent-red);
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Author Details Strip block layout */
+.article-author-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #2d2d2d;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.author-avatar-small {
+    width: 40px;
+    height: 40px;
+    background-color: #2d2d2d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.author-fullname {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.author-email-link a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+.author-email-link a:hover { color: var(--accent-red); }
+
+.article-date-meta {
+    margin-left: auto; /* Pushes publication timeline indicator to far right corner */
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Article Prose Flow Text Paragraphs */
+.article-body-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: #e0e0e0;
+}
+
+.article-body-content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-main);
+}
+
+/* 9.3 Discussion Modules */
+.comments-heading {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Write comment system text block styles */
+.comment-input-block {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.comment-form {
+    flex: 1;
+}
+
+.comment-form textarea {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #3a3a3a; /* YouTube style minimalist text underline field */
+    color: var(--text-main);
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: none;
+    transition: border-color 0.2s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--text-main);
+}
+
+.comment-submit-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.btn-comment {
+    padding: 0.4rem 1.25rem;
+    font-size: 0.85rem;
+    border-radius: 18px;
+    cursor: pointer;
+}
+
+/* Logged out visual banner prompt card */
+.login-prompt-box {
+    background-color: var(--bg-card);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #2d2d2d;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.login-prompt-box a {
+    color: var(--accent-red);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Individual user comments timeline lists tracks layout rules */
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comment-item {
+    display: flex;
+    gap: 1rem;
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.comment-user {
+    font-weight: 600;
+    color: var(--text-main);
+    margin-right: 0.5rem;
+}
+
+.comment-time {
+    color: var(--text-muted);
+}
+
+.comment-text-content {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #d1d1d1;
+}
+
+/* Mobile Tweak: Flatten structural elements */
+@media (max-width: 600px) {
+    .article-main-title { font-size: 2rem; }
+    .admin-moderation-panel { flex-direction: column; align-items: stretch; }
+    .moderation-actions .inline-form { width: 100%; }
+    .moderation-actions .btn { flex: 1; text-align: center; }
+    .article-author-card { flex-wrap: wrap; }
+    .article-date-meta { margin-left: 0; width: 100%; margin-top: 0.5rem; }
+}
