@@ -22,7 +22,14 @@ $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 $res = $sqldb->pdo->query("SELECT COUNT(*) FROM posts");
 $post_count = $res->fetchColumn();
 
-$res = $sqldb->pdo->query("SELECT
+$page_count = 8;
+$page_num = 1;
+if(isset($_GET["page"])) {
+    $page_num = max((int)$_GET["page"], 1);
+}
+$offset = ($page_num-1) * $page_count;
+
+$res = $sqldb->pdo->prepare("SELECT
                                 posts.id AS post_id,
                                 posts.title, 
                                 posts.intro, 
@@ -33,7 +40,13 @@ $res = $sqldb->pdo->query("SELECT
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE approval=1");
+                            WHERE approval=1
+                            LIMIT :limit OFFSET :offset");
+
+$res->execute([
+    ":limit" => $page_count,
+    ":offset" => $offset
+])
 
 ?>
 
@@ -65,6 +78,11 @@ $res = $sqldb->pdo->query("SELECT
                 <p> <a href="view.php?view=<?php echo $row['post_id'] ?>">Read More</a></p>
             </article>
         <?php endwhile ?>
+
+        <div class="pages">
+            <a href="index.php?page=<?= $page_num+1 ?>"> <button> Next </button></a>
+            <a href="index.php?page=<?= max($page_num-1, 1) ?>"> <button> Prev </button></a>
+        </div>
 
         <h3>Categories</h3>
         <ul>
