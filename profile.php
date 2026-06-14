@@ -23,10 +23,17 @@ if(IsLoggedIn()) {
     if($user == NULL) {
         $not_found = true;
     } else {
+        $approval = 1;
+        if(isset($_POST["approval_select"])) {
+            $approval = $_POST["approval_select"];
+        }
         $posts = $sqldb->pdo->prepare("SELECT *
                                         FROM posts
-                                        WHERE author_id=:id");
-        $posts->execute(array(":id" => $user["id"]));
+                                        WHERE author_id=:id AND approval=:approval");
+        $posts->execute(array(
+            ":id" => $user["id"],
+            ":approval" => $approval
+        ));
         if($user["role"] > 0) {
             $waiting = $sqldb->pdo->query("SELECT
                                         posts.id AS post_id,
@@ -91,7 +98,16 @@ if(IsLoggedIn()) {
         <?php if($posts == NULL) : ?>
             <h4>No Posts Yet</h4>
         <?php else : ?>
-            <h2>My Posts</h2>
+            <h2>Posts: <?= GetApproval($approval) ?></h2>
+            <form action="profile.php" method="POST">
+                <select name="approval_select" required>
+                    <option value="" disabled selected>Select a category...</option>
+                    <option value="-1">Disapproved</option>
+                    <option value="0">Pending</option>
+                    <option value="1">Approved</option>
+                </select>
+                <button type="submit">Submit Choice</button>
+            </form>
             <div class="blog">
                 <?php while(($row = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
                     <article class="article-card">

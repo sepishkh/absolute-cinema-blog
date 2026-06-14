@@ -121,3 +121,12 @@ function NewPost($title, $intro, $body, $author_email) {
         return array(0, $new_id);
     }
 }
+
+function GetApproval($approval) {
+    switch($approval) {
+        case -1: return "Disapproved";
+        case 0: return "Pending";
+        case 1: return "Approved";
+        default: return "Error";
+    }
+}
