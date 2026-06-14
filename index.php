@@ -40,7 +40,7 @@ $res = $sqldb->pdo->prepare("SELECT
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE approval=1
+                            WHERE approval=1 AND hidden=0
                             LIMIT :limit OFFSET :offset");
 
 $res->execute([
@@ -80,8 +80,8 @@ $res->execute([
         <?php endwhile ?>
 
         <div class="pages">
-            <a href="index.php?page=<?= $page_num+1 ?>"> <button> Next </button></a>
             <a href="index.php?page=<?= max($page_num-1, 1) ?>"> <button> Prev </button></a>
+            <a href="index.php?page=<?= $page_num+1 ?>"> <button> Next </button></a>
         </div>
 
         <h3>Categories</h3>

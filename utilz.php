@@ -93,8 +93,8 @@ function NewPost($title, $intro, $body, $author_email) {
     } else {
         $stmt = $sqldb->pdo->prepare("INSERT 
                                         INTO posts
-                                        (title, intro, body, author_id, created_at, approval)
-                                        VALUES (:title, :intro, :body, :author_id, :created_at, :approval)");
+                                        (title, intro, body, author_id, created_at, approval, hidden)
+                                        VALUES (:title, :intro, :body, :author_id, :created_at, :approval, :hidden)");
         try {
         $stmt->execute(array(
             ":title" => $title,
@@ -102,7 +102,8 @@ function NewPost($title, $intro, $body, $author_email) {
             ":body" => $body,
             ":author_id" => $user['id'],
             ":created_at" => date("Y-m-d"),
-            ":approval" => (($user['role'] == 2) ? 1 : 0)
+            ":approval" => (($user['role'] == 2) ? 1 : 0),
+            ":hidden" => 0
         ));
         } catch(PDOException $e) {
             return array($e->getCode(), 0);

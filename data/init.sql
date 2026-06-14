@@ -10,6 +10,7 @@ CREATE TABLE posts (
     author_id   INTEGER NOT NULL,
     created_at  VARCHAR NOT NULL,
     approval    INTEGER NOT NULL,
+    hidden      INTEGER NOT NULL,
     FOREIGN KEY (author_id) REFERENCES users (id)
 );
 

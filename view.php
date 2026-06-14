@@ -16,19 +16,29 @@ require_once "sqldb.php";
 $sqldb = new SQLDB();
 $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
+if($_GET["delete"] === "true") {
+    $stmt = $sqldb->pdo->prepare("UPDATE posts
+                            SET hidden=1
+                            WHERE id=:id");
+    $stmt->execute([":id" => $view_id]);
+    header("Location: index.php");
+    exit;
+}
+
 $stmt = $sqldb->pdo->prepare("SELECT 
                                 posts.id AS post_id,
                                 posts.title, 
                                 posts.intro, 
-                                posts.body, 
+                                posts.body,
                                 posts.created_at,
                                 posts.approval,
+                                posts.hidden,
                                 users.first_name,
                                 users.last_name,
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE post_id = :view_id");
+                            WHERE post_id=:view_id AND posts.hidden=0");
 
 $stmt->execute(
     array(":view_id" => $view_id)
@@ -96,6 +106,12 @@ try {
             <div class="approves">
                 <a href="view.php?view=<?=$view_id?>&approved=1"> <button> Approve </button></a>
                 <a href="view.php?view=<?=$view_id?>&approved=-1"> <button> Disapprove </button></a>
+            </div>
+        <?php endif ?>
+        <?php if($user["role"] > 0) : ?>
+            <div class="approves">
+                <a href="edit.php?id=<?=$view_id?>"> <button> Edit </button></a>
+                <a href="view.php?view=<?=$view_id?>&delete=true"> <button> Delete </button></a>
             </div>
         <?php endif ?>
         <p class="article-author"> <?php echo htmlspecialchars($content['first_name'], ENT_HTML5, "UTF-8") . " " . 
