@@ -1096,3 +1096,94 @@ body {
     .article-author-card { flex-wrap: wrap; }
     .article-date-meta { margin-left: 0; width: 100%; margin-top: 0.5rem; }
 }
+
+/* ==========================================================================
+   11. INLINE COMMENT MODERATION UTILITIES
+   ========================================================================== */
+
+.comment-moderation-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.25rem;
+}
+
+/* Base style for inline comment links */
+.comment-mod-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.1s ease;
+}
+
+.comment-mod-btn .btn-icon {
+    font-size: 0.85rem;
+}
+
+/* Inline State: Approve (Subtle Emerald Green Highlight) */
+.c-approve {
+    color: #a2a2a2; /* Muted gray by default so it stays clean */
+}
+.c-approve:hover {
+    color: #2ecc71; /* Highlighting to emerald green on hover */
+}
+
+/* Inline State: Disapprove (Subtle Crimson Red Highlight) */
+.c-disapprove {
+    color: #a2a2a2;
+}
+.c-disapprove:hover {
+    color: #e74c3c; /* Highlighting to crimson red on hover */
+}
+
+/* Optional: Status Badges for Comment Metadata Header */
+.status-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 0.5rem;
+}
+.badge-waiting {
+    background-color: rgba(243, 156, 18, 0.15);
+    color: #f39c12;
+    border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+/* Ensure the form doesn't add accidental block breaks or margins */
+.comment-moderation-form {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.25rem;
+}
+
+/* Base style resetting button defaults to match a clean text link */
+.comment-mod-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.comment-mod-btn .btn-icon {
+    font-size: 0.85rem;
+}
+
+/* Hover States matching your theme colors */
+.c-approve { color: #a2a2a2; }
+.c-approve:hover { color: #2ecc71; }
+
+.c-disapprove { color: #a2a2a2; }
+.c-disapprove:hover { color: #e74c3c; }

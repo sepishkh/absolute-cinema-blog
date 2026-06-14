@@ -11,14 +11,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
     $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
     $comment_table = "comment_" . $view_id;
-    $stmt = $sqldb->pdo->prepare("INSERT INTO {$comment_table}
+    $stmt = $sqldb->pdo->prepare("INSERT INTO $comment_table
                             (comment, author_id, approval, creation_date)
                             VALUES (:comment, :author_id, :approval, :creation_date)");
     $stmt->execute(array(
                             ":comment" => $comment,
                             ":author_id" => $author_id,
                             ":approval" => 0,
-                            ":creation_date" => date("Y-m-d")              
+                            ":creation_date" => date("Y-m-d H:i")              
     ));
     header("Location: view.php?view=" . $view_id);
     exit;

@@ -23,6 +23,7 @@ $stmt = $sqldb->pdo->prepare("SELECT
                                 posts.body, 
                                 posts.creation_date,
                                 posts.approval,
+                                posts.category,
                                 users.fname,
                                 users.lname,
                                 users.email
@@ -67,16 +68,18 @@ try {
                                 $comments_t.author_id,
                                 users.id AS uid,
                                 users.fname,
-                                users.last_name,
+                                users.lname,
                                 users.email
                                 FROM $comments_t
                                 INNER JOIN users ON uid = $comments_t.author_id
                                 WHERE $comments_t.approval=1 OR $comments_t.approval=:control
+                                ORDER BY $comments_t.creation_date DESC
                             ");
     $stmt2->execute(array(
         ":control" => ($user["role"] > 0) ? 0 : NULL
     ));
 } catch(PDOException $e) {
+    echo $e->getMessage();
     $stmt2 = NULL;
 }
 
@@ -151,13 +154,26 @@ try {
                 <div class="comments-list">  
                     <?php while(($comment = $stmt2->fetch(PDO::FETCH_ASSOC))) : ?>
                         <div class="comment-item">
-                            <div class="author-avatar-small"><?= substr($content["fname"], 0, 1) ?></div>
+                            <div class="author-avatar-small"><?= substr($comment["fname"], 0, 1) ?></div>
                             <div class="comment-main-body">
                                 <div class="comment-meta">
-                                    <span class="comment-user"><?= FullName($user["fname"], $user["lname"]) ?></span>
-                                    <span class="comment-time"><?= FormatDate($content["creation_date"]) ?></span>
+                                    <span class="comment-user"><?= FullName($comment["fname"], $user["lname"]) ?></span>
+                                    <span class="comment-time"><?= FormatDate($comment["creation_date"]) ?></span>
                                 </div>
-                                <p class="comment-text-content"><?= $comment["body"] ?></p>
+                                <p class="comment-text-content"><?= $comment["comment"] ?></p>
+                                <?php if($user["role"] > 0 && $comment["approval"] == 0) : ?>
+                                    <form action="process-comment.php" method="POST" class="comment-moderation-form">
+                                        <input type="hidden" name="view_id" value="<?= $view_id ?>">
+                                        <input type="hidden" name="comment_id" value="<?= $comment["cid"] ?>">
+                                        <button type="submit" name="status" value="1" class="comment-mod-btn c-approve">
+                                            <span class="btn-icon">✔</span> Approve
+                                        </button>
+                                        <button type="submit" name="status" value="-1" class="comment-mod-btn c-disapprove">
+                                            <span class="btn-icon">✖</span> Disapprove
+                                        </button>
+
+                                    </form>
+                                <?php endif ?>
                             </div>
                         </div>
                     <?php endwhile ?>
