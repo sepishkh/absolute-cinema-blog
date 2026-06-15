@@ -136,7 +136,7 @@ try {
                 <?php if(IsLoggedIn()) : ?>
                     <div class="comment-input-block">
                         <div class="author-avatar-small"><?= substr($user["fname"], 0, 1) ?></div>
-                        <form action="submit-comment.php" method="POST" class="comment-form">
+                        <form action="process-comment.php" method="POST" class="comment-form">
                             <input type="hidden" name="view_id" value="<?= $view_id ?>">
                             <input type="hidden" name="author_id" value="<?= $user["id"] ?>">
                             <div class="form-group">
@@ -162,7 +162,7 @@ try {
                                 </div>
                                 <p class="comment-text-content"><?= $comment["comment"] ?></p>
                                 <?php if($user["role"] > 0 && $comment["approval"] == 0) : ?>
-                                    <form action="process-comment.php" method="POST" class="comment-moderation-form">
+                                    <form action="approve-comment.php" method="POST" class="comment-moderation-form">
                                         <input type="hidden" name="view_id" value="<?= $view_id ?>">
                                         <input type="hidden" name="comment_id" value="<?= $comment["cid"] ?>">
                                         <button type="submit" name="status" value="1" class="comment-mod-btn c-approve">

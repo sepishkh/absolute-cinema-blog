@@ -1,22 +1,24 @@
 <?php
 
-
 if($_SERVER["REQUEST_METHOD"] === "POST") {
-    require_once "paths.php";
-    require_once "sqldb.php";
+    $view_id = (int)$_POST["view_id"];
+    $comment = $_POST["comment_text"];
+    $author_id = (int)$_POST["author_id"];
+
+    require_once "paths.php";   
+    require_once "sqldb.php";   
     $sqldb = new SQLDB();
     $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
-    $comment_id = $_POST["comment_id"];
-    $status = $_POST["status"];
-    $view_id = $_POST["view_id"];
     $comment_table = "comment_" . $view_id;
-    $stmt = $sqldb->pdo->prepare("UPDATE $comment_table
-                                    SET approval=:approval
-                                    WHERE id=:id");
+    $stmt = $sqldb->pdo->prepare("INSERT INTO $comment_table
+                            (comment, author_id, approval, creation_date)
+                            VALUES (:comment, :author_id, :approval, :creation_date)");
     $stmt->execute(array(
-        ":approval" => (int)$status,
-        ":id" => (int)$comment_id
+                            ":comment" => $comment,
+                            ":author_id" => $author_id,
+                            ":approval" => 0,
+                            ":creation_date" => date("Y-m-d H:i")              
     ));
     header("Location: view.php?view=" . $view_id);
     exit;

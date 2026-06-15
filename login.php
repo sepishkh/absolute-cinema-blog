@@ -2,18 +2,6 @@
 
 <!-- TODO: Validate Email and Password as text -->
 
-<?php
-
-require_once "utilz.php";
-
-$email = $_POST['email'];
-$pass = $_POST['password'];
-$submit = $_POST['submit'];
-
-$logged_in = Login($email, $pass);
-
-?>
-
 <html lang="en">
 
 <head>
@@ -45,7 +33,7 @@ $logged_in = Login($email, $pass);
                     </div>
                 </div>
             <?php endif; ?>
-            <form action="login-process.php" method="POST" class="auth-form">
+            <form action="process-login.php" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
                     <input type="email" id="login_email" name="email"
