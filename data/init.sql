@@ -1,6 +1,7 @@
+PRAGMA foreign_keys = ON;
+
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS avatars;
 
 CREATE TABLE posts (
     id          INTEGER PRIMARY KEY NOT NULL,

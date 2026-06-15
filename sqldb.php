@@ -28,24 +28,26 @@ class SQLDB {
         }
     }
 
-    function Initialize($schema_path, $foreign_key_enable = 1) {
+    function Initialize($schema_path) {
         if(!$this->connected) {
             echo "Error: Not yet connected to the database.<br>";
             return;
         }
-        if($foreign_key_enable) $this->pdo->exec('PRAGMA foreign_keys = ON;');
         $schema_file = "$this->root/$schema_path";
-        if (filesize($this->db_file) > 0) return;
+        $schema_tmstmp = "$schema_file.timestamp";
         if(file_exists($schema_file)) {
-            $schema = file_get_contents($schema_file);
+            if(file_exists($schema_tmstmp)) {
+                if(filemtime($schema_file) <= file_get_contents($schema_tmstmp)) {
+                    return;
+                }
+            }
             try {
-                $res = $this->pdo->exec($schema);
+                $this->pdo->exec(file_get_contents($schema_file));
+                $file = fopen($schema_tmstmp, "w");
+                fwrite($file, time());
+                fclose($file);
             } catch (PDOException $e) {
                 echo "Error: Couldn't run schema on database " . $e->getMessage();
-            }
-            if($res === false) {
-                echo "Error: Couldn't run schema on database file" . print_r($this->pdo->errorInfo());
-                return;
             }
         } else {
             echo "Error: SQL schema not found.";
@@ -53,8 +55,8 @@ class SQLDB {
         }
     }
 
-    function StartDBConnection($file_path, $schema_path, $foreign_key_enable = 1) {
+    function StartDBConnection($file_path, $schema_path) {
         $this->Connect($file_path);
-        $this->Initialize($schema_path, $foreign_key_enable);
+        $this->Initialize($schema_path);
     }
 }
