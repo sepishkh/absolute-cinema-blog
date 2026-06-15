@@ -128,6 +128,10 @@ function FormatDate($date) {
     return date("M d, Y", $d);
 }
 
+function FullName($fname, $lname) {
+    return Escape($fname . " " . $lname);
+}
+
 function GetCategory($category) {
     switch($category) {
         case 0: return "Movie";
@@ -136,11 +140,6 @@ function GetCategory($category) {
         default: return "ERROR";
     }
 }
-
-function FullName($fname, $lname) {
-    return Escape($fname . " " . $lname);
-}
-
 
 function GetRole($role) {
     switch($role) {
