@@ -35,7 +35,11 @@ if(IsLoggedIn()) {
             ":approval" => $approval
         ));
         if($user["role"] > 0) {
-            $waiting = $sqldb->pdo->query("SELECT
+            $approval_panel = 1;
+            if(isset($_POST["approval_select_panel"])) {
+                $approval_panel = $_POST["approval_select_panel"];
+            }
+            $panel = $sqldb->pdo->prepare("SELECT
                                         posts.id AS post_id,
                                         posts.title, 
                                         posts.intro, 
@@ -46,19 +50,8 @@ if(IsLoggedIn()) {
                                         users.email
                                         FROM posts
                                         INNER JOIN users ON posts.author_id = users.id
-                                        WHERE approval=0");
-            $disapproved = $sqldb->pdo->query("SELECT
-                                        posts.id AS post_id,
-                                        posts.title, 
-                                        posts.intro, 
-                                        posts.created_at,
-                                        posts.approval,
-                                        users.first_name,
-                                        users.last_name,
-                                        users.email
-                                        FROM posts
-                                        INNER JOIN users ON posts.author_id = users.id
-                                        WHERE approval=-1");
+                                        WHERE approval=:approval");
+            $panel->execute([":approval" => $approval_panel]);
         }
     }
 }
@@ -98,10 +91,10 @@ if(IsLoggedIn()) {
         <?php if($posts == NULL) : ?>
             <h4>No Posts Yet</h4>
         <?php else : ?>
-            <h2>Posts: <?= GetApproval($approval) ?></h2>
+            <h2>My Posts</h2>
             <form action="profile.php" method="POST">
                 <select name="approval_select" required>
-                    <option value="" disabled selected>Select a category...</option>
+                    <option value="" disabled selected>Select...</option>
                     <option value="-1">Disapproved</option>
                     <option value="0">Pending</option>
                     <option value="1">Approved</option>
@@ -118,28 +111,24 @@ if(IsLoggedIn()) {
                             echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                         ?></p>
                         <p> <a href="view.php?view=<?php echo $row["id"] ?>">Read More</a></p>
-                        <p> <?php switch($row["approval"]) :
-                                case -1: ?>
-                                    <span class="error">Disapproved</span>
-                            <?php   break;
-                                case 0:  ?>
-                                    <span class="waiting">Waiting for approval</span>
-                            <?php   break;
-                                case 1: ?>
-                                    <span class="success">Approved</span>
-                            <?php   break;
-                                default: ?>
-                                    <span class="error">Error</span>
-                            <?php endswitch ?>
-                        </p>
+                        <p> <span class="<?= strtolower(GetApproval($row["approval"])) ?>"><?= GetApproval($row["approval"]) ?></span></p>
                     </article>
                 <?php endwhile ?>
             </div>
             <br>
             <?php if($user["role"] > 0) : ?>
-                <h2>Waiting for approval</h2>
+                <h2>Admin Panel</h2>
+                <form action="profile.php" method="POST">
+                    <select name="approval_select_panel" required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="-1">Disapproved</option>
+                        <option value="0">Pending</option>
+                        <option value="1">Approved</option>
+                    </select>
+                    <button type="submit">Submit Choice</button>
+                </form>
                 <div class="blog">
-                    <?php while(($row = $waiting->fetch(PDO::FETCH_ASSOC))) : ?>
+                    <?php while(($row = $panel->fetch(PDO::FETCH_ASSOC))) : ?>
                         <article class="article-card">
                             <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
                             <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
@@ -150,54 +139,11 @@ if(IsLoggedIn()) {
                                 echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
                             ?></p>
                             <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
-                            <p> <?php switch($row["approval"]) :
-                                    case -1: ?>
-                                        <span class="error">Disapproved</span>
-                                <?php   break;
-                                    case 0:  ?>
-                                        <span class="waiting">Waiting for approval</span>
-                                <?php   break;
-                                    case 1: ?>
-                                        <span class="success">Approved</span>
-                                <?php   break;
-                                    default: ?>
-                                        <span class="error">Error</span>
-                                <?php endswitch ?>
-                            </p>
+                            <p> <span class="<?= strtolower(GetApproval($row["approval"])) ?>"><?= GetApproval($row["approval"]) ?></span></p>
                         </article>
                     <?php endwhile ?>
                 </div>
                 <p></p>
-                <h2>Disapproved</h2>
-                <div class="blog">
-                    <?php while(($row = $disapproved->fetch(PDO::FETCH_ASSOC))) : ?>
-                        <article class="article-card">
-                            <h2 class="article-title"><?php echo htmlspecialchars($row["title"], ENT_HTML5, "UTF-8") ?></h2>
-                            <p class="article-body"><?php echo htmlspecialchars($row["intro"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-author"> <?php echo htmlspecialchars($row['first_name'], ENT_HTML5, "UTF-8") .' '. htmlspecialchars($row['last_name'], ENT_HTML5, "UTF-8")?></p>
-                            <p class="author-email"> <?php echo htmlspecialchars($row["email"], ENT_HTML5, "UTF-8") ?></p>
-                            <p class="article-date"> <?php 
-                                $date = DateTime::createFromFormat("Y-m-d", $row["created_at"]);
-                                echo htmlspecialchars($date->format("d M Y"), ENT_HTML5, "UTF-8") 
-                            ?></p>
-                            <p> <a href="view.php?view=<?php echo $row["post_id"] ?>">Read More</a></p>
-                            <p> <?php switch($row["approval"]) :
-                                    case -1: ?>
-                                        <span class="error">Disapproved</span>
-                                <?php   break;
-                                    case 0:  ?>
-                                        <span class="waiting">Waiting for approval</span>
-                                <?php   break;
-                                    case 1: ?>
-                                        <span class="success">Approved</span>
-                                <?php   break;
-                                    default: ?>
-                                        <span class="error">Error</span>
-                                <?php endswitch ?>
-                            </p>
-                        </article>
-                    <?php endwhile ?>
-                </div>
             <?php endif ?>
         <?php endif ?>
     </body>

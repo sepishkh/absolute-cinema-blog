@@ -80,6 +80,18 @@ header {
     color: steelblue;
 }
 
+.disapproved {
+    color: red;
+}
+
+.approved {
+    color: green;
+}
+
+.pending {
+    color: steelblue;
+}
+
 .header-align {
     display: flex;
     align-items: center;
