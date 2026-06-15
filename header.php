@@ -6,7 +6,7 @@
     </div>
     <div class="header-row auth-row">
         <?php if(IsLoggedIn()) : ?>
-            <a href="profile.php" class="btn btn-secondary"><?= htmlspecialchars(GetUsername(), ENT_HTML5, "UTF-8") ?></a>
+            <a href="profile.php" class="btn btn-secondary"><?= Escape(GetUsername()) ?></a>
             <a href="index.php?logout=true" class="btn btn-primary">Logout</a>
         <?php else : ?>
             <a href="login.php" class="btn btn-secondary">Log In</a>

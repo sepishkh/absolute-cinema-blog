@@ -88,7 +88,7 @@ try {
 <html lang="en">
     <head><meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> <?php echo htmlspecialchars($content['title'], ENT_HTML5, "UTF-8") ?> </title>
+        <title> <?php echo Escape($content['title']) ?> </title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
