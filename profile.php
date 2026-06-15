@@ -194,5 +194,8 @@ if(IsLoggedIn()) {
                 </div>
             </section>
         </main>
+        <footer class="main-footer">
+            <?php require_once "footer.php" ?>
+        </footer>
 </body>
 </html>

@@ -1187,3 +1187,111 @@ body {
 
 .c-disapprove { color: #a2a2a2; }
 .c-disapprove:hover { color: #e74c3c; }
+
+/* ==========================================================================
+   13. MASTER FOOTER LAYOUT
+   ========================================================================== */
+
+.main-footer {
+    background-color: var(--bg-card); /* Reusing your dark card container hex color */
+    border-top: 1px solid #2d2d2d;
+    margin-top: 5rem; /* Generous breathing buffer separating review contents from the footer */
+    padding-top: 3.5rem;
+    color: var(--text-main);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* Gives the branding description twice the horizontal track space */
+    gap: 3rem;
+    padding-bottom: 3.5rem;
+}
+
+.footer-col h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+}
+
+.footer-tagline {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-top: 1rem;
+    max-width: 320px;
+}
+
+/* Stripping default browser listing styles from navigation columns */
+.footer-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links-list li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links-list a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+}
+
+.footer-links-list a:hover {
+    color: var(--accent-red); /* Your custom crimson accent color pop */
+}
+
+/* 13.2 Bottom Operational Copyright Metadata Strip Layout Rules */
+.footer-bottom-strip {
+    background-color: #0c0c0c; /* Marginally darker shade than your card background for contrast separation */
+    border-top: 1px solid #1f1f1f;
+    padding: 1.5rem 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer-bottom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.legal-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.legal-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.legal-links a:hover {
+    color: var(--text-main);
+}
+
+/* Responsive View Breakpoint Rule */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr; /* Stacks column sections vertically down single columns layout on mobile views */
+        gap: 2rem;
+    }
+    
+    .footer-bottom-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}

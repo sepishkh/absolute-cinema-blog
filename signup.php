@@ -85,6 +85,9 @@
                 <p>Already have an account? <a href="login.php">Log In instead</a></p>
             </div>
         </div>
+        <footer class="main-footer">
+            <?php require_once "footer.php" ?>
+        </footer>
     </main>
 </body>
 

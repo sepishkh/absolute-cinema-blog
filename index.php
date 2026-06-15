@@ -77,5 +77,8 @@ $res = $sqldb->pdo->query("SELECT
             <?php endwhile ?>
         </div>
     </main>
+    <footer class="main-footer">
+        <?php require_once "footer.php" ?>
+    </footer>
 </body>
 </html>
