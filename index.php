@@ -2,8 +2,6 @@
 
 <!-- TODO: Robust Login/Logout system -->
 <!-- TODO: Proper Error Handling -->
-<!-- TODO: Better UI -->
-<!-- TODO: Think about UX -->
 
 <?php
 
@@ -18,7 +16,14 @@ require_once "sqldb.php";
 $sqldb = new SQLDB();
 $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
-$res = $sqldb->pdo->query("SELECT
+$page_count = 8;
+$page_num = 1;
+if(isset($_GET["page"])) {
+    $page_num = max((int)$_GET["page"], 1);
+}
+$offset = ($page_num-1) * $page_count;
+
+$res = $sqldb->pdo->prepare("SELECT
                                 posts.id AS post_id,
                                 posts.title, 
                                 posts.intro, 
@@ -30,8 +35,14 @@ $res = $sqldb->pdo->query("SELECT
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE approval=1
-                            ORDER BY posts.creation_date DESC");
+                            WHERE approval=1 AND hidden IS NULL
+                            ORDER BY posts.creation_date DESC
+                            LIMIT :limit OFFSET :offset");
+
+$res->execute([
+    ":limit" => $page_count,
+    ":offset" => $offset
+])
 
 ?>
 
@@ -76,6 +87,14 @@ $res = $sqldb->pdo->query("SELECT
                 </article>
             <?php endwhile ?>
         </div>
+        <nav class="pagination-container" aria-label="Review Page Navigation">
+            <a href="?page=<?= max($page_num-1, 1) ?>" class="page-nav-btn">
+                <span class="btn-arrow">&larr;</span> Previous
+            </a>
+            <a href="?page=<?= $page_num+1 ?>" class="page-nav-btn">
+                Next <span class="btn-arrow">&rarr;</span>
+            </a>
+        </nav>
     </main>
     <footer class="main-footer">
         <?php require_once "footer.php" ?>

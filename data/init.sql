@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
 
@@ -5,13 +7,15 @@ CREATE TABLE posts (
     id              INTEGER PRIMARY KEY NOT NULL,
     title           VARCHAR NOT NULL,
     intro           VARCHAR NOT NULL,
+    body            VARCHAR NOT NULL,
     creation_date   VARCHAR NOT NULL,
-    body            TEXT NOT NULL,
     author_id       INTEGER NOT NULL,
     approval        INTEGER NOT NULL,
     category        INTEGER,
+    hidden          INTEGER,
     FOREIGN KEY (author_id) REFERENCES users (id)
 );
+
 
 CREATE TABLE users (
     id              INTEGER PRIMARY KEY NOT NULL,

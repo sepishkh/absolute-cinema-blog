@@ -7,12 +7,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
     $intro = $_POST["intro"];
     $body = $_POST["body"];
     $category_id = $_POST["category_id"];
-    $rc = NewPost($title, $intro, $body, GetUsername(), $category_id);
-    if($rc[0] == 0) {
-        header("Location: view.php?view=" . $rc[1]);
+    $id = isset($_GET["edit"]) ? $_GET["edit"] : NULL;
+    if($id) {
+        $rc = UpdatePost($id, $title, $intro, $body, $category_id);
     } else {
-        header("Location: new.php?status=" . $rc[0]);
+        $rc = NewPost($title, $intro, $body, GetUsername(), $category_id);
     }
+    if($rc[0] == 0) header("Location: view.php?view=" . $rc[1]);
+    else header("Location: new.php?status=" . $rc[0]);
     exit;
 }
 

@@ -68,7 +68,7 @@ function Signup($fname, $lname, $email, $pass) {
 }
 
 function NewPost($title, $intro, $body, $author_email, $category_id) {
-    if(!$title || !$intro || !$body || !$author_email || !$category_id) {
+    if(!$title || !$intro || !$body || !$author_email) {
         return array(1, 0);
     }
     require_once "paths.php";
@@ -88,15 +88,15 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
                                         (title, intro, body, author_id, creation_date, approval, category)
                                         VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)");
         try {
-        $stmt->execute(array(
-            ":title" => $title,
-            ":intro" => $intro,
-            ":body" => $body,
-            ":author_id" => $user['id'],
-            ":creation_date" => date("Y-m-d H:i"),
-            ":approval" => (($user['role'] == 2) ? 1 : 0),
-            ":category_id" => $category_id
-        ));
+            $stmt->execute(array(
+                ":title" => $title,
+                ":intro" => $intro,
+                ":body" => $body,
+                ":author_id" => $user['id'],
+                ":creation_date" => date("Y-m-d H:i"),
+                ":approval" => (($user['role'] == 2) ? 1 : 0),
+                ":category_id" => $category_id,
+            ));
         } catch(PDOException $e) {
             return array($e->getCode(), 0);
         }
@@ -112,6 +112,34 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
         $stmt->execute();
         return array(0, $new_id);
     }
+}
+
+function UpdatePost($id, $title, $intro, $body, $category_id) {
+    if(!$id || !$title || !$intro || !$body) {
+        return array(1, 0);
+    }
+    require_once "paths.php";
+    require_once "sqldb.php";
+    $sqldb = new SQLDB();
+    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $stmt = $sqldb->pdo->prepare("UPDATE posts
+                                    SET title=:title,
+                                        intro=:intro,
+                                        body=:body,
+                                        category=:category
+                                    WHERE id=:id");
+    try {
+        $stmt->execute([
+            ":title" => $title,
+            ":intro" => $intro,
+            ":body" => $body,
+            ":category" => $category_id,
+            ":id" => $id 
+        ]);
+    } catch(PDOException $e) {
+        return array($e->getCode(), 0);
+    }
+    return array(0, $id);
 }
 
 function IsActive($page) {

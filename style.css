@@ -1295,3 +1295,118 @@ body {
         text-align: center;
     }
 }
+
+/* ==========================================================================
+   14. SYSTEM PAGINATION ELEMENTS
+   ========================================================================== */
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between; /* Automatically positions Prev on left, Next on right */
+    align-items: center;
+    margin-top: 4rem; /* Generous separation gap below your last row of movie cards */
+    padding-top: 2rem;
+    border-top: 1px solid #2d2d2d; /* Subtle line dividing the grid from the controls */
+}
+
+.page-nav-btn {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.65rem 1.5rem;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s ease;
+}
+
+/* Hover Action State utilizing your signature crimson red accent */
+.page-nav-btn:hover {
+    border-color: var(--accent-red);
+    background-color: #1a1a1a; /* Slight background drop highlight */
+    color: #ffffff;
+}
+
+/* Arrow spacer adjustment */
+.btn-arrow {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* Disabled State: If you are on Page 1 (no prev) or Last Page (no next) */
+.page-nav-btn.disabled {
+    color: var(--text-muted);
+    border-color: #222222;
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+/* ==========================================================================
+   15. PROFILE ACTIVITY PANEL BAR
+   ========================================================================== */
+
+/* Container bar pinning title to the left edge and form controls to the right edge */
+.panel-header-strip {
+    display: flex;
+    justify-content: space-between; /* Pushes H2 left and Form right */
+    align-items: center;            /* Vertically centers them on the exact same axis line */
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Strip default browser-injected vertical margin offsets from your section headers */
+.panel-header-strip .page-title {
+    margin: 0;
+}
+
+/* Keeps select box wrapper and button components tight horizontally */
+.profile-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Custom dropdown style reusing your cinematic variables */
+.profile-filter-form select {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid #3a3a3a;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a2a2a2' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.65rem) center;
+}
+
+.profile-filter-form select:focus {
+    outline: none;
+    border-color: var(--accent-red);
+}
+
+/* Premium micro submit button */
+.profile-filter-btn {
+    background-color: #1a1a1a;
+    color: var(--text-main);
+    border: 1px solid #3a3a3a;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.profile-filter-btn:hover {
+    background-color: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #ffffff;
+}

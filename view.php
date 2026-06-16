@@ -16,6 +16,15 @@ require_once "sqldb.php";
 $sqldb = new SQLDB();
 $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
+if($_GET["delete"] === "true") {
+    $stmt = $sqldb->pdo->prepare("UPDATE posts
+                            SET hidden=1
+                            WHERE id=:id");
+    $stmt->execute([":id" => $view_id]);
+    header("Location: index.php");
+    exit;
+}
+
 $stmt = $sqldb->pdo->prepare("SELECT 
                                 posts.id AS post_id,
                                 posts.title, 
@@ -24,12 +33,13 @@ $stmt = $sqldb->pdo->prepare("SELECT
                                 posts.creation_date,
                                 posts.approval,
                                 posts.category,
+                                posts.hidden,
                                 users.fname,
                                 users.lname,
                                 users.email
                             FROM posts
                             INNER JOIN users ON posts.author_id = users.id
-                            WHERE post_id = :view_id");
+                            WHERE post_id=:view_id AND posts.hidden IS NULL");
 
 $stmt->execute(
     array(":view_id" => $view_id)
