@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $pass = $_POST["password"];
 
     Logout();
-    $rc = Signup($fname, $lname, $email, $pass);
+    $rc = Signup($fname, $lname, $email, password_hash($pass, PASSWORD_DEFAULT));
     header("Location: signup.php?status=" . (($rc == NULL) ? "success" : $rc));
     exit();
 }

@@ -28,12 +28,12 @@ CREATE TABLE users (
 );
 
 INSERT INTO users (fname, lname, email, password, role) VALUES
-("Jesus", "Christ", "admin@admin.com", "admin", 2),
-("Sarah", "Connor", "sarahreviews@gmail.com", "pass", 1),
-("Marcus", "Brody", "marcusfilms@yahoo.com", "xyz", 1),
-("Elena", "Fisher", "elenascreen@gmail.com", "123", 1),
-("David", "Fincher", "b_blanc_fan@outlook.com", "poop", 1),
-("Amara", NULL, "amara_watches@gmail.com", "charlie", 0);
+("Jesus", "Christ", "admin@admin.com", "$2y$12$IZ5olxtXG9zjcFeiBn84jeAHiFbXq9PwvdJLnKYSz8LpMBen09f.G", 2),
+("Sarah", "Connor", "sarahreviews@gmail.com", "$2y$12$W15xTrA2rLonRRLYSvcdV.hwHcEn2hMy86wH2jY/pl1qzcaXy3r8C", 1),
+("Marcus", "Brody", "marcusfilms@yahoo.com", "$2y$12$53B3xonA9UR2WiSWOaByuuZfMjmq1Zz8.s6sTt03sFsfpXClmd.iG", 1),
+("Elena", "Fisher", "elenascreen@gmail.com", "$2y$12$CJJJ83gPJ0ltBMeQZG729.fvS22tUrS6dgnERGnWBC1OQyZj6IG/K", 1),
+("David", "Fincher", "b_blanc_fan@outlook.com", "$2y$12$vWw6WVENScPns/QmeTLHruVlKcOXFp12VcfSGJ2PBS0KgL7dDySXy", 1),
+("Amara", NULL, "amara_watches@gmail.com", "$2y$12$3XiZnJ6/Ji5ukIF6LzWEAekd0Ci7LsTXy.ql5cPSv35U4zEnJoKtu", 0);
 
 INSERT INTO posts (title, intro, body, author_id, creation_date, approval, category) VALUES
 (

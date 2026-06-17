@@ -27,7 +27,7 @@ function Login($email, $pass) {
     $stmt = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
     $stmt->execute([":email" => $email]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row != null && $row["password"] == $pass) {
+    if ($row != null && password_verify($pass, $row["password"])) {
         $_SESSION["username"] = $email;
         return true;
     } else {
