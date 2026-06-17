@@ -7,7 +7,7 @@
 
 require_once "utilz.php";
 
-if(isset($_GET["logout"])) {
+if (isset($_GET["logout"])) {
     Logout();
 }
 
@@ -18,10 +18,10 @@ $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
 
 $page_count = 8;
 $page_num = 1;
-if(isset($_GET["page"])) {
+if (isset($_GET["page"])) {
     $page_num = max((int)$_GET["page"], 1);
 }
-$offset = ($page_num-1) * $page_count;
+$offset = ($page_num - 1) * $page_count;
 
 $res = $sqldb->pdo->prepare("SELECT
                                 posts.id AS post_id,
@@ -55,22 +55,23 @@ $res->execute([
     <title> Absolute Cinema </title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header class="main-header">
-        <?php require_once 'header.php' ?>
+        <?php require_once "header.php" ?>
         <!-- <img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner"> -->
     </header>
 
     <main class="content-wrapper">
         <h1 class="page-title">Latest Reviews</h1>
         <div class="reviews-grid">
-            <?php while(($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
+            <?php while (($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
                 <article class="review-card">
                     <div class="card-thumbnail">
                         <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
                         <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
                     </div>
-                    
+
                     <div class="card-details">
                         <h2 class="card-title">
                             <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
@@ -88,10 +89,10 @@ $res->execute([
             <?php endwhile ?>
         </div>
         <nav class="pagination-container" aria-label="Review Page Navigation">
-            <a href="?page=<?= max($page_num-1, 1) ?>" class="page-nav-btn">
+            <a href="?page=<?= max($page_num - 1, 1) ?>" class="page-nav-btn">
                 <span class="btn-arrow">&larr;</span> Previous
             </a>
-            <a href="?page=<?= $page_num+1 ?>" class="page-nav-btn">
+            <a href="?page=<?= $page_num + 1 ?>" class="page-nav-btn">
                 Next <span class="btn-arrow">&rarr;</span>
             </a>
         </nav>
@@ -100,4 +101,5 @@ $res->execute([
         <?php require_once "footer.php" ?>
     </footer>
 </body>
+
 </html>

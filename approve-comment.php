@@ -1,6 +1,6 @@
 <?php
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require_once "paths.php";
     require_once "sqldb.php";
     $sqldb = new SQLDB();
@@ -13,10 +13,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $sqldb->pdo->prepare("UPDATE $comment_table
                                     SET approval=:approval
                                     WHERE id=:id");
-    $stmt->execute(array(
+    $stmt->execute([
         ":approval" => (int)$status,
         ":id" => (int)$comment_id
-    ));
+    ]);
     header("Location: view.php?view=" . $view_id);
-    exit;
+    exit();
 }

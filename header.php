@@ -5,7 +5,7 @@
         <a href="index.php" class="logo">Absolute<span>Cinema</span></a>
     </div>
     <div class="header-row auth-row">
-        <?php if(IsLoggedIn()) : ?>
+        <?php if (IsLoggedIn()) : ?>
             <a href="profile.php" class="btn btn-secondary"><?= Escape(GetUsername()) ?></a>
             <a href="index.php?logout=true" class="btn btn-primary">Logout</a>
         <?php else : ?>

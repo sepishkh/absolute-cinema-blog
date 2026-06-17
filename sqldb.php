@@ -29,15 +29,15 @@ class SQLDB {
     }
 
     function Initialize($schema_path) {
-        if(!$this->connected) {
+        if (!$this->connected) {
             echo "Error: Not yet connected to the database.<br>";
             return;
         }
         $schema_file = "$this->root/$schema_path";
         $schema_tmstmp = "$schema_file.timestamp";
-        if(file_exists($schema_file)) {
-            if(file_exists($schema_tmstmp)) {
-                if(filemtime($schema_file) <= file_get_contents($schema_tmstmp)) {
+        if (file_exists($schema_file)) {
+            if (file_exists($schema_tmstmp)) {
+                if (filemtime($schema_file) <= file_get_contents($schema_tmstmp)) {
                     return;
                 }
             }
@@ -47,7 +47,7 @@ class SQLDB {
                 fwrite($file, time());
                 fclose($file);
             } catch (PDOException $e) {
-                echo "Error: Couldn't run schema on database " . $e->getMessage();
+                echo "Error: Couldnt run schema on database " . $e->getMessage();
             }
         } else {
             echo "Error: SQL schema not found.";

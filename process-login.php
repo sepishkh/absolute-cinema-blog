@@ -1,6 +1,6 @@
 <?php
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require_once "utilz.php";
 
     $email = $_POST["email"];
@@ -8,12 +8,10 @@ if($_SERVER["REQUEST_METHOD"] === "POST") {
     $submit = $_POST["submit"];
 
     $logged_in = Login($email, $pass);
-    if($logged_in) {
+    if ($logged_in) {
         header("Location: index.php");
     } else {
         header("Location: login.php?status=failed");
     }
-    exit;
+    exit();
 }
-
-?>

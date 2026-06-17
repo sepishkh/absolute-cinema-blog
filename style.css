@@ -2,13 +2,19 @@
    1. VARIABLES & RESET
    ========================================================================== */
 :root {
-    --bg-dark: #0f0f0f;       /* YouTube standard dark background */
-    --bg-card: #1f1f1f;       /* Slightly lighter gray for cards */
-    --text-main: #f1f1f1;     /* Primary text color */
-    --text-muted: #aaaaaa;    /* Secondary/meta text color */
-    --accent-red: #cc0000;    /* Vibrant red accent */
-    --accent-hover: #ff3333;  /* Lighter red for hover states */
-    --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --bg-dark: #0f0f0f;
+    /* YouTube standard dark background */
+    --bg-card: #1f1f1f;
+    /* Slightly lighter gray for cards */
+    --text-main: #f1f1f1;
+    /* Primary text color */
+    --text-muted: #aaaaaa;
+    /* Secondary/meta text color */
+    --accent-red: #cc0000;
+    /* Vibrant red accent */
+    --accent-hover: #ff3333;
+    /* Lighter red for hover states */
+    --font-stack: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -43,8 +49,10 @@ body {
     padding: 1.5rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers all 3 rows horizontally */
-    gap: 1.2rem;         /* Space between the three rows */
+    align-items: center;
+    /* Centers all 3 rows horizontally */
+    gap: 1.2rem;
+    /* Space between the three rows */
 }
 
 /* Base style for each row */
@@ -58,7 +66,8 @@ body {
 /* --- Row 1: Logo --- */
 .logo {
     color: var(--text-main);
-    font-size: 2rem; /* Made slightly larger as it anchors the header */
+    font-size: 2rem;
+    /* Made slightly larger as it anchors the header */
     font-weight: 800;
     text-decoration: none;
     letter-spacing: -1px;
@@ -71,7 +80,8 @@ body {
 
 /* --- Row 2: Modern Auth Buttons --- */
 .auth-row {
-    gap: 1rem; /* Space between Login and Signup buttons */
+    gap: 1rem;
+    /* Space between Login and Signup buttons */
 }
 
 /* Base button styles */
@@ -80,7 +90,8 @@ body {
     padding: 0.5rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 600;
-    border-radius: 20px; /* Modern pill-shaped buttons like YouTube */
+    border-radius: 20px;
+    /* Modern pill-shaped buttons like YouTube */
     text-decoration: none;
     transition: all 0.2s ease;
     text-align: center;
@@ -96,7 +107,8 @@ body {
 .btn-primary:hover {
     background-color: var(--accent-hover);
     border-color: var(--accent-hover);
-    transform: translateY(-1px); /* Subtle modern lift effect */
+    transform: translateY(-1px);
+    /* Subtle modern lift effect */
 }
 
 /* Login / Secondary Style */
@@ -113,8 +125,10 @@ body {
 
 /* --- Row 3: Navigation Links --- */
 .nav-row {
-    gap: 2rem; /* Clean, spacious gaps between nav items */
-    border-top: 1px solid #1f1f1f; /* Soft divider line right above nav links */
+    gap: 2rem;
+    /* Clean, spacious gaps between nav items */
+    border-top: 1px solid #1f1f1f;
+    /* Soft divider line right above nav links */
     padding-top: 1rem;
     width: 100%;
 }
@@ -138,7 +152,7 @@ body {
 }
 
 .nav-row .nav-link::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -172,7 +186,8 @@ body {
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem 1.2rem; /* YouTube uses wider horizontal spacing than vertical */
+    gap: 2rem 1.2rem;
+    /* YouTube uses wider horizontal spacing than vertical */
 }
 
 /* ==========================================================================
@@ -181,7 +196,8 @@ body {
 .review-card {
     display: flex;
     flex-direction: column;
-    background-color: transparent; /* Flat design look like YouTube */
+    background-color: transparent;
+    /* Flat design look like YouTube */
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.2s ease;
@@ -191,7 +207,8 @@ body {
 .card-thumbnail {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 9; /* Strict widescreen proportions */
+    aspect-ratio: 16 / 9;
+    /* Strict widescreen proportions */
     background-color: var(--bg-card);
     border-radius: 12px;
     overflow: hidden;
@@ -222,7 +239,8 @@ body {
 
 /* Card Typography & Layout */
 .card-details {
-    padding: 0.8rem 0.2rem; /* Minimal padding to mimic YouTube layout */
+    padding: 0.8rem 0.2rem;
+    /* Minimal padding to mimic YouTube layout */
 }
 
 .card-title {
@@ -231,7 +249,8 @@ body {
     line-height: 1.4;
     margin-bottom: 0.5rem;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Truncate titles to max 2 lines */
+    -webkit-line-clamp: 2;
+    /* Truncate titles to max 2 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -251,7 +270,8 @@ body {
     font-size: 0.9rem;
     margin-bottom: 0.6rem;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Truncate description to max 2 lines */
+    -webkit-line-clamp: 2;
+    /* Truncate description to max 2 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -269,7 +289,8 @@ body {
 .author-name {
     color: var(--text-main);
     font-weight: 500;
-    cursor: help; /* Shows that hovering reveals email title */
+    cursor: help;
+    /* Shows that hovering reveals email title */
 }
 
 .author-name:hover {
@@ -286,7 +307,8 @@ body {
 
 /* Page-specific body tweak (optional) */
 .profile-page {
-    background-color: #080808; /* Slightly deeper dark for contrast */
+    background-color: #080808;
+    /* Slightly deeper dark for contrast */
 }
 
 /* 5.1 User Header Section */
@@ -295,7 +317,8 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 0;
-    flex-wrap: wrap; /* Good for mobile stacking */
+    flex-wrap: wrap;
+    /* Good for mobile stacking */
     gap: 1.5rem;
 }
 
@@ -354,8 +377,10 @@ body {
 .create-post-btn {
     padding: 0.8rem 2rem;
     font-size: 1rem;
-    border-radius: 25px; /* Extra round */
-    box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2); /* Red glow */
+    border-radius: 25px;
+    /* Extra round */
+    box-shadow: 0 4px 15px rgba(204, 0, 0, 0.2);
+    /* Red glow */
 }
 
 .section-divider {
@@ -385,7 +410,8 @@ body {
 /* 5.3 Approval Status Badges on Cards */
 .status-badge {
     position: absolute;
-    bottom: 10px; /* Positioned opposite category badge */
+    bottom: 10px;
+    /* Positioned opposite category badge */
     right: 10px;
     padding: 0.3rem 0.7rem;
     font-size: 0.7rem;
@@ -393,12 +419,13 @@ body {
     border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Status: Approved (Green) */
 .status-1 {
-    background-color: rgba(39, 174, 96, 0.9); /* Slight transparency */
+    background-color: rgba(39, 174, 96, 0.9);
+    /* Slight transparency */
     color: #ffffff;
 }
 
@@ -410,14 +437,16 @@ body {
 
 /* Status: Draft (Gray) */
 .status--1 {
-    background-color: rgba(192, 41, 43, 0.95); /* Vibrant but deep red to match the theme */
+    background-color: rgba(192, 41, 43, 0.95);
+    /* Vibrant but deep red to match the theme */
     color: #ffffff;
     /* border: 1px solid rgba(255, 255, 255, 0.2); Soft border to make it pop against dark thumbnails */
 }
 
 /* 5.4 Inline Post Actions (Alternative Idea) */
 .post-actions-inline {
-    margin-left: auto; /* Push actions to the right */
+    margin-left: auto;
+    /* Push actions to the right */
     display: flex;
     gap: 0.5rem;
     font-size: 0.8rem;
@@ -432,15 +461,19 @@ body {
 .edit-link {
     color: var(--text-muted);
 }
+
 .edit-link:hover {
     color: var(--text-main);
 }
 
 .delete-link {
-    color: #a04040; /* Subdued red for danger */
+    color: #a04040;
+    /* Subdued red for danger */
 }
+
 .delete-link:hover {
-    color: #ff4444; /* Bright red on hover */
+    color: #ff4444;
+    /* Bright red on hover */
 }
 
 /* Mobile Tweak: Stack dashboard header vertically on small screens */
@@ -450,16 +483,16 @@ body {
         align-items: flex-start;
         text-align: center;
     }
-    
+
     .user-profile-meta {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .dashboard-actions {
         width: 100%;
     }
-    
+
     .create-post-btn {
         width: 100%;
     }
@@ -531,7 +564,8 @@ body {
 .form-row-split .form-group {
     display: table-cell;
     vertical-align: top;
-    margin-bottom: 0; /* Clear bottom margin inside the split table layout */
+    margin-bottom: 0;
+    /* Clear bottom margin inside the split table layout */
 }
 
 /* Labels */
@@ -558,7 +592,8 @@ body {
 /* Modern Minimalist Dark Inputs */
 .form-group input {
     width: 100%;
-    background-color: #0f0f0f; /* Pitch black input backgrounds matching YouTube style */
+    background-color: #0f0f0f;
+    /* Pitch black input backgrounds matching YouTube style */
     color: var(--text-main);
     border: 1px solid #3a3a3a;
     padding: 0.75rem 1rem;
@@ -572,7 +607,8 @@ body {
 .form-group input:focus {
     outline: none;
     border-color: var(--accent-red);
-    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2); /* Soft crimson outer glow ring */
+    box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+    /* Soft crimson outer glow ring */
     background-color: #151515;
 }
 
@@ -617,11 +653,13 @@ body {
     .auth-card {
         padding: 1.5rem;
     }
+
     .form-row-split {
         display: block;
         margin-left: 0;
         width: 100%;
     }
+
     .form-row-split .form-group {
         display: block;
         margin-bottom: 1.25rem;
@@ -654,7 +692,8 @@ body {
 }
 
 .alert-content {
-    flex: 1; /* Forces text content to scale and take up the remaining width */
+    flex: 1;
+    /* Forces text content to scale and take up the remaining width */
 }
 
 .alert-title {
@@ -677,30 +716,39 @@ body {
 
 /* State A: Danger / Error (Deep Crimson Palette) */
 .alert-danger {
-    background-color: rgba(192, 41, 43, 0.12); /* Subtle 12% opacity red tint */
-    border: 1px solid rgba(192, 41, 43, 0.4);   /* Soft crimson border */
-    color: #ff6b6b;                            /* Highly legible pastel red text */
+    background-color: rgba(192, 41, 43, 0.12);
+    /* Subtle 12% opacity red tint */
+    border: 1px solid rgba(192, 41, 43, 0.4);
+    /* Soft crimson border */
+    color: #ff6b6b;
+    /* Highly legible pastel red text */
 }
 
 .alert-danger .alert-icon,
 .alert-danger .alert-title {
-    color: #ff4d4d; /* Pop-out bright red for emphasis headers */
+    color: #ff4d4d;
+    /* Pop-out bright red for emphasis headers */
 }
 
 .alert-danger .alert-list li {
-    color: #ffb3b3; /* Softer red for long lists of errors */
+    color: #ffb3b3;
+    /* Softer red for long lists of errors */
 }
 
 /* State B: Success (Emerald Green Palette) */
 .alert-success {
-    background-color: rgba(46, 204, 113, 0.1);  /* Subtle 10% opacity green tint */
-    border: 1px solid rgba(46, 204, 113, 0.35); /* Soft emerald border */
-    color: #72eca4;                            /* Highly legible pastel green text */
+    background-color: rgba(46, 204, 113, 0.1);
+    /* Subtle 10% opacity green tint */
+    border: 1px solid rgba(46, 204, 113, 0.35);
+    /* Soft emerald border */
+    color: #72eca4;
+    /* Highly legible pastel green text */
 }
 
 .alert-success .alert-icon,
 .alert-success .alert-title {
-    color: #2ecc71; /* Pop-out bright green for success headlines */
+    color: #2ecc71;
+    /* Pop-out bright green for success headlines */
 }
 
 /* CSS Animation for a smooth slide-down entrance when page loads */
@@ -709,6 +757,7 @@ body {
         opacity: 0;
         transform: translateY(-8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -724,7 +773,8 @@ body {
 }
 
 .editor-container {
-    max-width: 850px; /* Slightly wider than login/signup for comfortable typing */
+    max-width: 850px;
+    /* Slightly wider than login/signup for comfortable typing */
     margin: 2rem auto;
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -760,7 +810,8 @@ body {
     border-radius: 8px;
     transition: all 0.2s ease;
     font-family: inherit;
-    resize: vertical; /* Allows users to drag up/down, but blocks breaking layouts sideways */
+    resize: vertical;
+    /* Allows users to drag up/down, but blocks breaking layouts sideways */
     min-height: 250px;
 }
 
@@ -787,13 +838,15 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-family: inherit;
-    appearance: none; /* Strips old native browser arrow shapes */
+    appearance: none;
+    /* Strips old native browser arrow shapes */
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaaaaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3e%3cpolyline points="6 9 12 15 18 9"%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1em;
-    padding-right: 2.5rem; /* Leaves room for custom arrow icon */
+    padding-right: 2.5rem;
+    /* Leaves room for custom arrow icon */
 }
 
 .form-group select:focus {
@@ -826,11 +879,14 @@ body {
         padding: 1.5rem;
         margin: 1rem;
     }
+
     .editor-actions {
-        flex-direction: column-reverse; /* Puts cancel button on bottom on mobile screen */
+        flex-direction: column-reverse;
+        /* Puts cancel button on bottom on mobile screen */
         align-items: stretch;
         gap: 1rem;
     }
+
     .editor-actions .btn {
         width: 100%;
     }
@@ -841,14 +897,16 @@ body {
    ========================================================================== */
 
 .article-container {
-    max-width: 800px; /* Highly optimized column width for text legibility */
+    max-width: 800px;
+    /* Highly optimized column width for text legibility */
     margin: 0 auto;
     padding: 2rem;
 }
 
 /* 9.1 Administrative Actions Overlay Box */
 .admin-moderation-panel {
-    background-color: rgba(243, 156, 18, 0.08); /* Transparent amber warning tint */
+    background-color: rgba(243, 156, 18, 0.08);
+    /* Transparent amber warning tint */
     border: 1px solid rgba(243, 156, 18, 0.3);
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
@@ -893,7 +951,10 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
-.btn-approve:hover { background-color: #2ecc71; }
+
+.btn-approve:hover {
+    background-color: #2ecc71;
+}
 
 .btn-disapprove {
     background-color: #c0392b;
@@ -905,7 +966,10 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
-.btn-disapprove:hover { background-color: #e74c3c; }
+
+.btn-disapprove:hover {
+    background-color: #e74c3c;
+}
 
 /* 9.2 Article Typography layout rules */
 .category-badge-inline {
@@ -966,10 +1030,14 @@ body {
     text-decoration: none;
     font-size: 0.85rem;
 }
-.author-email-link a:hover { color: var(--accent-red); }
+
+.author-email-link a:hover {
+    color: var(--accent-red);
+}
 
 .article-date-meta {
-    margin-left: auto; /* Pushes publication timeline indicator to far right corner */
+    margin-left: auto;
+    /* Pushes publication timeline indicator to far right corner */
     font-size: 0.85rem;
     color: var(--text-muted);
 }
@@ -1010,7 +1078,8 @@ body {
     width: 100%;
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid #3a3a3a; /* YouTube style minimalist text underline field */
+    border-bottom: 1px solid #3a3a3a;
+    /* YouTube style minimalist text underline field */
     color: var(--text-main);
     padding: 0.5rem 0;
     font-size: 0.95rem;
@@ -1089,12 +1158,33 @@ body {
 
 /* Mobile Tweak: Flatten structural elements */
 @media (max-width: 600px) {
-    .article-main-title { font-size: 2rem; }
-    .admin-moderation-panel { flex-direction: column; align-items: stretch; }
-    .moderation-actions .inline-form { width: 100%; }
-    .moderation-actions .btn { flex: 1; text-align: center; }
-    .article-author-card { flex-wrap: wrap; }
-    .article-date-meta { margin-left: 0; width: 100%; margin-top: 0.5rem; }
+    .article-main-title {
+        font-size: 2rem;
+    }
+
+    .admin-moderation-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .moderation-actions .inline-form {
+        width: 100%;
+    }
+
+    .moderation-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .article-author-card {
+        flex-wrap: wrap;
+    }
+
+    .article-date-meta {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
 }
 
 /* ==========================================================================
@@ -1125,18 +1215,23 @@ body {
 
 /* Inline State: Approve (Subtle Emerald Green Highlight) */
 .c-approve {
-    color: #a2a2a2; /* Muted gray by default so it stays clean */
+    color: #a2a2a2;
+    /* Muted gray by default so it stays clean */
 }
+
 .c-approve:hover {
-    color: #2ecc71; /* Highlighting to emerald green on hover */
+    color: #2ecc71;
+    /* Highlighting to emerald green on hover */
 }
 
 /* Inline State: Disapprove (Subtle Crimson Red Highlight) */
 .c-disapprove {
     color: #a2a2a2;
 }
+
 .c-disapprove:hover {
-    color: #e74c3c; /* Highlighting to crimson red on hover */
+    color: #e74c3c;
+    /* Highlighting to crimson red on hover */
 }
 
 /* Optional: Status Badges for Comment Metadata Header */
@@ -1148,13 +1243,14 @@ body {
     text-transform: uppercase;
     margin-left: 0.5rem;
 }
+
 .badge-waiting {
     background-color: rgba(243, 156, 18, 0.15);
     color: #f39c12;
     border: 1px solid rgba(243, 156, 18, 0.3);
 }
 
-/* Ensure the form doesn't add accidental block breaks or margins */
+/* Ensure the form doesn"t add accidental block breaks or margins */
 .comment-moderation-form {
     display: flex;
     gap: 1rem;
@@ -1182,20 +1278,32 @@ body {
 }
 
 /* Hover States matching your theme colors */
-.c-approve { color: #a2a2a2; }
-.c-approve:hover { color: #2ecc71; }
+.c-approve {
+    color: #a2a2a2;
+}
 
-.c-disapprove { color: #a2a2a2; }
-.c-disapprove:hover { color: #e74c3c; }
+.c-approve:hover {
+    color: #2ecc71;
+}
+
+.c-disapprove {
+    color: #a2a2a2;
+}
+
+.c-disapprove:hover {
+    color: #e74c3c;
+}
 
 /* ==========================================================================
    13. MASTER FOOTER LAYOUT
    ========================================================================== */
 
 .main-footer {
-    background-color: var(--bg-card); /* Reusing your dark card container hex color */
+    background-color: var(--bg-card);
+    /* Reusing your dark card container hex color */
     border-top: 1px solid #2d2d2d;
-    margin-top: 5rem; /* Generous breathing buffer separating review contents from the footer */
+    margin-top: 5rem;
+    /* Generous breathing buffer separating review contents from the footer */
     padding-top: 3.5rem;
     color: var(--text-main);
 }
@@ -1205,7 +1313,8 @@ body {
     margin: 0 auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr; /* Gives the branding description twice the horizontal track space */
+    grid-template-columns: 2fr 1fr 1fr;
+    /* Gives the branding description twice the horizontal track space */
     gap: 3rem;
     padding-bottom: 3.5rem;
 }
@@ -1246,12 +1355,14 @@ body {
 }
 
 .footer-links-list a:hover {
-    color: var(--accent-red); /* Your custom crimson accent color pop */
+    color: var(--accent-red);
+    /* Your custom crimson accent color pop */
 }
 
 /* 13.2 Bottom Operational Copyright Metadata Strip Layout Rules */
 .footer-bottom-strip {
-    background-color: #0c0c0c; /* Marginally darker shade than your card background for contrast separation */
+    background-color: #0c0c0c;
+    /* Marginally darker shade than your card background for contrast separation */
     border-top: 1px solid #1f1f1f;
     padding: 1.5rem 0;
     font-size: 0.85rem;
@@ -1286,10 +1397,11 @@ body {
 /* Responsive View Breakpoint Rule */
 @media (max-width: 768px) {
     .footer-container {
-        grid-template-columns: 1fr; /* Stacks column sections vertically down single columns layout on mobile views */
+        grid-template-columns: 1fr;
+        /* Stacks column sections vertically down single columns layout on mobile views */
         gap: 2rem;
     }
-    
+
     .footer-bottom-container {
         flex-direction: column;
         text-align: center;
@@ -1302,11 +1414,14 @@ body {
 
 .pagination-container {
     display: flex;
-    justify-content: space-between; /* Automatically positions Prev on left, Next on right */
+    justify-content: space-between;
+    /* Automatically positions Prev on left, Next on right */
     align-items: center;
-    margin-top: 4rem; /* Generous separation gap below your last row of movie cards */
+    margin-top: 4rem;
+    /* Generous separation gap below your last row of movie cards */
     padding-top: 2rem;
-    border-top: 1px solid #2d2d2d; /* Subtle line dividing the grid from the controls */
+    border-top: 1px solid #2d2d2d;
+    /* Subtle line dividing the grid from the controls */
 }
 
 .page-nav-btn {
@@ -1327,7 +1442,8 @@ body {
 /* Hover Action State utilizing your signature crimson red accent */
 .page-nav-btn:hover {
     border-color: var(--accent-red);
-    background-color: #1a1a1a; /* Slight background drop highlight */
+    background-color: #1a1a1a;
+    /* Slight background drop highlight */
     color: #ffffff;
 }
 
@@ -1353,8 +1469,10 @@ body {
 /* Container bar pinning title to the left edge and form controls to the right edge */
 .panel-header-strip {
     display: flex;
-    justify-content: space-between; /* Pushes H2 left and Form right */
-    align-items: center;            /* Vertically centers them on the exact same axis line */
+    justify-content: space-between;
+    /* Pushes H2 left and Form right */
+    align-items: center;
+    /* Vertically centers them on the exact same axis line */
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
 }
@@ -1382,7 +1500,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a2a2a2' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%23a2a2a2" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>");
     background-repeat: no-repeat;
     background-position: calc(100% - 0.65rem) center;
 }

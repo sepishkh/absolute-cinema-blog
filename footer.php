@@ -1,5 +1,5 @@
 <div class="footer-container">
-    
+
     <div class="footer-col branding-col">
         <a href="index.php" class="logo">Absolute<span>Cinema</span></a>
         <p class="footer-tagline">

@@ -23,8 +23,8 @@
                 <p>Create an account to start reviewing your favorite movies and TV shows.</p>
             </div>
 
-            <?php if(isset($_GET["status"])) : ?>
-                <?php if($_GET['status'] === "success") : ?>
+            <?php if (isset($_GET["status"])) : ?>
+                <?php if ($_GET["status"] === "success") : ?>
                     <div class="alert-box alert-success">
                         <div class="alert-icon">✔</div>
                         <div class="alert-content">
@@ -32,7 +32,7 @@
                             <p>Your account has been created. Go to <a href="login.php">Login</a> page.</p>
                         </div>
                     </div>
-                <?php elseif($_GET["status"] == "23000") : ?>
+                <?php elseif ($_GET["status"] == "23000") : ?>
                     <div class="alert-box alert-danger">
                         <div class="alert-icon">⚠</div>
                         <div class="alert-content">
@@ -55,13 +55,13 @@
                 <?php endif ?>
             <?php endif ?>
             <form action="process-signup.php" method="POST" class="auth-form">
-                
+
                 <div class="form-row-split">
                     <div class="form-group">
                         <label for="first_name">First Name <span class="required-asterisk">*</span></label>
                         <input type="text" id="first_name" name="fname" placeholder="e.g. John" required autocomplete="given-name">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="last_name">Last Name <span class="optional-label">(Optional)</span></label>
                         <input type="text" id="last_name" name="lname" placeholder="e.g. Doe" autocomplete="family-name">
