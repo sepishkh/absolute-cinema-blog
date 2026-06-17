@@ -14,7 +14,7 @@
     /* Vibrant red accent */
     --accent-hover: #ff3333;
     /* Lighter red for hover states */
-    --font-stack: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -152,7 +152,7 @@ body {
 }
 
 .nav-row .nav-link::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     left: 0;
@@ -841,7 +841,7 @@ body {
     appearance: none;
     /* Strips old native browser arrow shapes */
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3e%3cpolyline points="6 9 12 15 18 9"%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaaaaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1em;
@@ -1250,7 +1250,7 @@ body {
     border: 1px solid rgba(243, 156, 18, 0.3);
 }
 
-/* Ensure the form doesn"t add accidental block breaks or margins */
+/* Ensure the form doesn't add accidental block breaks or margins */
 .comment-moderation-form {
     display: flex;
     gap: 1rem;
@@ -1500,7 +1500,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%23a2a2a2" viewBox="0 0 16 16"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a2a2a2' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
     background-repeat: no-repeat;
     background-position: calc(100% - 0.65rem) center;
 }
