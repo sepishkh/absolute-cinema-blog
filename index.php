@@ -46,7 +46,6 @@ $res->execute([
 
 ?>
 
-
 <html lang="en">
 
 <head>
@@ -66,26 +65,22 @@ $res->execute([
         <h1 class="page-title">Latest Reviews</h1>
         <div class="reviews-grid">
             <?php while (($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
-                <article class="review-card">
-                    <div class="card-thumbnail">
-                        <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
-                        <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
-                    </div>
-
-                    <div class="card-details">
-                        <h2 class="card-title">
-                            <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
-                        </h2>
-                        <p class="card-intro"><?= Escape($post["intro"]) ?></p>
-                        <div class="card-meta">
-                            <span class="author-name" title="<?= Escape($post["email"]) ?>">
-                                <?= FullName($post["fname"], $post["lname"]) ?>
-                            </span>
-                            <span class="meta-divider">•</span>
-                            <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
-                        </div>
-                    </div>
-                </article>
+                <?php
+                $TEMPLATE_VALUES = [
+                    "CATEGORY" => GetCategory($post["category"]),
+                    "THUMBNAIL" => GetThumbnail($post["category"]),
+                    "ID" => $post["post_id"],
+                    "TITLE" => Escape($post["title"]),
+                    "INTRO" => Escape($post["intro"]),
+                    "EMAIL" => Escape($post["email"]),
+                    "FULL_NAME" => FullName($post["fname"], $post["lname"]),
+                    "DATE" => $post["creation_date"],
+                    "DATE_FORMATTED" => FormatDate($post["creation_date"]),
+                    "AUTHOR_SW" => true,
+                    "INTRO_SW" => true
+                ];
+                require "post-card-template.php";
+                ?>
             <?php endwhile ?>
         </div>
         <nav class="pagination-container" aria-label="Review Page Navigation">

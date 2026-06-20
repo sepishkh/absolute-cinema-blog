@@ -115,28 +115,24 @@ if (IsLoggedIn()) {
             </div>
             <div class="reviews-grid profile-post-grid">
                 <?php while (($post = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
-                    <article class="review-card profile-card">
-                        <div class="card-thumbnail">
-                            <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
-                            <span class="status-badge status-<?= $post["approval"] ?>"><?= GetApproval($post["approval"]) ?></span>
-                            <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
-                        </div>
-
-                        <div class="card-details">
-                            <h2 class="card-title">
-                                <a href="view.php?view=<?= $post["id"] ?>"><?= Escape($post["title"]) ?></a>
-                            </h2>
-                            <div class="card-meta">
-                                <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
-
-                                <div class="post-actions-inline">
-                                    <a href="new.php?edit=<?= $post["id"] ?>" class="action-link edit-link">Edit</a>
-                                    <span class="meta-divider">|</span>
-                                    <a href="#" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                    <?php
+                    $TEMPLATE_VALUES = [
+                        "CATEGORY" => GetCategory($post["category"]),
+                        "THUMBNAIL" => GetThumbnail($post["category"]),
+                        "ID" => $post["id"],
+                        "TITLE" => Escape($post["title"]),
+                        "INTRO" => Escape($post["intro"]),
+                        "EMAIL" => Escape($post["email"]),
+                        "FULL_NAME" => FullName($post["fname"], $post["lname"]),
+                        "DATE" => $post["creation_date"],
+                        "DATE_FORMATTED" => FormatDate($post["creation_date"]),
+                        "STATUS_BADGE_SW" => true,
+                        "STATUS_BADGE_CSS" => $post["approval"],
+                        "STATUS_BADGE" => GetApproval($post["approval"]),
+                        "POST_ACTIONS_SW" => true,
+                    ];
+                    require "post-card-template.php";
+                    ?>
                 <?php endwhile ?>
             </div>
         </section>
@@ -158,32 +154,25 @@ if (IsLoggedIn()) {
                 </div>
                 <div class="reviews-grid profile-post-grid">
                     <?php while (($post = $panel->fetch(PDO::FETCH_ASSOC))) : ?>
-                        <article class="review-card profile-card">
-                            <div class="card-thumbnail">
-                                <span class="category-badge"><?= GetCategory($post["category"]) ?></span>
-                                <span class="status-badge status-<?= $post["approval"] ?>"><?= GetApproval($post["approval"]) ?></span>
-                                <div class="thumbnail-placeholder"><?= GetThumbnail($post["category"]) ?></div>
-                            </div>
-
-                            <div class="card-details">
-                                <h2 class="card-title">
-                                    <a href="view.php?view=<?= $post["post_id"] ?>"><?= Escape($post["title"]) ?></a>
-                                </h2>
-                                <div class="card-meta">
-                                    <span class="author-name" title="<?= Escape($post["email"]) ?>">
-                                        <?= FullName($post["fname"], $post["lname"]) ?>
-                                    </span>
-                                    <span class="meta-divider">•</span>
-                                    <time datetime="<?= $post["creation_date"] ?>" class="creation-date"><?= FormatDate($post["creation_date"]) ?></time>
-
-                                    <div class="post-actions-inline">
-                                        <a href="edit.php?id=<?= $post["post_id"] ?>" class="action-link edit-link">Edit</a>
-                                        <span class="meta-divider">|</span>
-                                        <a href="view.php?view=<?= $post["post_id"] ?>&delete=true" class="action-link delete-link" onclick="return confirm("Are you sure?")">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
+                        <?php
+                        $TEMPLATE_VALUES = [
+                            "CATEGORY" => GetCategory($post["category"]),
+                            "THUMBNAIL" => GetThumbnail($post["category"]),
+                            "ID" => $post["post_id"],
+                            "TITLE" => Escape($post["title"]),
+                            "INTRO" => Escape($post["intro"]),
+                            "EMAIL" => Escape($post["email"]),
+                            "FULL_NAME" => FullName($post["fname"], $post["lname"]),
+                            "DATE" => $post["creation_date"],
+                            "DATE_FORMATTED" => FormatDate($post["creation_date"]),
+                            "STATUS_BADGE_SW" => true,
+                            "STATUS_BADGE_CSS" => $post["approval"],
+                            "STATUS_BADGE" => GetApproval($post["approval"]),
+                            "AUTHOR_SW" => true,
+                            "POST_ACTIONS_SW" => true,
+                        ];
+                        require "post-card-template.php";
+                        ?>
                     <?php endwhile ?>
                 </div>
             </section>
