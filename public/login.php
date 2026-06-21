@@ -2,19 +2,21 @@
 
 <!-- TODO: Validate Email and Password as text -->
 
+<?php require_once "../config/config.php" ?>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Login </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body>
 
     <header>
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
     </header>
 
     <main class="auth-container">
@@ -33,7 +35,7 @@
                     </div>
                 </div>
             <?php endif; ?>
-            <form action="process-login.php" method="POST" class="auth-form">
+            <form action="<?= Paths::$ROUTE . "?action=login"?>" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
                     <input type="email" id="login_email" name="email"
@@ -50,13 +52,13 @@
             </form>
 
             <div class="auth-footer">
-                <p>New to the platform? <a href="signup.php">Create an account instead</a></p>
+                <p>New to the platform? <a href="<?= Paths::$SIGNUP ?>">Create an account instead</a></p>
             </div>
 
         </div>
     </main>
     <footer class="main-footer">
-        <?php require_once "footer.php" ?>
+        <?php require_once Paths::$FOOTER ?>
     </footer>
 </body>
 

@@ -9,7 +9,7 @@
 
     <div class="card-details">
         <h2 class="card-title">
-            <a href="view.php?view=<?= $TEMPLATE_VALUES["ID"] ?>"><?= $TEMPLATE_VALUES["TITLE"] ?></a>
+            <a href="<?= Paths::$VIEW . "?view=" . $TEMPLATE_VALUES["ID"] ?>"><?= $TEMPLATE_VALUES["TITLE"] ?></a>
         </h2>
         <?php if ($TEMPLATE_VALUES["INTRO_SW"] === true) : ?>
             <p class="card-intro"><?= $TEMPLATE_VALUES["INTRO"] ?></p>
@@ -26,9 +26,9 @@
             <time datetime="<?= $TEMPLATE_VALUES["DATE"] ?>" class="creation-date"><?= $TEMPLATE_VALUES["DATE_FORMATTED"] ?></time>
             <?php if ($TEMPLATE_VALUES["POST_ACTIONS_SW"] === true) : ?>
                 <div class="post-actions-inline">
-                    <a href="new.php?edit=<?= $TEMPLATE_VALUES["ID"] ?>" class="action-link edit-link">Edit</a>
+                    <a href="<?= Paths::$NEW . "?edit=" . $TEMPLATE_VALUES["ID"] ?>" class="action-link edit-link">Edit</a>
                     <span class="meta-divider">|</span>
-                    <a href="view.php?view=<?= $TEMPLATE_VALUES["ID"] ?>&delete=true" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a href="<?= Paths::$VIEW . "?view=" . $TEMPLATE_VALUES["ID"] . "&delete=true"?>" class="action-link delete-link" onclick="return confirm('Are you sure?')">Delete</a>
                 </div>
             <?php endif ?>
         </div>

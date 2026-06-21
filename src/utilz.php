@@ -2,6 +2,8 @@
 
 <?php
 
+require_once "../config/config.php";
+
 session_start();
 
 function GetUsername() {
@@ -18,12 +20,7 @@ function Logout() {
 
 function Login($email, $pass) {
     if ($email == null || $pass == null) return false;
-    require_once "paths.php";
-    require_once "sqldb.php";
-
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
-
+    $sqldb = $GLOBALS["Sqldb"];
     $stmt = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
     $stmt->execute([":email" => $email]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -44,10 +41,7 @@ function Signup($fname, $lname, $email, $pass) {
     if (!$fname || !$email || !$pass) {
         return 1;
     }
-    require_once "paths.php";
-    require_once "sqldb.php";
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $sqldb = $GLOBALS["Sqldb"];
     $stmt = $sqldb->pdo->prepare("INSERT 
                                     INTO users 
                                     (fname, lname, email, password, role, creation_date) 
@@ -71,10 +65,7 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
     if (!$title || !$intro || !$body || !$author_email) {
         return [1, 0];
     }
-    require_once "paths.php";
-    require_once "sqldb.php";
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $sqldb = $GLOBALS["Sqldb"];
     $stmt = $sqldb->pdo->prepare("SELECT id, role
                                     FROM users
                                     WHERE email=:email");
@@ -118,10 +109,7 @@ function UpdatePost($id, $title, $intro, $body, $category_id) {
     if (!$id || !$title || !$intro || !$body) {
         return [1, 0];
     }
-    require_once "paths.php";
-    require_once "sqldb.php";
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+    $sqldb = $GLOBALS["Sqldb"];
     $stmt = $sqldb->pdo->prepare("UPDATE posts
                                     SET title=:title,
                                         intro=:intro,

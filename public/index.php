@@ -5,24 +5,16 @@
 
 <?php
 
-require_once "utilz.php";
+require_once "../config/config.php";
+require_once Paths::$UTILZ;
 
-if (isset($_GET["logout"])) {
-    Logout();
-}
+if (isset($_GET["logout"])) Logout();
 
-require_once "paths.php";
-require_once "sqldb.php";
-$sqldb = new SQLDB();
-$sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
+$per_page = 6;
+$page_num = isset($_GET["page"]) ? max((int)$_GET["page"], 1) : 1;
+$offset = ($page_num - 1) * $per_page;
 
-$page_count = 8;
-$page_num = 1;
-if (isset($_GET["page"])) {
-    $page_num = max((int)$_GET["page"], 1);
-}
-$offset = ($page_num - 1) * $page_count;
-
+$sqldb = $GLOBALS["Sqldb"];
 $res = $sqldb->pdo->prepare("SELECT
                                 posts.id AS post_id,
                                 posts.title, 
@@ -40,7 +32,7 @@ $res = $sqldb->pdo->prepare("SELECT
                             LIMIT :limit OFFSET :offset");
 
 $res->execute([
-    ":limit" => $page_count,
+    ":limit" => $per_page,
     ":offset" => $offset
 ])
 
@@ -52,12 +44,12 @@ $res->execute([
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Absolute Cinema </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body>
     <header class="main-header">
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
         <!-- <img src="/abscin.jpg" alt="Absolute Cinema" class="header-banner"> -->
     </header>
 
@@ -79,7 +71,7 @@ $res->execute([
                     "AUTHOR_SW" => true,
                     "INTRO_SW" => true
                 ];
-                require "post-card-template.php";
+                require Paths::$POST_CARD_TEMPLATE;
                 ?>
             <?php endwhile ?>
         </div>
@@ -93,7 +85,7 @@ $res->execute([
         </nav>
     </main>
     <footer class="main-footer">
-        <?php require_once "footer.php" ?>
+        <?php require_once Paths::$FOOTER ?>
     </footer>
 </body>
 

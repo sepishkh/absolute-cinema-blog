@@ -4,19 +4,18 @@
 
 <?php
 
+require_once "../config/config.php";
+$sqldb = $GLOBALS["Sqldb"];
+
 $id = isset($_GET["edit"]) ? $_GET["edit"] : null;
 if ($id) {
-    require_once "paths.php";
-    require_once "sqldb.php";
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
     $stmt = $sqldb->pdo->prepare("SELECT * 
                                     FROM posts
                                     WHERE id=:id");
     $stmt->execute([":id" => $id]);
     $post = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($post == null) {
-        require "404.php";
+        require Paths::$P404;
         exit();
     }
 }
@@ -29,15 +28,15 @@ if ($id) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $id ? "Edit" : "New" ?> Post</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body>
     <header class="main-header">
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
     </header>
     <?php if (!IsLoggedIn()) : ?>
-        <h1> Please <a href="login.php">Login</a> first.</h1>
+        <h1> Please <a href="<?= Paths::$LOGIN ?>">Login</a> first.</h1>
         <?php exit() ?>
     <?php endif ?>
     <p></p>
@@ -59,7 +58,7 @@ if ($id) {
                     </div>
                 </div>
             <?php endif ?>
-            <form action="process-new.php<?= $id ? "?edit=$id" : "" ?>" method="POST" class="editor-form">
+            <form action="<?= Paths::$ROUTE . "?action=new" . ($id ? "edit=$id" : "") ?>" method="POST" class="editor-form">
 
                 <div class="form-group">
                     <label for="post_title">Review Title <span class="required-asterisk">*</span></label>
@@ -91,7 +90,7 @@ if ($id) {
                 </div>
 
                 <div class="editor-actions">
-                    <a href="profile.php" class="btn btn-secondary">Cancel & Discard</a>
+                    <a href="<?= Paths::$PROFILE ?>" class="btn btn-secondary">Cancel & Discard</a>
                     <button type="submit" class="btn btn-primary publish-btn">Submit Review for Approval</button>
                 </div>
 
@@ -99,7 +98,7 @@ if ($id) {
         </div>
     </main>
     <footer class="main-footer">
-        <?php require_once "footer.php" ?>
+        <?php require_once Paths::$FOOTER ?>
     </footer>
 </body>
 

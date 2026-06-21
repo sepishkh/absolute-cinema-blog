@@ -4,15 +4,12 @@
 
 <?php
 
-require_once "utilz.php";
+require_once "../config/config.php";
+require_once Paths::$UTILZ;
+
+$sqldb = $GLOBALS["Sqldb"];
 
 if (IsLoggedIn()) {
-    require_once "sqldb.php";
-    require_once "paths.php";
-
-    $sqldb = new SQLDB();
-    $sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
-
     $stmt = $sqldb->pdo->prepare("SELECT * 
                                     FROM users
                                     WHERE email=:email");
@@ -66,15 +63,15 @@ if (IsLoggedIn()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= (IsLoggedIn() ? $user["fname"] . " " : "") ?>Profile</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body class="profile-page">
     <header class="main-header">
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
     </header>
     <?php if (!IsLoggedIn()) : ?>
-        <h1> Please <a href="login.php">Login</a> first.</h1>
+        <h1> Please <a href="<?= Paths::$LOGIN ?>">Login</a> first.</h1>
         <?php exit() ?>
     <?php endif ?>
     <?php if ($not_found) : ?>
@@ -95,14 +92,14 @@ if (IsLoggedIn()) {
                 </div>
             </div>
             <div class="dashboard-actions">
-                <a href="new.php" class="btn btn-primary create-post-btn">+ Create New Post</a>
+                <a href="<?= Paths::$NEW ?>" class="btn btn-primary create-post-btn">+ Create New Post</a>
             </div>
         </section>
         <hr class="section-divider">
         <section class="my-posts-section">
             <div class="panel-header-strip">
                 <h2 class="page-title">My Posts</h2>
-                <form action="profile.php" method="POST" class="profile-filter-form">
+                <form action="<?= Paths::$PROFILE ?>" method="POST" class="profile-filter-form">
                     <div class="select-wrapper">
                         <select name="approval_select" required>
                             <option value="1" <?= ($approval == 1) ? "selected" : "" ?>>Approved</option>
@@ -131,7 +128,7 @@ if (IsLoggedIn()) {
                         "STATUS_BADGE" => GetApproval($post["approval"]),
                         "POST_ACTIONS_SW" => true,
                     ];
-                    require "post-card-template.php";
+                    require Paths::$POST_CARD_TEMPLATE;
                     ?>
                 <?php endwhile ?>
             </div>
@@ -141,7 +138,7 @@ if (IsLoggedIn()) {
             <section class="my-posts-section">
                 <div class="panel-header-strip">
                     <h2 class="page-title">Admin Panel</h2>
-                    <form action="profile.php" method="POST" class="profile-filter-form">
+                    <form action="<?= Paths::$PROFILE ?>" method="POST" class="profile-filter-form">
                         <div class="select-wrapper">
                             <select name="approval_select_panel" required>
                                 <option value="1" <?= ($approval_panel == 1) ? "selected" : "" ?>>Approved</option>
@@ -171,7 +168,7 @@ if (IsLoggedIn()) {
                             "AUTHOR_SW" => true,
                             "POST_ACTIONS_SW" => true,
                         ];
-                        require "post-card-template.php";
+                        require Paths::$POST_CARD_TEMPLATE;
                         ?>
                     <?php endwhile ?>
                 </div>
@@ -179,7 +176,7 @@ if (IsLoggedIn()) {
         <?php endif ?>
     </main>
     <footer class="main-footer">
-        <?php require_once "footer.php" ?>
+        <?php require_once Paths::$FOOTER ?>
     </footer>
 </body>
 

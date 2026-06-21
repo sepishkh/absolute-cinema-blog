@@ -2,18 +2,20 @@
 
 <!-- TODO: Remove unnecessary ifs when shwoing required error messages -->
 
+<?php require_once "../config/config.php" ?>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Sign Up </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body class="auth-page">
     <header class="main-header">
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
     </header>
 
     <main class="auth-container">
@@ -29,7 +31,7 @@
                         <div class="alert-icon">✔</div>
                         <div class="alert-content">
                             <p class="alert-title">Success!</p>
-                            <p>Your account has been created. Go to <a href="login.php">Login</a> page.</p>
+                            <p>Your account has been created. Go to <a href="<?= Paths::$LOGIN ?>">Login</a> page.</p>
                         </div>
                     </div>
                 <?php elseif ($_GET["status"] == "23000") : ?>
@@ -54,7 +56,7 @@
                     </div>
                 <?php endif ?>
             <?php endif ?>
-            <form action="process-signup.php" method="POST" class="auth-form">
+            <form action="<?= Paths::$ROUTE . "?action=signup" ?>" method="POST" class="auth-form">
 
                 <div class="form-row-split">
                     <div class="form-group">
@@ -82,13 +84,13 @@
             </form>
 
             <div class="auth-footer">
-                <p>Already have an account? <a href="login.php">Log In instead</a></p>
+                <p>Already have an account? <a href="<?= Paths::$LOGIN ?>">Log In instead</a></p>
             </div>
         </div>
-        <footer class="main-footer">
-            <?php require_once "footer.php" ?>
-        </footer>
     </main>
+    <footer class="main-footer">
+        <?php require_once Paths::$FOOTER ?>
+    </footer>
 </body>
 
 </html>

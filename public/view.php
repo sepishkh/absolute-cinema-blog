@@ -2,26 +2,21 @@
 
 <?php
 
-require_once "utilz.php";
+require_once "../config/config.php";
+require_once Paths::$UTILZ;
 
 $view_id = $_GET["view"];
 if ($view_id == null || empty(trim($view_id))) {
-    include "404.php";
+    include Paths::$P404;
     exit();
 }
-
-require_once "paths.php";
-require_once "sqldb.php";
-
-$sqldb = new SQLDB();
-$sqldb->StartDBConnection($DB_PATH, $SCHEMA_PATH);
-
+$sqldb = $GLOBALS["Sqldb"];
 if ($_GET["delete"] === "true") {
     $stmt = $sqldb->pdo->prepare("UPDATE posts
                             SET hidden=1
                             WHERE id=:id");
     $stmt->execute([":id" => $view_id]);
-    header("Location: index.php");
+    header("Location: " . Paths::$INDEX);
     exit();
 }
 
@@ -46,7 +41,7 @@ $stmt->execute(
 );
 $content = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($content == null) {
-    include "404.php";
+    include Paths::$P404;
     exit();
 }
 
@@ -61,7 +56,7 @@ if (
     && $content["approval"] != 1
     && $user["role"] == 0
 ) {
-    include "404.php";
+    include Paths::$P404;
     exit();
 }
 
@@ -108,12 +103,12 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <?php echo Escape($content["title"]) ?> </title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
 <body>
     <header class="main-header">
-        <?php require_once "header.php" ?>
+        <?php require_once Paths::$HEADER ?>
     </header>
 
     <main class="content-wrapper article-container">
@@ -127,8 +122,8 @@ try {
                     </div>
                 </div>
                 <div class="moderation-actions">
-                    <a href="view.php?view=<?= $view_id ?>&approved=1" class="btn-link btn-approve">Approve Post</a>
-                    <a href="view.php?view=<?= $view_id ?>&approved=-1" class="btn-link btn-disapprove">Disapprove</a>
+                    <a href="<?= Paths::$VIEW . '?view=' . $view_id . '&approved=1' ?>" class="btn-link btn-approve">Approve Post</a>
+                    <a href="<?= Paths::$VIEW . '?view=' . $view_id . '&approved=-1' ?>" class="btn-link btn-disapprove">Disapprove</a>
                 </div>
             </section>
         <?php endif ?>
@@ -156,7 +151,7 @@ try {
             <?php if (IsLoggedIn()) : ?>
                 <div class="comment-input-block">
                     <div class="author-avatar-small"><?= substr($user["fname"], 0, 1) ?></div>
-                    <form action="process-comment.php" method="POST" class="comment-form">
+                    <form action="<?= Paths::$ROUTE . "?action=comment" ?>" method="POST" class="comment-form">
                         <input type="hidden" name="view_id" value="<?= $view_id ?>">
                         <input type="hidden" name="author_id" value="<?= $user["id"] ?>">
                         <div class="form-group">
@@ -168,7 +163,7 @@ try {
                     </form>
                 </div>
             <?php else : ?>
-                <h4> Please <a href="login.php">Login</a> to comment.</h4>
+                <h4> Please <a href="<?= Paths::$LOGIN ?>">Login</a> to comment.</h4>
                 <br>
             <?php endif ?>
             <div class="comments-list">
@@ -182,7 +177,7 @@ try {
                             </div>
                             <p class="comment-text-content"><?= $comment["comment"] ?></p>
                             <?php if ($user["role"] > 0 && $comment["approval"] == 0) : ?>
-                                <form action="approve-comment.php" method="POST" class="comment-moderation-form">
+                                <form action="<?= Paths::$ROUTE . "?action=appr_cmnt" ?>" method="POST" class="comment-moderation-form">
                                     <input type="hidden" name="view_id" value="<?= $view_id ?>">
                                     <input type="hidden" name="comment_id" value="<?= $comment["cid"] ?>">
                                     <button type="submit" name="status" value="1" class="comment-mod-btn c-approve">
@@ -201,7 +196,7 @@ try {
         </section>
     </main>
     <footer class="main-footer">
-        <?php require_once "footer.php" ?>
+        <?php require_once Paths::$FOOTER ?>
     </footer>
 </body>
 

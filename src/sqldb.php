@@ -5,20 +5,16 @@
 // TODO: Feature to run custom fucntion after connecting
 
 class SQLDB {
-    private $root;
-    private $db_file;
     private $dsn;
     private $connected;
     public $pdo;
 
     function __construct() {
-        $this->root = realpath(__DIR__);
         $this->connected = false;
     }
 
     function Connect($file_path) {
-        $this->db_file = "$this->root/$file_path";
-        $this->dsn = "sqlite:$this->db_file";
+        $this->dsn = "sqlite:$file_path";
         try {
             $this->pdo = new PDO($this->dsn);
             $this->connected = true;
@@ -33,7 +29,7 @@ class SQLDB {
             echo "Error: Not yet connected to the database.<br>";
             return;
         }
-        $schema_file = "$this->root/$schema_path";
+        $schema_file = "$schema_path";
         $schema_tmstmp = "$schema_file.timestamp";
         if (file_exists($schema_file)) {
             if (file_exists($schema_tmstmp)) {
