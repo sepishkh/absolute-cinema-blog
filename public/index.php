@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 
-<!-- TODO: Robust Login/Logout system -->
-<!-- TODO: Proper Error Handling -->
-
 <?php
 
 require_once "../config/config.php";
@@ -11,7 +8,7 @@ require_once Paths::$UTILZ;
 if (isset($_GET["logout"])) Logout();
 
 $per_page = 6;
-$page_num = (int)$_GET["page"] ?? 1;
+$page_num = (int)($_GET["page"] ?? 1);
 $offset = ($page_num - 1) * $per_page;
 
 $sqldb = $GLOBALS["Sqldb"];
@@ -57,7 +54,7 @@ $posts->execute([
                     "FULL_NAME" => FullName($post["fname"], $post["lname"]),
                     "DATE" => $post["creation_date"],
                     "DATE_FORMATTED" => FormatDate($post["creation_date"]),
-                    "AUTHOR_SW" => true,
+                    "AUTHOR_SW" => false,
                     "INTRO_SW" => true
                 ];
                 require Paths::$POST_CARD_TEMPLATE;

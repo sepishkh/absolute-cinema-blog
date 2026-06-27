@@ -107,7 +107,7 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
             comment         VARCHAR NOT NULL,
             author_id       INTEGER NOT NULL,
             approval        INTEGER NOT NULL,
-            creation_date   VARCHAR NOT NULL,
+            creation_date   VARCHAR NOT NULL
         )"
     );
     $stmt->execute();

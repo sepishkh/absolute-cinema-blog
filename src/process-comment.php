@@ -1,6 +1,7 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
 
@@ -13,6 +14,7 @@ $stmt = $sqldb->pdo->prepare(
     (comment, author_id, approval, creation_date)
     VALUES (:comment, :author_id, :approval, :creation_date)"
 );
+var_dump($cmnt, $author_id);
 $stmt->execute([
     ":comment" => $cmnt,
     ":author_id" => $author_id,

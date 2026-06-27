@@ -131,7 +131,7 @@ if (IsLoggedIn()) {
                         $TEMPLATE_VALUES = [
                             "CATEGORY" => GetCategory($post["category"]),
                             "THUMBNAIL" => GetThumbnail($post["category"]),
-                            "ID" => $post["post_id"],
+                            "ID" => $post["id"],
                             "TITLE" => Escape($post["title"]),
                             "INTRO" => Escape($post["intro"]),
                             "EMAIL" => Escape($post["email"]),

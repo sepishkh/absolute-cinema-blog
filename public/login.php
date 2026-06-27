@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 
-<!-- TODO: Validate Email and Password as text -->
-
 <?php require_once "../config/config.php" ?>
 
 <html lang="en">

@@ -15,7 +15,7 @@ class SQLDB {
     }
 
     function Connect($file_path) {
-        $db_file = $file_path;
+        $this->db_file = $file_path;
         $this->dsn = "sqlite:$this->db_file";
         try {
             $this->pdo = new PDO($this->dsn);

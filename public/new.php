@@ -9,15 +9,15 @@ require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
 
-$id = $_GET["edit"];
+$id = (int)($_GET["edit"]);
 if (NotEmpty($id)) {
-    $stmt = $sqldb->pdo->prepare(
+    $posts = $sqldb->pdo->prepare(
         "SELECT * 
         FROM posts
         WHERE id=:id"
     );
-    $stmt->execute([":id" => $id]);
-    $post = $stmt->fetch(PDO::FETCH_ASSOC);
+    $posts->execute([":id" => $id]);
+    $post = $posts->fetch(PDO::FETCH_ASSOC);
     if ($post == null) {
         require Paths::$P404;
         exit();

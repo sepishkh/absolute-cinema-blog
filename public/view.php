@@ -7,7 +7,7 @@ require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
 
-$post_id = $_GET["view"];
+$post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
     include Paths::$P404;
     exit();
@@ -66,14 +66,13 @@ if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
 
 $cmnt_table = CommentTable($post_id);
 try {
+    $cond = ($user["role"] > 0) ? "approval=0 || approval=1" : "approval=1";
     $cmnts = $sqldb->pdo->prepare(
         "SELECT *
         FROM $cmnt_table
-        WHERE :cond"
+        WHERE $cond"
     );
-    $cmnts->execute([
-        ":cond" => ($user["role"] > 0) ? "true" : "approval=1"
-    ]);
+    $cmnts->execute();
 } catch(PDOException $e) {
     echo $e->getMessage();
 }
@@ -138,7 +137,7 @@ try {
                         <input type="hidden" name="post_id" value="<?= $post_id ?>">
                         <input type="hidden" name="author_id" value="<?= $user["id"] ?>">
                         <div class="form-group">
-                            <textarea name="comment_text" rows="3" placeholder="Add a public comment..." required></textarea>
+                            <textarea name="cmnt" rows="3" placeholder="Add a public comment..." required></textarea>
                         </div>
                         <div class="comment-submit-row">
                             <button type="submit" class="btn btn-primary btn-comment">Comment</button>
@@ -162,7 +161,7 @@ try {
                             <?php if ($user["role"] > 0 && $cmnt["approval"] == 0) : ?>
                                 <form action="<?= Paths::$ROUTE . "?action=appr_cmnt" ?>" method="POST" class="comment-moderation-form">
                                     <input type="hidden" name="post_id" value="<?= $post_id ?>">
-                                    <input type="hidden" name="cmnt_id" value="<?= $cmnt["cid"] ?>">
+                                    <input type="hidden" name="cmnt_id" value="<?= $cmnt["id"] ?>">
                                     <button type="submit" name="appr" value="1" class="comment-mod-btn c-approve">
                                         <span class="btn-icon">✔</span> Approve
                                     </button>
