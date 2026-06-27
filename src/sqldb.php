@@ -5,6 +5,7 @@
 // TODO: Feature to run custom fucntion after connecting
 
 class SQLDB {
+    private $db_file;
     private $dsn;
     private $connected;
     public $pdo;
@@ -14,7 +15,8 @@ class SQLDB {
     }
 
     function Connect($file_path) {
-        $this->dsn = "sqlite:$file_path";
+        $db_file = $file_path;
+        $this->dsn = "sqlite:$this->db_file";
         try {
             $this->pdo = new PDO($this->dsn);
             $this->connected = true;
@@ -33,7 +35,10 @@ class SQLDB {
         $schema_tmstmp = "$schema_file.timestamp";
         if (file_exists($schema_file)) {
             if (file_exists($schema_tmstmp)) {
-                if (filemtime($schema_file) <= file_get_contents($schema_tmstmp)) {
+                if (
+                    filemtime($schema_file) <= file_get_contents($schema_tmstmp)
+                    && filesize($this->db_file) > 0
+                ) {
                     return;
                 }
             }

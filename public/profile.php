@@ -10,48 +10,31 @@ require_once Paths::$UTILZ;
 $sqldb = $GLOBALS["Sqldb"];
 
 if (IsLoggedIn()) {
-    $stmt = $sqldb->pdo->prepare("SELECT * 
-                                    FROM users
-                                    WHERE email=:email");
-
-    $stmt->execute([":email" => GetUsername()]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $not_found = false;
-    if ($user == null) {
-        $not_found = true;
-    } else {
-        $approval = 1;
-        if (isset($_POST["approval_select"])) {
-            $approval = $_POST["approval_select"];
-        }
-        $posts = $sqldb->pdo->prepare("SELECT *
-                                        FROM posts
-                                        WHERE author_id=:id AND approval=:approval
-                                        ORDER BY creation_date DESC");
-        $posts->execute([
-            ":id" => $user["id"],
-            ":approval" => $approval
-        ]);
-        if ($user["role"] > 0) {
-            $approval_panel = 1;
-            if (isset($_POST["approval_select_panel"])) {
-                $approval_panel = $_POST["approval_select_panel"];
-            }
-            $panel = $sqldb->pdo->prepare("SELECT
-                                        posts.id AS post_id,
-                                        posts.title, 
-                                        posts.intro, 
-                                        posts.creation_date,
-                                        posts.approval,
-                                        posts.category,
-                                        users.fname,
-                                        users.lname,
-                                        users.email
-                                        FROM posts
-                                        INNER JOIN users ON posts.author_id = users.id
-                                        WHERE approval=:approval");
-            $panel->execute([":approval" => $approval_panel]);
-        }
+    $users = $sqldb->pdo->prepare(
+        "SELECT * 
+        FROM users
+        WHERE email=:email"
+    );
+    $users->execute([":email" => GetUsername()]);
+    $user = $users->fetch(PDO::FETCH_ASSOC);
+    $appr = $_POST["appr"] ?? 1;
+    $posts = $sqldb->pdo->prepare(
+        "SELECT *
+        FROM posts
+        WHERE author_id=:id AND approval=:approval"
+    );
+    $posts->execute([
+        ":id" => $user["id"],
+        ":approval" => $appr
+    ]);
+    if ($user["role"] > 0) {
+        $appr_admin = $_POST["appr_admin"] ?? 1;
+        $panel = $sqldb->pdo->prepare(
+            "SELECT *
+            FROM posts
+            WHERE approval=:approval"
+        );
+        $panel->execute([":approval" => $appr_admin]);
     }
 }
 
@@ -72,10 +55,6 @@ if (IsLoggedIn()) {
     </header>
     <?php if (!IsLoggedIn()) : ?>
         <h1> Please <a href="<?= Paths::$LOGIN ?>">Login</a> first.</h1>
-        <?php exit() ?>
-    <?php endif ?>
-    <?php if ($not_found) : ?>
-        <h1> User not found </h1>
         <?php exit() ?>
     <?php endif ?>
 
@@ -101,18 +80,17 @@ if (IsLoggedIn()) {
                 <h2 class="page-title">My Posts</h2>
                 <form action="<?= Paths::$PROFILE ?>" method="POST" class="profile-filter-form">
                     <div class="select-wrapper">
-                        <select name="approval_select" required>
-                            <option value="1" <?= ($approval == 1) ? "selected" : "" ?>>Approved</option>
-                            <option value="0" <?= ($approval == 0) ? "selected" : "" ?>>Pending</option>
-                            <option value="-1" <?= ($approval == -1) ? "selected" : "" ?>>Disapproved</option>
+                        <select name="appr" required>
+                            <option value="1" <?= ($appr == 1) ? "selected" : "" ?>>Approved</option>
+                            <option value="0" <?= ($appr == 0) ? "selected" : "" ?>>Pending</option>
+                            <option value="-1" <?= ($appr == -1) ? "selected" : "" ?>>Disapproved</option>
                         </select>
                     </div>
                     <button type="submit" class="profile-filter-btn">Filter</button>
                 </form>
             </div>
             <div class="reviews-grid profile-post-grid">
-                <?php while (($post = $posts->fetch(PDO::FETCH_ASSOC))) : ?>
-                    <?php
+                <?php while (($post = $posts->fetch(PDO::FETCH_ASSOC))) :
                     $TEMPLATE_VALUES = [
                         "CATEGORY" => GetCategory($post["category"]),
                         "THUMBNAIL" => GetThumbnail($post["category"]),
@@ -129,8 +107,7 @@ if (IsLoggedIn()) {
                         "POST_ACTIONS_SW" => true,
                     ];
                     require Paths::$POST_CARD_TEMPLATE;
-                    ?>
-                <?php endwhile ?>
+                endwhile ?>
             </div>
         </section>
         <?php if ($user["role"] > 0) : ?>
@@ -140,18 +117,17 @@ if (IsLoggedIn()) {
                     <h2 class="page-title">Admin Panel</h2>
                     <form action="<?= Paths::$PROFILE ?>" method="POST" class="profile-filter-form">
                         <div class="select-wrapper">
-                            <select name="approval_select_panel" required>
-                                <option value="1" <?= ($approval_panel == 1) ? "selected" : "" ?>>Approved</option>
-                                <option value="0" <?= ($approval_panel == 0) ? "selected" : "" ?>>Pending</option>
-                                <option value="-1" <?= ($approval_panel == -1) ? "selected" : "" ?>>Disapproved</option>
+                            <select name="appr_admin" required>
+                                <option value="1" <?= ($appr_admin == 1) ? "selected" : "" ?>>Approved</option>
+                                <option value="0" <?= ($appr_admin == 0) ? "selected" : "" ?>>Pending</option>
+                                <option value="-1" <?= ($appr_admin == -1) ? "selected" : "" ?>>Disapproved</option>
                             </select>
                         </div>
                         <button type="submit" class="profile-filter-btn">Filter</button>
                     </form>
                 </div>
                 <div class="reviews-grid profile-post-grid">
-                    <?php while (($post = $panel->fetch(PDO::FETCH_ASSOC))) : ?>
-                        <?php
+                    <?php while (($post = $panel->fetch(PDO::FETCH_ASSOC))) :
                         $TEMPLATE_VALUES = [
                             "CATEGORY" => GetCategory($post["category"]),
                             "THUMBNAIL" => GetThumbnail($post["category"]),
@@ -169,8 +145,7 @@ if (IsLoggedIn()) {
                             "POST_ACTIONS_SW" => true,
                         ];
                         require Paths::$POST_CARD_TEMPLATE;
-                        ?>
-                    <?php endwhile ?>
+                    endwhile ?>
                 </div>
             </section>
         <?php endif ?>

@@ -5,94 +5,77 @@
 require_once "../config/config.php";
 require_once Paths::$UTILZ;
 
-$view_id = $_GET["view"];
-if ($view_id == null || empty(trim($view_id))) {
+$sqldb = $GLOBALS["Sqldb"];
+
+$post_id = $_GET["view"];
+if (!NotEmpty($post_id)) {
     include Paths::$P404;
     exit();
 }
-$sqldb = $GLOBALS["Sqldb"];
+
 if ($_GET["delete"] === "true") {
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                            SET hidden=1
-                            WHERE id=:id");
-    $stmt->execute([":id" => $view_id]);
+    $stmt = $sqldb->pdo->prepare(
+        "UPDATE posts
+        SET hidden=1
+        WHERE id=:id"
+    );
+    $stmt->execute([":id" => $post_id]);
     header("Location: " . Paths::$INDEX);
     exit();
 }
 
-$stmt = $sqldb->pdo->prepare("SELECT 
-                                posts.id AS post_id,
-                                posts.title, 
-                                posts.intro, 
-                                posts.body, 
-                                posts.creation_date,
-                                posts.approval,
-                                posts.category,
-                                posts.hidden,
-                                users.fname,
-                                users.lname,
-                                users.email
-                            FROM posts
-                            INNER JOIN users ON posts.author_id = users.id
-                            WHERE post_id=:view_id AND posts.hidden IS NULL");
-
-$stmt->execute(
-    [":view_id" => $view_id]
+$posts = $sqldb->pdo->prepare(
+    "SELECT *
+    FROM posts
+    WHERE id=:post_id"
 );
-$content = $stmt->fetch(PDO::FETCH_ASSOC);
-if ($content == null) {
+$posts->execute([":post_id" => $post_id]);
+$post = $posts->fetch(PDO::FETCH_ASSOC);
+if ($post == null) {
     include Paths::$P404;
     exit();
 }
 
-$stmt = $sqldb->pdo->prepare("SELECT * 
-                                FROM users
-                                WHERE email=:email");
-$stmt->execute([":email" => GetUsername()]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$users = $sqldb->pdo->prepare(
+    "SELECT * 
+    FROM users
+    WHERE email=:email"
+);
+$users->execute([":email" => GetUsername()]);
+$user = $users->fetch(PDO::FETCH_ASSOC);
 if (
-    $content["email"] != GetUsername()
-    && $content["approval"] != 1
+    $post["email"] != GetUsername()
+    && $post["approval"] != 1
     && $user["role"] == 0
 ) {
     include Paths::$P404;
     exit();
 }
 
-if (isset($_GET["approved"]) && $user["role"] != 0) {
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                                    SET approval=:approval
-                                    WHERE id=:id");
+if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
+    $stmt = $sqldb->pdo->prepare(
+        "UPDATE posts
+        SET approval=:approval
+        WHERE id=:id"
+    );
     $stmt->execute([
         ":approval" => (int)$_GET["approved"],
-        ":id" => (int)$view_id
+        ":id" => (int)$post_id
     ]);
 }
 
-$comments_t = "comment_" . $view_id;
+$cmnt_table = CommentTable($post_id);
 try {
-    $stmt2 = $sqldb->pdo->prepare("SELECT
-                                $comments_t.id AS cid,
-                                $comments_t.comment,
-                                $comments_t.approval,
-                                $comments_t.creation_date,
-                                $comments_t.author_id,
-                                users.id AS uid,
-                                users.fname,
-                                users.lname,
-                                users.email
-                                FROM $comments_t
-                                INNER JOIN users ON uid = $comments_t.author_id
-                                WHERE $comments_t.approval=1 OR $comments_t.approval=:control
-                                ORDER BY $comments_t.creation_date DESC
-                            ");
-    $stmt2->execute([
-        ":control" => ($user["role"] > 0) ? 0 : null
+    $cmnts = $sqldb->pdo->prepare(
+        "SELECT *
+        FROM $cmnt_table
+        WHERE :cond"
+    );
+    $cmnts->execute([
+        ":cond" => ($user["role"] > 0) ? "true" : "approval=1"
     ]);
-} catch (PDOException $e) {
+} catch(PDOException $e) {
     echo $e->getMessage();
-    $stmt2 = null;
 }
 
 ?>
@@ -102,7 +85,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <?php echo Escape($content["title"]) ?> </title>
+    <title> <?= Escape($post["title"]) ?> </title>
     <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
@@ -122,28 +105,28 @@ try {
                     </div>
                 </div>
                 <div class="moderation-actions">
-                    <a href="<?= Paths::$VIEW . '?view=' . $view_id . '&approved=1' ?>" class="btn-link btn-approve">Approve Post</a>
-                    <a href="<?= Paths::$VIEW . '?view=' . $view_id . '&approved=-1' ?>" class="btn-link btn-disapprove">Disapprove</a>
+                    <a href="<?= Paths::$VIEW . '?view=' . $post_id . '&approved=1' ?>" class="btn-link btn-approve">Approve Post</a>
+                    <a href="<?= Paths::$VIEW . '?view=' . $post_id . '&approved=-1' ?>" class="btn-link btn-disapprove">Disapprove</a>
                 </div>
             </section>
         <?php endif ?>
         <article class="review-full-post">
             <header class="article-header">
-                <span class="category-badge-inline"><?= GetCategory($content["category"]) ?> Review</span>
-                <h1 class="article-main-title"><?= Escape($content["title"]) ?></h1>
-                <p class="article-short-intro"><?= $content["intro"] ?></p>
+                <span class="category-badge-inline"><?= GetCategory($post["category"]) ?> Review</span>
+                <h1 class="article-main-title"><?= Escape($post["title"]) ?></h1>
+                <p class="article-short-intro"><?= $post["intro"] ?></p>
                 <div class="article-author-card">
-                    <div class="author-avatar-small"><?= substr($content["fname"], 0, 1) ?></div>
+                    <div class="author-avatar-small"><?= substr($post["fname"], 0, 1) ?></div>
                     <div class="author-info">
-                        <p class="author-fullname"><?= FullName($content["fname"], $content["lname"]) ?></p>
-                        <p class="author-email-link"><a href="mailto:<?= $content["email"] ?>"><?= $content["email"] ?></a></p>
+                        <p class="author-fullname"><?= FullName($post["fname"], $post["lname"]) ?></p>
+                        <p class="author-email-link"><a href="mailto:<?= $post["email"] ?>"><?= $post["email"] ?></a></p>
                     </div>
                     <div class="article-date-meta">
-                        <time datetime="<?= $content["creation_date"] ?>">Published <?= FormatDate($content["creation_date"]) ?></time>
+                        <time datetime="<?= $post["creation_date"] ?>">Published <?= FormatDate($post["creation_date"]) ?></time>
                     </div>
                 </div>
             </header>
-            <section class="article-body-content"><?= $content["body"] ?></section>
+            <section class="article-body-content"><?= $post["body"] ?></section>
         </article>
         <hr class="section-divider">
         <section class="comments-section">
@@ -152,7 +135,7 @@ try {
                 <div class="comment-input-block">
                     <div class="author-avatar-small"><?= substr($user["fname"], 0, 1) ?></div>
                     <form action="<?= Paths::$ROUTE . "?action=comment" ?>" method="POST" class="comment-form">
-                        <input type="hidden" name="view_id" value="<?= $view_id ?>">
+                        <input type="hidden" name="post_id" value="<?= $post_id ?>">
                         <input type="hidden" name="author_id" value="<?= $user["id"] ?>">
                         <div class="form-group">
                             <textarea name="comment_text" rows="3" placeholder="Add a public comment..." required></textarea>
@@ -167,26 +150,25 @@ try {
                 <br>
             <?php endif ?>
             <div class="comments-list">
-                <?php while (($comment = $stmt2->fetch(PDO::FETCH_ASSOC))) : ?>
+                <?php while (($cmnt = $cmnts->fetch(PDO::FETCH_ASSOC))) : ?>
                     <div class="comment-item">
-                        <div class="author-avatar-small"><?= substr($comment["fname"], 0, 1) ?></div>
+                        <div class="author-avatar-small"><?= substr($cmnt["fname"], 0, 1) ?></div>
                         <div class="comment-main-body">
                             <div class="comment-meta">
-                                <span class="comment-user"><?= FullName($comment["fname"], $user["lname"]) ?></span>
-                                <span class="comment-time"><?= FormatDate($comment["creation_date"]) ?></span>
+                                <span class="comment-user"><?= FullName($cmnt["fname"], $user["lname"]) ?></span>
+                                <span class="comment-time"><?= FormatDate($cmnt["creation_date"]) ?></span>
                             </div>
-                            <p class="comment-text-content"><?= $comment["comment"] ?></p>
-                            <?php if ($user["role"] > 0 && $comment["approval"] == 0) : ?>
+                            <p class="comment-text-content"><?= $cmnt["comment"] ?></p>
+                            <?php if ($user["role"] > 0 && $cmnt["approval"] == 0) : ?>
                                 <form action="<?= Paths::$ROUTE . "?action=appr_cmnt" ?>" method="POST" class="comment-moderation-form">
-                                    <input type="hidden" name="view_id" value="<?= $view_id ?>">
-                                    <input type="hidden" name="comment_id" value="<?= $comment["cid"] ?>">
-                                    <button type="submit" name="status" value="1" class="comment-mod-btn c-approve">
+                                    <input type="hidden" name="post_id" value="<?= $post_id ?>">
+                                    <input type="hidden" name="cmnt_id" value="<?= $cmnt["cid"] ?>">
+                                    <button type="submit" name="appr" value="1" class="comment-mod-btn c-approve">
                                         <span class="btn-icon">✔</span> Approve
                                     </button>
-                                    <button type="submit" name="status" value="-1" class="comment-mod-btn c-disapprove">
+                                    <button type="submit" name="appr" value="-1" class="comment-mod-btn c-disapprove">
                                         <span class="btn-icon">✖</span> Disapprove
                                     </button>
-
                                 </form>
                             <?php endif ?>
                         </div>

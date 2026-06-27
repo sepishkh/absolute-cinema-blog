@@ -18,13 +18,25 @@ function Logout() {
     unset($_SESSION["username"]);
 }
 
+function IsEmpty($var) {
+    return ($var == NULL || empty(trim($var)));
+}
+
+function NotEmpty($var) {
+    return !IsEmpty($var);
+}
+
+function CommentTable($post_id) {
+    return "comment_" . $post_id;
+}
+
 function Login($email, $pass) {
-    if ($email == null || $pass == null) return false;
+    if (IsEmpty($email) || IsEmpty($pass)) return false;
     $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
-    $stmt->execute([":email" => $email]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row != null && password_verify($pass, $row["password"])) {
+    $users = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
+    $users->execute([":email" => $email]);
+    $user = $users->fetch(PDO::FETCH_ASSOC);
+    if ($user != null && password_verify($pass, $user["password"])) {
         $_SESSION["username"] = $email;
         return true;
     } else {
@@ -33,89 +45,87 @@ function Login($email, $pass) {
     }
 }
 
-function IsError($var, $submit) {
-    return ($submit != null && ($var == null || $var == false));
-}
-
 function Signup($fname, $lname, $email, $pass) {
-    if (!$fname || !$email || !$pass) {
+    if (IsEmpty($fname) || IsEmpty($email) || IsEmpty($pass)) {
         return 1;
     }
     $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare("INSERT 
-                                    INTO users 
-                                    (fname, lname, email, password, role, creation_date) 
-                                    VALUES (:fname, :lname, :email, :pass, :role, :creation_date)");
-    try {
-        $stmt->execute([
-            ":fname" => $fname,
-            ":lname" => $lname,
-            ":email" => $email,
-            ":pass" => $pass,
-            ":role" => 0,
-            ":creation_date" => date("Y-m-d H:i")
-        ]);
-    } catch (PDOException $e) {
-        return $e->getCode();
-    }
+    $stmt = $sqldb->pdo->prepare(
+        "INSERT 
+        INTO users 
+        (fname, lname, email, password, role, creation_date) 
+        VALUES (:fname, :lname, :email, :pass, :role, :creation_date)"
+    );
+    $stmt->execute([
+        ":fname" => $fname,
+        ":lname" => $lname,
+        ":email" => $email,
+        ":pass" => $pass,
+        ":role" => 0,
+        ":creation_date" => date("Y-m-d H:i")
+    ]);
     return null;
 }
 
 function NewPost($title, $intro, $body, $author_email, $category_id) {
-    if (!$title || !$intro || !$body || !$author_email) {
+    if (IsEmpty($title) || IsEmpty($intro) || IsEmpty($body) || IsEmpty($author_email)) {
         return [1, 0];
     }
     $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare("SELECT id, role
-                                    FROM users
-                                    WHERE email=:email");
+    $stmt = $sqldb->pdo->prepare(
+        "SELECT id, role
+        FROM users
+        WHERE email=:email"
+    );
     $stmt->execute([":email" => $author_email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$user["id"]) {
-        return [2, 0];
-    } else {
-        $stmt = $sqldb->pdo->prepare("INSERT 
-                                        INTO posts
-                                        (title, intro, body, author_id, creation_date, approval, category)
-                                        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)");
-        try {
-            $stmt->execute([
-                ":title" => $title,
-                ":intro" => $intro,
-                ":body" => $body,
-                ":author_id" => $user["id"],
-                ":creation_date" => date("Y-m-d H:i"),
-                ":approval" => (($user["role"] == 2) ? 1 : 0),
-                ":category_id" => $category_id,
-            ]);
-        } catch (PDOException $e) {
-            return [$e->getCode(), 0];
-        }
-        $new_id = $sqldb->pdo->lastInsertId();
-        $table_name = "comment_" . $new_id;
-        $stmt = $sqldb->pdo->prepare("CREATE TABLE {$table_name} (
-                                            id              INTEGER PRIMARY KEY NOT NULL,
-                                            comment         VARCHAR NOT NULL,
-                                            author_id       INTEGER NOT NULL,
-                                            approval        INTEGER NOT NULL,
-                                            creation_date   VARCHAR NOT NULL,
-                                            FOREIGN KEY (author_id) REFERENCES users (id))");
-        $stmt->execute();
-        return [0, $new_id];
+    if ($user == null) return [2, 0];
+    $stmt = $sqldb->pdo->prepare(
+        "INSERT 
+        INTO posts
+        (title, intro, body, author_id, creation_date, approval, category)
+        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)"
+    );
+    try {
+        $stmt->execute([
+            ":title" => $title,
+            ":intro" => $intro,
+            ":body" => $body,
+            ":author_id" => $user["id"],
+            ":creation_date" => date("Y-m-d H:i"),
+            ":approval" => (($user["role"] == 2) ? 1 : 0),
+            ":category_id" => $category_id,
+        ]);
+    } catch (PDOException $e) {
+        return [$e->getCode(), 0];
     }
+    $post_id = $sqldb->pdo->lastInsertId();
+    $cmnt_table = CommentTable($post_id);
+    $stmt = $sqldb->pdo->prepare(
+        "CREATE TABLE $cmnt_table (
+            id              INTEGER PRIMARY KEY NOT NULL,
+            comment         VARCHAR NOT NULL,
+            author_id       INTEGER NOT NULL,
+            approval        INTEGER NOT NULL,
+            creation_date   VARCHAR NOT NULL,
+        )"
+    );
+    $stmt->execute();
+    return [0, $post_id];
 }
 
 function UpdatePost($id, $title, $intro, $body, $category_id) {
-    if (!$id || !$title || !$intro || !$body) {
+    if (IsEmpty($id) || IsEmpty($title) || IsEmpty($intro) || IsEmpty($body)) {
         return [1, 0];
     }
     $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                                    SET title=:title,
-                                        intro=:intro,
-                                        body=:body,
-                                        category=:category
-                                    WHERE id=:id");
+    $stmt = $sqldb->pdo->prepare(
+        "UPDATE posts
+        SET title=:title,
+            intro=:intro,
+            body=:body,
+            category=:category
+        WHERE id=:id");
     try {
         $stmt->execute([
             ":title" => $title,
