@@ -18,10 +18,9 @@ $posts = $sqldb->pdo->prepare(
     WHERE approval=1
     LIMIT :limit OFFSET :offset"
 );
-$posts->execute([
-    ":limit" => $per_page,
-    ":offset" => $offset
-])
+$posts->bindValue(":limit", (int)$per_page, PDO::PARAM_INT);
+$posts->bindValue(":offset", (int)$offset, PDO::PARAM_INT);
+$posts->execute();
 
 ?>
 
@@ -43,7 +42,7 @@ $posts->execute([
     <main class="content-wrapper">
         <h1 class="page-title">Latest Reviews</h1>
         <div class="reviews-grid">
-            <?php while (($post = $posts->fetch(PDO::FETCH_ASSOC))) :
+            <?php while (($post = $posts->fetch())) :
                 $TEMPLATE_VALUES = [
                     "CATEGORY" => GetCategory($post["category"]),
                     "THUMBNAIL" => GetThumbnail($post["category"]),

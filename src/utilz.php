@@ -103,11 +103,11 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
     $cmnt_table = CommentTable($post_id);
     $stmt = $sqldb->pdo->prepare(
         "CREATE TABLE $cmnt_table (
-            id              INTEGER PRIMARY KEY NOT NULL,
-            comment         VARCHAR NOT NULL,
-            author_id       INTEGER NOT NULL,
-            approval        INTEGER NOT NULL,
-            creation_date   VARCHAR NOT NULL
+            id              INT AUTO_INCREMENT PRIMARY KEY,
+            comment         VARCHAR(255) NOT NULL,
+            author_id       INT NOT NULL,
+            approval        INT NOT NULL,
+            creation_date   VARCHAR(255) NOT NULL
         )"
     );
     $stmt->execute();

@@ -3,8 +3,7 @@
 class Paths {
     public static string $BASE;
 
-    public static string $DB;
-    public static string $SCHEMA;
+    public static string $INIT_SCHEMA;
 
     public static string $ABSCIN;
     public static string $CSS;
@@ -32,8 +31,7 @@ class Paths {
     public static function init() {
         self::$BASE = dirname(__DIR__);
 
-        self::$DB       = self::$BASE . "/data/data.sqlite";
-        self::$SCHEMA   = self::$BASE . "/data/init.sql";
+        self::$INIT_SCHEMA   = self::$BASE . "/data/init.sql";
 
         self::$CSS      = "/css/style.css";
         self::$ABSCIN   = "/images/abscin.jpg";

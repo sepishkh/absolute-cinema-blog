@@ -1,29 +1,26 @@
-PRAGMA foreign_keys = ON;
-
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE posts (
-    id              INTEGER PRIMARY KEY NOT NULL,
-    title           VARCHAR NOT NULL,
-    intro           VARCHAR NOT NULL,
-    body            VARCHAR NOT NULL,
-    creation_date   VARCHAR NOT NULL,
-    author_id       INTEGER NOT NULL,
-    approval        INTEGER NOT NULL,
-    category        INTEGER,
-    hidden          INTEGER
+CREATE TABLE users (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    fname           VARCHAR(255) NOT NULL,
+    lname           VARCHAR(255),
+    email           VARCHAR(255) UNIQUE NOT NULL,
+    password        VARCHAR(255) NOT NULL,
+    creation_date   VARCHAR(255),
+    role            INT NOT NULL
 );
 
-
-CREATE TABLE users (
-    id              INTEGER PRIMARY KEY NOT NULL,
-    fname           VARCHAR NOT NULL,
-    lname           VARCHAR,
-    email           VARCHAR UNIQUE NOT NULL,
-    password        VARCHAR NOT NULL,
-    role            INTEGER NOT NULL,
-    creation_date   VARCHAR
+CREATE TABLE posts (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    title           VARCHAR(255) NOT NULL,
+    intro           VARCHAR(255) NOT NULL,
+    body            TEXT NOT NULL,
+    creation_date   VARCHAR(255) NOT NULL,
+    author_id       INT NOT NULL,
+    approval        INT NOT NULL,
+    category        INT,
+    hidden          INT
 );
 
 INSERT INTO users (fname, lname, email, password, role) VALUES

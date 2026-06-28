@@ -65,17 +65,13 @@ if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
 }
 
 $cmnt_table = CommentTable($post_id);
-try {
-    $cond = ($user["role"] > 0) ? "approval=0 || approval=1" : "approval=1";
-    $cmnts = $sqldb->pdo->prepare(
-        "SELECT *
-        FROM $cmnt_table
-        WHERE $cond"
-    );
-    $cmnts->execute();
-} catch(PDOException $e) {
-    echo $e->getMessage();
-}
+$cond = ($user["role"] > 0) ? "approval=0 || approval=1" : "approval=1";
+$cmnts = $sqldb->pdo->prepare(
+    "SELECT *
+    FROM $cmnt_table
+    WHERE $cond"
+);
+$cmnts->execute();
 
 ?>
 
