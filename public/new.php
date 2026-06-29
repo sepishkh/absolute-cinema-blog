@@ -58,7 +58,7 @@ if ($id) {
                     </div>
                 </div>
             <?php endif ?>
-            <form action="<?= Paths::$ROUTE . "?action=new" . ($id ? "edit=$id" : "") ?>" method="POST" class="editor-form">
+            <form action="<?= Paths::$ROUTE . "?action=" . ($id ? "edit&edit=$id" : "new") ?>" method="POST" class="editor-form">
 
                 <div class="form-group">
                     <label for="post_title">Review Title <span class="required-asterisk">*</span></label>

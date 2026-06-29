@@ -18,6 +18,9 @@ switch($action) {
     case "new":
         require_once Paths::$PROC_NEW;
         break;
+    case "edit":
+        require_once Paths::$PROC_NEW;
+        break;
     case "comment":
         require_once Paths::$PROC_CMNT;
         break;
