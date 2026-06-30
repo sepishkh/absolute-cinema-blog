@@ -26,7 +26,7 @@ if (IsLoggedIn()) {
         }
         $posts = $sqldb->pdo->prepare("SELECT *
                                         FROM posts
-                                        WHERE author_id=:id AND approval=:approval
+                                        WHERE author_id=:id AND approval=:approval AND hidden IS NULL
                                         ORDER BY creation_date DESC");
         $posts->execute([
             ":id" => $user["id"],
@@ -49,7 +49,7 @@ if (IsLoggedIn()) {
                                         users.email
                                         FROM posts
                                         INNER JOIN users ON posts.author_id = users.id
-                                        WHERE approval=:approval");
+                                        WHERE approval=:approval AND hidden IS NULL");
             $panel->execute([":approval" => $approval_panel]);
         }
     }

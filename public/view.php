@@ -11,15 +11,6 @@ if ($view_id == null || empty(trim($view_id))) {
     exit();
 }
 $sqldb = $GLOBALS["Sqldb"];
-if ($_GET["delete"] === "true") {
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                            SET hidden=1
-                            WHERE id=:id");
-    $stmt->execute([":id" => $view_id]);
-    header("Location: " . Paths::$INDEX);
-    exit();
-}
-
 $stmt = $sqldb->pdo->prepare("SELECT 
                                 posts.id AS post_id,
                                 posts.title, 
@@ -60,7 +51,18 @@ if (
     exit();
 }
 
-if (isset($_GET["approved"]) && $user["role"] != 0) {
+if (
+    $_GET["delete"] === "true" 
+    && ($user["role"] > 0 || $content["email"] == GetUsername())) {
+    $stmt = $sqldb->pdo->prepare("UPDATE posts
+                            SET hidden=1
+                            WHERE id=:id");
+    $stmt->execute([":id" => $view_id]);
+    header("Location: " . Paths::$INDEX);
+    exit();
+}
+
+if (isset($_GET["approved"]) && $user["role"] > 0) {
     $stmt = $sqldb->pdo->prepare("UPDATE posts
                                     SET approval=:approval
                                     WHERE id=:id");
@@ -70,24 +72,26 @@ if (isset($_GET["approved"]) && $user["role"] != 0) {
     ]);
 }
 
-$comments_t = "comment_" . $view_id;
 try {
     $stmt2 = $sqldb->pdo->prepare("SELECT
-                                $comments_t.id AS cid,
-                                $comments_t.comment,
-                                $comments_t.approval,
-                                $comments_t.creation_date,
-                                $comments_t.author_id,
+                                comments.id AS cid,
+                                comments.post_id AS pid,
+                                comments.author_id AS aid,
+                                comments.body,
+                                comments.creation_date,
+                                comments.approval,
                                 users.id AS uid,
                                 users.fname,
                                 users.lname,
                                 users.email
-                                FROM $comments_t
-                                INNER JOIN users ON uid = $comments_t.author_id
-                                WHERE $comments_t.approval=1 OR $comments_t.approval=:control
-                                ORDER BY $comments_t.creation_date DESC
+                                FROM comments
+                                INNER JOIN users ON uid = aid
+                                WHERE (comments.approval=1 OR comments.approval=:control)
+                                    AND pid=:post_id
+                                ORDER BY comments.creation_date DESC
                             ");
     $stmt2->execute([
+        ":post_id" => $view_id,
         ":control" => ($user["role"] > 0) ? 0 : null
     ]);
 } catch (PDOException $e) {
@@ -175,7 +179,7 @@ try {
                                 <span class="comment-user"><?= FullName($comment["fname"], $user["lname"]) ?></span>
                                 <span class="comment-time"><?= FormatDate($comment["creation_date"]) ?></span>
                             </div>
-                            <p class="comment-text-content"><?= $comment["comment"] ?></p>
+                            <p class="comment-text-content"><?= $comment["body"] ?></p>
                             <?php if ($user["role"] > 0 && $comment["approval"] == 0) : ?>
                                 <form action="<?= Paths::$ROUTE . "?action=appr_cmnt" ?>" method="POST" class="comment-moderation-form">
                                     <input type="hidden" name="view_id" value="<?= $view_id ?>">

@@ -92,15 +92,6 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
             return [$e->getCode(), 0];
         }
         $new_id = $sqldb->pdo->lastInsertId();
-        $table_name = "comment_" . $new_id;
-        $stmt = $sqldb->pdo->prepare("CREATE TABLE {$table_name} (
-                                            id              INTEGER PRIMARY KEY NOT NULL,
-                                            comment         VARCHAR NOT NULL,
-                                            author_id       INTEGER NOT NULL,
-                                            approval        INTEGER NOT NULL,
-                                            creation_date   VARCHAR NOT NULL,
-                                            FOREIGN KEY (author_id) REFERENCES users (id))");
-        $stmt->execute();
         return [0, $new_id];
     }
 }
