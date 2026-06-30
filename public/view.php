@@ -24,12 +24,7 @@ if ($_GET["delete"] === "true") {
     exit();
 }
 
-$posts = $sqldb->pdo->prepare(
-    "SELECT *
-    FROM posts
-    WHERE id=:post_id"
-);
-$posts->execute([":post_id" => $post_id]);
+$posts = $sqldb->GetPosts($post_id);
 $post = $posts->fetch(PDO::FETCH_ASSOC);
 if ($post == null) {
     include Paths::$P404;
@@ -48,6 +43,7 @@ if (
     && $post["approval"] != 1
     && $user["role"] == 0
 ) {
+    echo "SHIT";
     include Paths::$P404;
     exit();
 }
@@ -66,12 +62,16 @@ if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
 
 $cmnt_table = CommentTable($post_id);
 $cond = ($user["role"] > 0) ? "approval=0 || approval=1" : "approval=1";
-$cmnts = $sqldb->pdo->prepare(
-    "SELECT *
-    FROM $cmnt_table
-    WHERE $cond"
-);
-$cmnts->execute();
+try {
+    $cmnts = $sqldb->pdo->prepare(
+        "SELECT *
+        FROM $cmnt_table
+        WHERE $cond"
+    );
+    $cmnts->execute();
+} catch(PDOException $e) {
+    echo $e->getMessage();
+}
 
 ?>
 

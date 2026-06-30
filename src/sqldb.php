@@ -2,8 +2,8 @@
 
 class SQLDB {
     public $pdo;
-
-    function __construct($host, $user, $pass, $dbname) {
+    
+    public function Connect($host, $user, $pass, $dbname) {
         $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
         $opts = [
             PDO::ATTR_EMULATE_PREPARES   => false,
@@ -11,9 +11,10 @@ class SQLDB {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
         $this->pdo = new PDO($dsn, $user, $pass, $opts);
+        return $this->pdo;
     }
 
-    function RunScript($script_file) {
+    public function RunScript($script_file) {
         if ($this->pdo == null) {
             echo "Error: Not connected to the database.<br>";
             return;
@@ -30,5 +31,11 @@ class SQLDB {
         $file = fopen($script_tmstmp, "w");
         fwrite($file, time());
         fclose($file);
+    }
+
+    public function __construct($host, $user, $pass, $dbname, $init_script) {
+        $this->Connect($host, $user, $pass, $dbname);
+        $rc = $this->RunScript($init_script);
+        return $rc;
     }
 }

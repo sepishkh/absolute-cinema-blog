@@ -18,23 +18,10 @@ if (IsLoggedIn()) {
     $users->execute([":email" => GetUsername()]);
     $user = $users->fetch(PDO::FETCH_ASSOC);
     $appr = $_POST["appr"] ?? 1;
-    $posts = $sqldb->pdo->prepare(
-        "SELECT *
-        FROM posts
-        WHERE author_id=:id AND approval=:approval"
-    );
-    $posts->execute([
-        ":id" => $user["id"],
-        ":approval" => $appr
-    ]);
+    $posts = $sqldb->GetPosts($user["id"], [$appr]);
     if ($user["role"] > 0) {
         $appr_admin = $_POST["appr_admin"] ?? 1;
-        $panel = $sqldb->pdo->prepare(
-            "SELECT *
-            FROM posts
-            WHERE approval=:approval"
-        );
-        $panel->execute([":approval" => $appr_admin]);
+        $panel = $sqldb->GetPosts([$appr_admin]);
     }
 }
 

@@ -4,6 +4,7 @@
 
 require_once "../config/config.php";
 require_once Paths::$UTILZ;
+require_once Paths::$DBHELPER;
 
 if (isset($_GET["logout"])) Logout();
 
@@ -12,15 +13,7 @@ $page_num = (int)($_GET["page"] ?? 1);
 $offset = ($page_num - 1) * $per_page;
 
 $sqldb = $GLOBALS["Sqldb"];
-$posts = $sqldb->pdo->prepare(
-    "SELECT *
-    FROM posts
-    WHERE approval=1
-    LIMIT :limit OFFSET :offset"
-);
-$posts->bindValue(":limit", (int)$per_page, PDO::PARAM_INT);
-$posts->bindValue(":offset", (int)$offset, PDO::PARAM_INT);
-$posts->execute();
+$posts = $sqldb->GetPosts(null, [1], null, $per_page, $offset);
 
 ?>
 

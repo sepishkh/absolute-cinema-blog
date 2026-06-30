@@ -11,12 +11,7 @@ $sqldb = $GLOBALS["Sqldb"];
 
 $id = (int)($_GET["edit"]);
 if (NotEmpty($id)) {
-    $posts = $sqldb->pdo->prepare(
-        "SELECT * 
-        FROM posts
-        WHERE id=:id"
-    );
-    $posts->execute([":id" => $id]);
+    $posts = $sqldb->GetPosts($id);
     $post = $posts->fetch(PDO::FETCH_ASSOC);
     if ($post == null) {
         require Paths::$P404;

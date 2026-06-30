@@ -8,5 +8,5 @@ require_once "paths.php";
 Paths::init();
 
 require_once Paths::$SQLDB;
-$Sqldb = new SQLDB("localhost", "blog_access", "password", "abscin_blog");
-$Sqldb->RunScript(Paths::$INIT_SCHEMA);
+require_once Paths::$DBHELPER;
+$Sqldb = new DBHelper("localhost", "blog_access", "password", "abscin_blog", Paths::$INIT_SCHEMA);

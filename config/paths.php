@@ -21,6 +21,7 @@ class Paths {
     public static string $PROC_NEW;
     public static string $PROC_SIGNUP;
     public static string $SQLDB;     
+    public static string $DBHELPER;     
     public static string $UTILZ;       
 
     public static string $P404;
@@ -49,6 +50,7 @@ class Paths {
         self::$PROC_NEW     = self::$BASE . "/src/process-new.php";
         self::$PROC_SIGNUP  = self::$BASE . "/src/process-signup.php";
         self::$SQLDB        = self::$BASE . "/src/sqldb.php";
+        self::$DBHELPER     = self::$BASE . "/src/dbhelper.php";
         self::$UTILZ        = self::$BASE . "/src/utilz.php";
         
         self::$P404                 = self::$BASE . "/templates/404.php";
