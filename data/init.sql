@@ -1,8 +1,18 @@
 PRAGMA foreign_keys = ON;
 
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS comments;
+
+CREATE TABLE users (
+    id              INTEGER PRIMARY KEY NOT NULL,
+    fname           VARCHAR NOT NULL,
+    lname           VARCHAR,
+    email           VARCHAR UNIQUE NOT NULL,
+    password        VARCHAR NOT NULL,
+    role            INTEGER NOT NULL,
+    creation_date   VARCHAR
+);
 
 CREATE TABLE posts (
     id              INTEGER PRIMARY KEY NOT NULL,
@@ -15,16 +25,6 @@ CREATE TABLE posts (
     category        INTEGER,
     hidden          INTEGER,
     FOREIGN KEY (author_id) REFERENCES users (id)
-);
-
-CREATE TABLE users (
-    id              INTEGER PRIMARY KEY NOT NULL,
-    fname           VARCHAR NOT NULL,
-    lname           VARCHAR,
-    email           VARCHAR UNIQUE NOT NULL,
-    password        VARCHAR NOT NULL,
-    role            INTEGER NOT NULL,
-    creation_date   VARCHAR
 );
 
 CREATE TABLE comments (
