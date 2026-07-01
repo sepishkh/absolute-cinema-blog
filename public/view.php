@@ -3,9 +3,11 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
+$pm = new PostsModel($sqldb);
 
 $post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
@@ -24,7 +26,7 @@ if ($_GET["delete"] === "true") {
     exit();
 }
 
-$posts = $sqldb->GetPosts($post_id);
+$posts = $pm->GetPosts($post_id);
 $post = $posts->fetch(PDO::FETCH_ASSOC);
 if ($post == null) {
     include Paths::$P404;

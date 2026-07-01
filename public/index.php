@@ -3,8 +3,8 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
-require_once Paths::$DBHELPER;
 
 if (isset($_GET["logout"])) Logout();
 
@@ -13,7 +13,8 @@ $page_num = (int)($_GET["page"] ?? 1);
 $offset = ($page_num - 1) * $per_page;
 
 $sqldb = $GLOBALS["Sqldb"];
-$posts = $sqldb->GetPosts(null, [1], null, $per_page, $offset);
+$pm = new PostsModel($sqldb);
+$posts = $pm->GetPosts(null, [1], null, $per_page, $offset);
 
 ?>
 

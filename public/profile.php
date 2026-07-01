@@ -5,9 +5,11 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
+$pm = new PostsModel($sqldb);
 
 if (IsLoggedIn()) {
     $users = $sqldb->pdo->prepare(
@@ -18,10 +20,11 @@ if (IsLoggedIn()) {
     $users->execute([":email" => GetUsername()]);
     $user = $users->fetch(PDO::FETCH_ASSOC);
     $appr = $_POST["appr"] ?? 1;
-    $posts = $sqldb->GetPosts($user["id"], [$appr]);
+    var_dump($user["id"], [$appr]);
+    $posts = $pm->GetPosts(null, [$appr], $user["id"]);
     if ($user["role"] > 0) {
         $appr_admin = $_POST["appr_admin"] ?? 1;
-        $panel = $sqldb->GetPosts([$appr_admin]);
+        $panel = $pm->GetPosts(null, [$appr_admin]);
     }
 }
 
