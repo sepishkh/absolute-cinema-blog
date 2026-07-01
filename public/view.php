@@ -17,12 +17,7 @@ if (!NotEmpty($post_id)) {
 }
 
 if ($_GET["delete"] === "true") {
-    $stmt = $sqldb->pdo->prepare(
-        "UPDATE posts
-        SET hidden=1
-        WHERE id=:id"
-    );
-    $stmt->execute([":id" => $post_id]);
+    $pm->HidePost($post_id);
     header("Location: " . Paths::$INDEX);
     exit();
 }
@@ -46,15 +41,7 @@ if (
 }
 
 if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
-    $stmt = $sqldb->pdo->prepare(
-        "UPDATE posts
-        SET approval=:approval
-        WHERE id=:id"
-    );
-    $stmt->execute([
-        ":approval" => (int)$_GET["approved"],
-        ":id" => (int)$post_id
-    ]);
+    $pm->SetApproval((int)$post_id, (int)$_GET["approved"]);
 }
 
 $cmnt_table = CommentTable($post_id);

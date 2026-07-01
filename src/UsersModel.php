@@ -15,4 +15,24 @@ class UsersModel extends BasicModel {
         ]);
         return $user_stmt;
     }
+
+    public function InsertUser($fname, $lname, $email, $pass, $role, $creation_date) {
+        $cmd = "INSERT INTO users 
+            (fname, lname, email, password, role, creation_date) 
+            VALUES (:fname, :lname, :email, :pass, :role, :creation_date)";
+        $stmt = $this->db->Connect()->prepare($cmd);
+        try {
+        $stmt->execute([
+            ":fname" => $fname,
+            ":lname" => $lname,
+            ":email" => $email,
+            ":pass" => $pass,
+            ":role" => $role,
+            ":creation_date" => $creation_date,
+        ]);
+        } catch (PDOException $e) {
+            return [$e->getCode(), 0];
+        }
+        return [$stmt->errorCode(), $this->db->Connect()->lastInsertId()];
+    }
 }
