@@ -8,6 +8,7 @@ require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
 $pm = new PostsModel($sqldb);
+$um = new UsersModel($sqldb);
 
 $post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
@@ -27,25 +28,19 @@ if ($_GET["delete"] === "true") {
 }
 
 $posts = $pm->GetPosts($post_id);
-$post = $posts->fetch(PDO::FETCH_ASSOC);
+$post = $posts->fetch();
 if ($post == null) {
     include Paths::$P404;
     exit();
 }
 
-$users = $sqldb->pdo->prepare(
-    "SELECT * 
-    FROM users
-    WHERE email=:email"
-);
-$users->execute([":email" => GetUsername()]);
-$user = $users->fetch(PDO::FETCH_ASSOC);
+$users = $um->GetUserByEmail(GetUsername());
+$user = $users->fetch();
 if (
     $post["email"] != GetUsername()
     && $post["approval"] != 1
     && $user["role"] == 0
 ) {
-    echo "SHIT";
     include Paths::$P404;
     exit();
 }
@@ -147,7 +142,7 @@ try {
                 <br>
             <?php endif ?>
             <div class="comments-list">
-                <?php while (($cmnt = $cmnts->fetch(PDO::FETCH_ASSOC))) : ?>
+                <?php while (($cmnt = $cmnts->fetch())) : ?>
                     <div class="comment-item">
                         <div class="author-avatar-small"><?= substr($cmnt["fname"], 0, 1) ?></div>
                         <div class="comment-main-body">

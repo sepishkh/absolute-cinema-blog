@@ -3,6 +3,8 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
+require_once Paths::$USERS_MODEL;
 
 session_start();
 
@@ -33,9 +35,9 @@ function CommentTable($post_id) {
 function Login($email, $pass) {
     if (IsEmpty($email) || IsEmpty($pass)) return false;
     $sqldb = $GLOBALS["Sqldb"];
-    $users = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
-    $users->execute([":email" => $email]);
-    $user = $users->fetch(PDO::FETCH_ASSOC);
+    $um = new UsersModel($sqldb);
+    $users = $um->GetUserByEmail($email);
+    $user = $users->fetch();
     if ($user != null && password_verify($pass, $user["password"])) {
         $_SESSION["username"] = $email;
         return true;
@@ -72,13 +74,9 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
         return [1, 0];
     }
     $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare(
-        "SELECT id, role
-        FROM users
-        WHERE email=:email"
-    );
-    $stmt->execute([":email" => $author_email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $um = new UsersModel($sqldb);
+    $users = $um->GetUserByEmail($author_email);
+    $user = $users->fetch();
     if ($user == null) return [2, 0];
     $stmt = $sqldb->pdo->prepare(
         "INSERT 

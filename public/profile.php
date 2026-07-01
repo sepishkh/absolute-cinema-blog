@@ -6,21 +6,18 @@
 
 require_once "../config/config.php";
 require_once Paths::$POSTS_MODEL;
+require_once Paths::$USERS_MODEL;
 require_once Paths::$UTILZ;
 
 $sqldb = $GLOBALS["Sqldb"];
 $pm = new PostsModel($sqldb);
+$um = new UsersModel($sqldb);
 
 if (IsLoggedIn()) {
-    $users = $sqldb->pdo->prepare(
-        "SELECT * 
-        FROM users
-        WHERE email=:email"
-    );
-    $users->execute([":email" => GetUsername()]);
-    $user = $users->fetch(PDO::FETCH_ASSOC);
+    $users = $um->GetUserByEmail(GetUsername());
+    $user = $users->fetch();
     $appr = $_POST["appr"] ?? 1;
-    var_dump($user["id"], [$appr]);
+    /* var_dump($user["id"], [$appr]); */
     $posts = $pm->GetPosts(null, [$appr], $user["id"]);
     if ($user["role"] > 0) {
         $appr_admin = $_POST["appr_admin"] ?? 1;
@@ -80,7 +77,7 @@ if (IsLoggedIn()) {
                 </form>
             </div>
             <div class="reviews-grid profile-post-grid">
-                <?php while (($post = $posts->fetch(PDO::FETCH_ASSOC))) :
+                <?php while (($post = $posts->fetch())) :
                     $TEMPLATE_VALUES = [
                         "CATEGORY" => GetCategory($post["category"]),
                         "THUMBNAIL" => GetThumbnail($post["category"]),
@@ -117,7 +114,7 @@ if (IsLoggedIn()) {
                     </form>
                 </div>
                 <div class="reviews-grid profile-post-grid">
-                    <?php while (($post = $panel->fetch(PDO::FETCH_ASSOC))) :
+                    <?php while (($post = $panel->fetch())) :
                         $TEMPLATE_VALUES = [
                             "CATEGORY" => GetCategory($post["category"]),
                             "THUMBNAIL" => GetThumbnail($post["category"]),
