@@ -1,7 +1,7 @@
 <?php
 
 require_once "../config/config.php";
-require_once Paths::$SQLDB;
+require_once Paths::$DBCONNECTION;
 require_once Paths::$BASIC_MODEL;
 
 class PostsModel extends BasicModel{
@@ -16,7 +16,7 @@ class PostsModel extends BasicModel{
             WHERE hidden IS NULL AND id$id AND approval IN $appr AND author_id$author_id
             $pagin";
         /* var_dump($cmd); */
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         $stmt->execute();
         return $stmt;
     }
@@ -25,7 +25,7 @@ class PostsModel extends BasicModel{
         $cmd = "UPDATE posts
             SET approval=:appr
             WHERE id=:id";
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         $stmt->execute([
             ":appr" => $appr,
             ":id" => $id,
@@ -36,7 +36,7 @@ class PostsModel extends BasicModel{
         $cmd = "UPDATE posts
             SET hidden=1
             WHERE id=:id";
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         $stmt->execute([
             ":id" => $id,
         ]);
@@ -46,7 +46,7 @@ class PostsModel extends BasicModel{
             INTO posts
             (title, intro, body, author_id, creation_date, approval, category)
             VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)";
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         try {
             $stmt->execute([
                 ":title" => $title,
@@ -60,7 +60,7 @@ class PostsModel extends BasicModel{
         } catch (PDOException $e) {
             return [$e->getCode(), 0];
         }
-        return [$stmt->errorCode(), $this->db->Connect()->lastInsertId()];
+        return [$stmt->errorCode(), $this->dbc->Connect()->lastInsertId()];
     }
 
     public function UpdatePost($id, $title, $intro, $body, $category_id) {
@@ -70,7 +70,7 @@ class PostsModel extends BasicModel{
                 body=:body,
                 category=:category
             WHERE id=:id";
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         try {
             $stmt->execute([
                 ":title" => $title,

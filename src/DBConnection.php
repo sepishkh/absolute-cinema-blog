@@ -1,6 +1,6 @@
 <?php
 
-class SQLDB {
+class DBConnection {
     private $host;
     private $user;
     private $pass;

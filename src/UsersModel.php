@@ -1,7 +1,7 @@
 <?php
 
 require_once "../config/config.php";
-require_once Paths::$SQLDB;
+require_once Paths::$DBCONNECTION;
 require_once Paths::$BASIC_MODEL;
 
 class UsersModel extends BasicModel {
@@ -9,7 +9,7 @@ class UsersModel extends BasicModel {
         $cmd = "SELECT *
             FROM users
             WHERE email=:email";
-        $user_stmt = $this->db->Connect()->prepare($cmd);
+        $user_stmt = $this->dbc->Connect()->prepare($cmd);
         $user_stmt->execute([
             ":email" => $email,
         ]);
@@ -20,7 +20,7 @@ class UsersModel extends BasicModel {
         $cmd = "INSERT INTO users 
             (fname, lname, email, password, role, creation_date) 
             VALUES (:fname, :lname, :email, :pass, :role, :creation_date)";
-        $stmt = $this->db->Connect()->prepare($cmd);
+        $stmt = $this->dbc->Connect()->prepare($cmd);
         try {
         $stmt->execute([
             ":fname" => $fname,
@@ -33,6 +33,6 @@ class UsersModel extends BasicModel {
         } catch (PDOException $e) {
             return [$e->getCode(), 0];
         }
-        return [$stmt->errorCode(), $this->db->Connect()->lastInsertId()];
+        return [$stmt->errorCode(), $this->dbc->Connect()->lastInsertId()];
     }
 }

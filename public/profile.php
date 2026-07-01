@@ -9,13 +9,12 @@ require_once Paths::$POSTS_MODEL;
 require_once Paths::$USERS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
-$pm = new PostsModel($sqldb);
-$um = new UsersModel($sqldb);
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
+$um = new UsersModel($dbc);
 
 if (IsLoggedIn()) {
-    $users = $um->GetUserByEmail(GetUsername());
-    $user = $users->fetch();
+    $user = $um->GetUserByEmail(GetUsername())->fetch();
     $appr = $_POST["appr"] ?? 1;
     /* var_dump($user["id"], [$appr]); */
     $posts = $pm->GetPosts(null, [$appr], $user["id"]);

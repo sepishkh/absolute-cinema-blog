@@ -6,9 +6,9 @@ require_once "../config/config.php";
 require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
-$pm = new PostsModel($sqldb);
-$um = new UsersModel($sqldb);
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
+$um = new UsersModel($dbc);
 
 $post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
@@ -29,8 +29,7 @@ if ($post == null) {
     exit();
 }
 
-$users = $um->GetUserByEmail(GetUsername());
-$user = $users->fetch();
+$user = $um->GetUserByEmail(GetUsername())->fetch();
 if (
     $post["email"] != GetUsername()
     && $post["approval"] != 1
@@ -47,7 +46,7 @@ if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
 $cmnt_table = CommentTable($post_id);
 $cond = ($user["role"] > 0) ? "approval=0 || approval=1" : "approval=1";
 try {
-    $cmnts = $sqldb->pdo->prepare(
+    $cmnts = $dbc->pdo->prepare(
         "SELECT *
         FROM $cmnt_table
         WHERE $cond"

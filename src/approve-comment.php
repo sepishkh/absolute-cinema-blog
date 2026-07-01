@@ -3,14 +3,14 @@
 require_once "../config/config.php";
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
+$dbc = $GLOBALS["DBCON"];
 
 $appr = $_POST["appr"];
 $post_id = $_POST["post_id"];
 $cmnt_id = $_POST["cmnt_id"];
 $cmnt_table = CommentTable($post_id);
 
-$stmt = $sqldb->pdo->prepare(
+$stmt = $dbc->pdo->prepare(
     "UPDATE $cmnt_table
     SET approval=:approval
     WHERE id=:id"

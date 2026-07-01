@@ -8,8 +8,8 @@ require_once "../config/config.php";
 require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
-$pm = new PostsModel($sqldb);
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
 
 $id = (int)($_GET["edit"]);
 if (NotEmpty($id)) {

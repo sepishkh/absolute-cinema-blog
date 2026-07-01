@@ -34,8 +34,8 @@ function CommentTable($post_id) {
 
 function Login($email, $pass) {
     if (IsEmpty($email) || IsEmpty($pass)) return false;
-    $sqldb = $GLOBALS["Sqldb"];
-    $um = new UsersModel($sqldb);
+    $dbc = $GLOBALS["DBCON"];
+    $um = new UsersModel($dbc);
     $user = $um->GetUserByEmail($email)->fetch();
     if ($user != null && password_verify($pass, $user["password"])) {
         $_SESSION["username"] = $email;
@@ -50,8 +50,8 @@ function Signup($fname, $lname, $email, $pass) {
     if (IsEmpty($fname) || IsEmpty($email) || IsEmpty($pass)) {
         return null;
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $um = new UsersModel($sqldb);
+    $dbc = $GLOBALS["DBCON"];
+    $um = new UsersModel($dbc);
     $res = $um->InsertUser($fname, $lname, $email, $pass, 0, date("Y-m-d H:i"));
     return $res;
 }
@@ -60,14 +60,14 @@ function NewPost($title, $intro, $body, $author_email, $category_id) {
     if (IsEmpty($title) || IsEmpty($intro) || IsEmpty($body) || IsEmpty($author_email)) {
         return [1, 0];
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $pm = new PostsModel($sqldb);
-    $um = new UsersModel($sqldb);
+    $dbc = $GLOBALS["DBCON"];
+    $pm = new PostsModel($dbc);
+    $um = new UsersModel($dbc);
     $user = $um->GetUserByEmail($author_email)->fetch();
     if ($user == null) return [2, 0];
     $res = $pm->InsertPost($title, $intro, $body, $user["id"], date("Y-m-d H:i"), (($user["role"] == 2) ? 1 : 0), $category_id);
     $cmnt_table = CommentTable($res[1]);
-    $stmt = $sqldb->pdo->prepare(
+    $stmt = $dbc->pdo->prepare(
         "CREATE TABLE $cmnt_table (
             id              INT AUTO_INCREMENT PRIMARY KEY,
             comment         VARCHAR(255) NOT NULL,
@@ -84,8 +84,8 @@ function UpdatePost($id, $title, $intro, $body, $category_id) {
     if (IsEmpty($id) || IsEmpty($title) || IsEmpty($intro) || IsEmpty($body)) {
         return [1, 0];
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $pm = new PostsModel($sqldb);
+    $dbc = $GLOBALS["DBCON"];
+    $pm = new PostsModel($dbc);
     $res = $pm->UpdatePost($id, $title, $intro, $body, $category_id);
     return [$res, $id];
 }

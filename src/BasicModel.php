@@ -1,11 +1,11 @@
 <?php
 
 require_once "../config/config.php";
-require_once Paths::$SQLDB;
+require_once Paths::$DBCONNECTION;
 
 class BasicModel {
-    protected SQLDB $db;
-    public function __construct($sqldb) {
-        $this->db = $sqldb;
+    protected DBConnection $dbc;
+    public function __construct($dbc) {
+        $this->dbc = $dbc;
     }
 }

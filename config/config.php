@@ -7,5 +7,5 @@ error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_WARNING
 require_once "paths.php";
 Paths::init();
 
-require_once Paths::$SQLDB;
-$Sqldb = new SQLDB("localhost", "blog_access", "password", "abscin_blog", Paths::$INIT_SCHEMA);
+require_once Paths::$DBCONNECTION;
+$DBCON = new DBConnection("localhost", "blog_access", "password", "abscin_blog", Paths::$INIT_SCHEMA);

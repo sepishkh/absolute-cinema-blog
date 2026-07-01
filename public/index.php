@@ -12,8 +12,8 @@ $per_page = 6;
 $page_num = (int)($_GET["page"] ?? 1);
 $offset = ($page_num - 1) * $per_page;
 
-$sqldb = $GLOBALS["Sqldb"];
-$pm = new PostsModel($sqldb);
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
 $posts = $pm->GetPosts(null, [1], null, $per_page, $offset);
 
 ?>
