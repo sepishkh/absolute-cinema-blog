@@ -54,7 +54,7 @@ if (
 
 if (
     $_GET["delete"] === "true" 
-    && ($user["role"] > 0 || $content["email"] == GetUsername())) {
+    && ($user["role"] > 0 || $post["email"] == GetUsername())) {
     $stmt = $sqldb->pdo->prepare("UPDATE posts
                             SET hidden=1
                             WHERE id=:id");
