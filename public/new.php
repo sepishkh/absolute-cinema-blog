@@ -5,15 +5,19 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$UTILZ;
+
 $sqldb = $GLOBALS["Sqldb"];
 
-$id = isset($_GET["edit"]) ? $_GET["edit"] : null;
-if ($id) {
-    $stmt = $sqldb->pdo->prepare("SELECT * 
-                                    FROM posts
-                                    WHERE id=:id");
-    $stmt->execute([":id" => $id]);
-    $post = $stmt->fetch(PDO::FETCH_ASSOC);
+$id = (int)($_GET["edit"]);
+if (NotEmpty($id)) {
+    $posts = $sqldb->pdo->prepare(
+        "SELECT * 
+        FROM posts
+        WHERE id=:id"
+    );
+    $posts->execute([":id" => $id]);
+    $post = $posts->fetch(PDO::FETCH_ASSOC);
     if ($post == null) {
         require Paths::$P404;
         exit();
@@ -27,7 +31,7 @@ if ($id) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $id ? "Edit" : "New" ?> Post</title>
+    <title><?= NotEmpty($id) ? "Edit" : "New" ?> Post</title>
     <link rel="stylesheet" href="<?= Paths::$CSS ?>">
 </head>
 
@@ -44,7 +48,7 @@ if ($id) {
         <div class="editor-container">
 
             <div class="editor-header">
-                <h1 class="page-title"><?= $id ? "Edit" : "Write a new" ?> Review</h1>
+                <h1 class="page-title"><?= NotEmpty($id) ? "Edit" : "Write a new" ?> Review</h1>
                 <p class="editor-subtitle">Share your thoughts on recent movies or television series with the community.</p>
             </div>
             <?php if (isset($_GET["status"])) : ?>
@@ -58,11 +62,11 @@ if ($id) {
                     </div>
                 </div>
             <?php endif ?>
-            <form action="<?= Paths::$ROUTE . "?action=" . ($id ? "edit&edit=$id" : "new") ?>" method="POST" class="editor-form">
+            <form action="<?= Paths::$ROUTE . "?action=" . (NotEmpty($id) ? "edit&edit=$id" : "new") ?>" method="POST" class="editor-form">
 
                 <div class="form-group">
                     <label for="post_title">Review Title <span class="required-asterisk">*</span></label>
-                    <input type="text" id="post_title" name="title" placeholder="e.g., The Batman (2022): A Gritty, Neo-Noir Masterpiece" value="<?= $id ? $post["title"] : "" ?>" required>
+                    <input type="text" id="post_title" name="title" placeholder="e.g., The Batman (2022): A Gritty, Neo-Noir Masterpiece" value="<?= NotEmpty($id) ? $post["title"] : "" ?>" required>
                 </div>
 
                 <div class="form-row-split">
@@ -71,22 +75,22 @@ if ($id) {
                         <div class="select-wrapper">
                             <select id="post_category" name="category_id" required>
                                 <option value="" disabled selected>Select a category...</option>
-                                <option value="0" <?= ($id && $post["category"] == 0) ? "selected" : "" ?>>Movie</option>
-                                <option value="1" <?= ($id && $post["category"] == 1) ? "selected" : "" ?>>TV Show</option>
-                                <option value="2" <?= ($id && $post["category"] == 2) ? "selected" : "" ?>>Theatre</option>
+                                <option value="0" <?= (NotEmpty($id) && $post["category"] == 0) ? "selected" : "" ?>>Movie</option>
+                                <option value="1" <?= (NotEmpty($id) && $post["category"] == 1) ? "selected" : "" ?>>TV Show</option>
+                                <option value="2" <?= (NotEmpty($id) && $post["category"] == 2) ? "selected" : "" ?>>Theatre</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="post_intro">Short Intro <span class="required-asterisk">*</span></label>
-                        <input type="text" id="post_intro" name="intro" placeholder="A brief one or two-sentence hook for the homepage card..." value="<?= $id ? $post["intro"] : "" ?>" required maxlength="200">
+                        <input type="text" id="post_intro" name="intro" placeholder="A brief one or two-sentence hook for the homepage card..." value="<?= NotEmpty($id) ? $post["intro"] : "" ?>" required maxlength="200">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="post_body">Article Body <span class="required-asterisk">*</span></label>
-                    <textarea id="post_body" name="body" rows="15" placeholder="Write your full review breakdown here. Analyze the plot, cinematography, performances, and overall score..." required><?= $id ? $post["body"] : "" ?></textarea>
+                    <textarea id="post_body" name="body" rows="15" placeholder="Write your full review breakdown here. Analyze the plot, cinematography, performances, and overall score..." required><?= NotEmpty($id) ? $post["body"] : "" ?></textarea>
                 </div>
 
                 <div class="editor-actions">

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 
-<!-- TODO: Robust Login/Logout system -->
-<!-- TODO: Proper Error Handling -->
-
 <?php
 
 require_once "../config/config.php";
@@ -11,30 +8,19 @@ require_once Paths::$UTILZ;
 if (isset($_GET["logout"])) Logout();
 
 $per_page = 6;
-$page_num = isset($_GET["page"]) ? max((int)$_GET["page"], 1) : 1;
+$page_num = (int)($_GET["page"] ?? 1);
 $offset = ($page_num - 1) * $per_page;
 
 $sqldb = $GLOBALS["Sqldb"];
-$res = $sqldb->pdo->prepare("SELECT
-                                posts.id AS post_id,
-                                posts.title, 
-                                posts.intro, 
-                                posts.body, 
-                                posts.creation_date,
-                                posts.category,
-                                users.fname,
-                                users.lname,
-                                users.email
-                            FROM posts
-                            INNER JOIN users ON posts.author_id = users.id
-                            WHERE approval=1 AND hidden IS NULL
-                            ORDER BY posts.creation_date DESC
-                            LIMIT :limit OFFSET :offset");
-
-$res->execute([
-    ":limit" => $per_page,
-    ":offset" => $offset
-])
+$posts = $sqldb->pdo->prepare(
+    "SELECT *
+    FROM posts
+    WHERE approval=1
+    LIMIT :limit OFFSET :offset"
+);
+$posts->bindValue(":limit", (int)$per_page, PDO::PARAM_INT);
+$posts->bindValue(":offset", (int)$offset, PDO::PARAM_INT);
+$posts->execute();
 
 ?>
 
@@ -56,24 +42,22 @@ $res->execute([
     <main class="content-wrapper">
         <h1 class="page-title">Latest Reviews</h1>
         <div class="reviews-grid">
-            <?php while (($post = $res->fetch(PDO::FETCH_ASSOC))) : ?>
-                <?php
+            <?php while (($post = $posts->fetch())) :
                 $TEMPLATE_VALUES = [
                     "CATEGORY" => GetCategory($post["category"]),
                     "THUMBNAIL" => GetThumbnail($post["category"]),
-                    "ID" => $post["post_id"],
+                    "ID" => $post["id"],
                     "TITLE" => Escape($post["title"]),
                     "INTRO" => Escape($post["intro"]),
                     "EMAIL" => Escape($post["email"]),
                     "FULL_NAME" => FullName($post["fname"], $post["lname"]),
                     "DATE" => $post["creation_date"],
                     "DATE_FORMATTED" => FormatDate($post["creation_date"]),
-                    "AUTHOR_SW" => true,
+                    "AUTHOR_SW" => false,
                     "INTRO_SW" => true
                 ];
                 require Paths::$POST_CARD_TEMPLATE;
-                ?>
-            <?php endwhile ?>
+            endwhile ?>
         </div>
         <nav class="pagination-container" aria-label="Review Page Navigation">
             <a href="?page=<?= max($page_num - 1, 1) ?>" class="page-nav-btn">

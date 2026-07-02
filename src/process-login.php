@@ -5,7 +5,6 @@ require_once Paths::$UTILZ;
 
 $email = $_POST["email"];
 $pass = $_POST["password"];
-$submit = $_POST["submit"];
 
 $logged_in = Login($email, $pass);
 if ($logged_in) {

@@ -29,7 +29,7 @@
 
 <div class="footer-bottom-strip">
     <div class="footer-bottom-container">
-        <p class="copyright-text">&copy; 2026 AbsoluteCinema. Built with pure PHP & SQLite. All rights reserved.</p>
+        <p class="copyright-text">&copy; 2026 AbsoluteCinema. Built with pure PHP & MySQL. All rights reserved.</p>
         <div class="legal-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>

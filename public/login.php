@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 
-<!-- TODO: Validate Email and Password as text -->
-
 <?php require_once "../config/config.php" ?>
 
 <html lang="en">
@@ -35,7 +33,7 @@
                     </div>
                 </div>
             <?php endif; ?>
-            <form action="<?= Paths::$ROUTE . "?action=login"?>" method="POST" class="auth-form">
+            <form action="<?= Paths::$ROUTE . "?action=login" ?>" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
                     <input type="email" id="login_email" name="email"

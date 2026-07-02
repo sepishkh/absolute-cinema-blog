@@ -1,58 +1,34 @@
 <?php
 
-// TODO: Proper Error Handling
-// TODO: Type Checking
-// TODO: Feature to run custom fucntion after connecting
-
 class SQLDB {
-    private $dsn;
-    private $connected;
     public $pdo;
 
-    function __construct() {
-        $this->connected = false;
+    function __construct($host, $user, $pass, $dbname) {
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+        $opts = [
+            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ];
+        $this->pdo = new PDO($dsn, $user, $pass, $opts);
     }
 
-    function Connect($file_path) {
-        $this->dsn = "sqlite:$file_path";
-        try {
-            $this->pdo = new PDO($this->dsn);
-            $this->connected = true;
-            return $this->pdo;
-        } catch (PDOException $e) {
-            echo "Error: Database connection failed: " . $e->getMessage();
-        }
-    }
-
-    function Initialize($schema_path) {
-        if (!$this->connected) {
-            echo "Error: Not yet connected to the database.<br>";
+    function RunScript($script_file) {
+        if ($this->pdo == null) {
+            echo "Error: Not connected to the database.<br>";
             return;
         }
-        $schema_file = "$schema_path";
-        $schema_tmstmp = "$schema_file.timestamp";
-        if (file_exists($schema_file)) {
-            if (file_exists($schema_tmstmp)) {
-                if (filemtime($schema_file) <= file_get_contents($schema_tmstmp)) {
-                    return;
-                }
-            }
-            try {
-                $this->pdo->exec(file_get_contents($schema_file));
-                $file = fopen($schema_tmstmp, "w");
-                fwrite($file, time());
-                fclose($file);
-            } catch (PDOException $e) {
-                echo "Error: Couldnt run schema on database " . $e->getMessage();
-            }
-        } else {
-            echo "Error: SQL schema not found.";
-            return;
+        if (!file_exists($script_file)) {
+            echo("Error: SQL script not found.");
+            return null;
         }
-    }
-
-    function StartDBConnection($file_path, $schema_path) {
-        $this->Connect($file_path);
-        $this->Initialize($schema_path);
+        $script_tmstmp = "$script_file.timestamp";
+        if ((int)filemtime($script_file) <= (int)file_get_contents($script_tmstmp)) {
+            return 0;
+        }
+        $this->pdo->exec(file_get_contents($script_file));
+        $file = fopen($script_tmstmp, "w");
+        fwrite($file, time());
+        fclose($file);
     }
 }
