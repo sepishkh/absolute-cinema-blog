@@ -5,19 +5,16 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
 
 $id = (int)($_GET["edit"]);
 if (NotEmpty($id)) {
-    $posts = $sqldb->pdo->prepare(
-        "SELECT * 
-        FROM posts
-        WHERE id=:id"
-    );
-    $posts->execute([":id" => $id]);
-    $post = $posts->fetch(PDO::FETCH_ASSOC);
+    $posts = $pm->GetPosts($id);
+    $post = $posts->fetch();
     if ($post == null) {
         require Paths::$P404;
         exit();

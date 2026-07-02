@@ -3,6 +3,8 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
+require_once Paths::$USERS_MODEL;
 
 session_start();
 
@@ -32,10 +34,9 @@ function CommentTable($post_id) {
 
 function Login($email, $pass) {
     if (IsEmpty($email) || IsEmpty($pass)) return false;
-    $sqldb = $GLOBALS["Sqldb"];
-    $users = $sqldb->pdo->prepare("SELECT * FROM users WHERE email=:email");
-    $users->execute([":email" => $email]);
-    $user = $users->fetch(PDO::FETCH_ASSOC);
+    $dbc = $GLOBALS["DBCON"];
+    $um = new UsersModel($dbc);
+    $user = $um->GetUserByEmail($email)->fetch();
     if ($user != null && password_verify($pass, $user["password"])) {
         $_SESSION["username"] = $email;
         return true;
@@ -47,85 +48,35 @@ function Login($email, $pass) {
 
 function Signup($fname, $lname, $email, $pass) {
     if (IsEmpty($fname) || IsEmpty($email) || IsEmpty($pass)) {
-        return 1;
+        return null;
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare(
-        "INSERT 
-        INTO users 
-        (fname, lname, email, password, role, creation_date) 
-        VALUES (:fname, :lname, :email, :pass, :role, :creation_date)"
-    );
-    $stmt->execute([
-        ":fname" => $fname,
-        ":lname" => $lname,
-        ":email" => $email,
-        ":pass" => $pass,
-        ":role" => 0,
-        ":creation_date" => date("Y-m-d H:i")
-    ]);
-    return null;
+    $dbc = $GLOBALS["DBCON"];
+    $um = new UsersModel($dbc);
+    $res = $um->InsertUser($fname, $lname, $email, $pass, 0, date("Y-m-d H:i"));
+    return $res;
 }
 
 function NewPost($title, $intro, $body, $author_email, $category_id) {
     if (IsEmpty($title) || IsEmpty($intro) || IsEmpty($body) || IsEmpty($author_email)) {
         return [1, 0];
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare(
-        "SELECT id, role
-        FROM users
-        WHERE email=:email"
-    );
-    $stmt->execute([":email" => $author_email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $dbc = $GLOBALS["DBCON"];
+    $pm = new PostsModel($dbc);
+    $um = new UsersModel($dbc);
+    $user = $um->GetUserByEmail($author_email)->fetch();
     if ($user == null) return [2, 0];
-    $stmt = $sqldb->pdo->prepare(
-        "INSERT 
-        INTO posts
-        (title, intro, body, author_id, creation_date, approval, category)
-        VALUES (:title, :intro, :body, :author_id, :creation_date, :approval, :category_id)"
-    );
-    try {
-        $stmt->execute([
-            ":title" => $title,
-            ":intro" => $intro,
-            ":body" => $body,
-            ":author_id" => $user["id"],
-            ":creation_date" => date("Y-m-d H:i"),
-            ":approval" => (($user["role"] == 2) ? 1 : 0),
-            ":category_id" => $category_id,
-        ]);
-    } catch (PDOException $e) {
-        return [$e->getCode(), 0];
-    }
-    return [0, $sqldb->pdo->lastInsertId()];
+    $res = $pm->InsertPost($title, $intro, $body, $user["id"], date("Y-m-d H:i"), (($user["role"] == 2) ? 1 : 0), $category_id);
+    return $res;
 }
 
 function UpdatePost($id, $title, $intro, $body, $category_id) {
     if (IsEmpty($id) || IsEmpty($title) || IsEmpty($intro) || IsEmpty($body)) {
         return [1, 0];
     }
-    $sqldb = $GLOBALS["Sqldb"];
-    $stmt = $sqldb->pdo->prepare(
-        "UPDATE posts
-        SET title=:title,
-            intro=:intro,
-            body=:body,
-            category=:category
-        WHERE id=:id");
-    try {
-        $stmt->execute([
-            ":title" => $title,
-            ":intro" => $intro,
-            ":body" => $body,
-            ":category" => $category_id,
-            ":id" => $id
-        ]);
-    } catch (PDOException $e) {
-        return [$e->getCode(), 0];
-    }
-    return [0, $id];
+    $dbc = $GLOBALS["DBCON"];
+    $pm = new PostsModel($dbc);
+    $res = $pm->UpdatePost($id, $title, $intro, $body, $category_id);
+    return [$res, $id];
 }
 
 function IsActive($page) {

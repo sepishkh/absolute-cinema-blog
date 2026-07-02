@@ -3,9 +3,14 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$POSTS_MODEL;
+require_once Paths::$COMMENTS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
+$dbc = $GLOBALS["DBCON"];
+$pm = new PostsModel($dbc);
+$um = new UsersModel($dbc);
+$cm = new CommentsModel($dbc);
 
 $post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
@@ -14,35 +19,19 @@ if (!NotEmpty($post_id)) {
 }
 
 if ($_GET["delete"] === "true") {
-    $stmt = $sqldb->pdo->prepare(
-        "UPDATE posts
-        SET hidden=1
-        WHERE id=:id"
-    );
-    $stmt->execute([":id" => $post_id]);
+    $pm->HidePost($post_id);
     header("Location: " . Paths::$INDEX);
     exit();
 }
 
-$posts = $sqldb->pdo->prepare(
-    "SELECT *
-    FROM posts
-    WHERE id=:post_id"
-);
-$posts->execute([":post_id" => $post_id]);
-$post = $posts->fetch(PDO::FETCH_ASSOC);
+$posts = $pm->GetPosts($post_id);
+$post = $posts->fetch();
 if ($post == null) {
     include Paths::$P404;
     exit();
 }
 
-$users = $sqldb->pdo->prepare(
-    "SELECT * 
-    FROM users
-    WHERE email=:email"
-);
-$users->execute([":email" => GetUsername()]);
-$user = $users->fetch(PDO::FETCH_ASSOC);
+$user = $um->GetUserByEmail(GetUsername())->fetch();
 if (
     $post["email"] != GetUsername()
     && $post["approval"] != 1
@@ -64,40 +53,14 @@ if (
 }
 
 if (NotEmpty($_GET["approved"]) && $user["role"] > 0) {
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                                    SET approval=:approval
-                                    WHERE id=:id");
-    $stmt->execute([
-        ":approval" => (int)$_GET["approved"],
-        ":id" => (int)$post_id
-    ]);
+    $pm->SetApproval((int)$post_id, (int)$_GET["approved"]);
 }
 
+$cmnts = null;
 try {
-    $cmnts = $sqldb->pdo->prepare("SELECT
-                                comments.id AS cid,
-                                comments.post_id AS pid,
-                                comments.author_id AS aid,
-                                comments.body,
-                                comments.creation_date,
-                                comments.approval,
-                                users.id AS uid,
-                                users.fname,
-                                users.lname,
-                                users.email
-                                FROM comments
-                                INNER JOIN users ON users.id = author_id
-                                WHERE (comments.approval=1 OR comments.approval=:control)
-                                    AND post_id=:post_id
-                                ORDER BY comments.creation_date DESC
-                            ");
-    $cmnts->execute([
-        ":post_id" => $post_id,
-        ":control" => ($user["role"] > 0) ? 0 : null
-    ]);
-} catch (PDOException $e) {
+    $cmnts = $cm->GetComments($post_id, ($user["role"] > 0 ? [0, 1] : [1]));
+} catch(PDOException $e) {
     echo $e->getMessage();
-    $cmnts = null;
 }
 
 ?>
@@ -172,7 +135,7 @@ try {
                 <br>
             <?php endif ?>
             <div class="comments-list">
-                <?php while (($cmnt = $cmnts->fetch(PDO::FETCH_ASSOC))) : ?>
+                <?php while (($cmnt = $cmnts->fetch())) : ?>
                     <div class="comment-item">
                         <div class="author-avatar-small"><?= substr($cmnt["fname"], 0, 1) ?></div>
                         <div class="comment-main-body">

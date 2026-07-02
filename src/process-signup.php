@@ -10,5 +10,5 @@ $pass = $_POST["password"];
 
 Logout();
 $rc = Signup($fname, $lname, $email, password_hash($pass, PASSWORD_DEFAULT));
-header("Location: " . Paths::$SIGNUP . "?status=" . (($rc == NULL) ? "success" : $rc));
+header("Location: " . Paths::$SIGNUP . "?status=" . (($rc[0] == 0) ? "success" : $rc[0]));
 exit();

@@ -1,20 +1,15 @@
 <?php
 
 require_once "../config/config.php";
+require_once Paths::$COMMENTS_MODEL;
 require_once Paths::$UTILZ;
 
-$sqldb = $GLOBALS["Sqldb"];
+$dbc = $GLOBALS["DBCON"];
+$cm = new CommentsModel($dbc);
 
-$comment_id = $_POST["comment_id"];
 $appr = $_POST["appr"];
 $post_id = $_POST["post_id"];
 $cmnt_id = $_POST["cmnt_id"];
-$stmt = $sqldb->pdo->prepare("UPDATE comments
-                                SET approval=:approval
-                                WHERE id=:id");
-$stmt->execute([
-    ":approval" => (int)$appr,
-    ":id" => (int)$cmnt_id
-]);
+$cm->SetApproval($cmnt_id, $appr);
 header("Location: " . Paths::$VIEW . "?view=" . $post_id);
 exit();

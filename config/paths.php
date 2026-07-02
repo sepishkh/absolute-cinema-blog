@@ -7,11 +7,11 @@ class Paths {
 
     public static string $ABSCIN;
     public static string $CSS;
-    public static string $INDEX;    
-    public static string $LOGIN;   
-    public static string $NEW;   
-    public static string $PROFILE;  
-    public static string $SIGNUP; 
+    public static string $INDEX;
+    public static string $LOGIN;
+    public static string $NEW;
+    public static string $PROFILE;
+    public static string $SIGNUP;
     public static string $VIEW;
     public static string $ROUTE;
 
@@ -20,8 +20,12 @@ class Paths {
     public static string $PROC_LOGIN;
     public static string $PROC_NEW;
     public static string $PROC_SIGNUP;
-    public static string $SQLDB;     
-    public static string $UTILZ;       
+    public static string $DBCONNECTION;
+    public static string $BASIC_MODEL;
+    public static string $POSTS_MODEL;
+    public static string $USERS_MODEL;
+    public static string $COMMENTS_MODEL;
+    public static string $UTILZ;
 
     public static string $P404;
     public static string $FOOTER;
@@ -48,9 +52,13 @@ class Paths {
         self::$PROC_LOGIN   = self::$BASE . "/src/process-login.php";
         self::$PROC_NEW     = self::$BASE . "/src/process-new.php";
         self::$PROC_SIGNUP  = self::$BASE . "/src/process-signup.php";
-        self::$SQLDB        = self::$BASE . "/src/sqldb.php";
+        self::$DBCONNECTION = self::$BASE . "/src/DBConnection.php";
+        self::$BASIC_MODEL  = self::$BASE . "/src/BasicModel.php";
+        self::$POSTS_MODEL  = self::$BASE . "/src/PostsModel.php";
+        self::$USERS_MODEL  = self::$BASE . "/src/UsersModel.php";
+        self::$COMMENTS_MODEL = self::$BASE . "/src/CommentsModel.php";
         self::$UTILZ        = self::$BASE . "/src/utilz.php";
-        
+
         self::$P404                 = self::$BASE . "/templates/404.php";
         self::$FOOTER               = self::$BASE . "/templates/footer.php";
         self::$HEADER               = self::$BASE . "/templates/header.php";
