@@ -20,11 +20,6 @@ class Paths {
     public static string $PROC_LOGIN;
     public static string $PROC_NEW;
     public static string $PROC_SIGNUP;
-    public static string $DBCONNECTION;
-    public static string $BASIC_MODEL;
-    public static string $POSTS_MODEL;
-    public static string $USERS_MODEL;
-    public static string $COMMENTS_MODEL;
     public static string $UTILZ;
 
     public static string $P404;
@@ -47,16 +42,11 @@ class Paths {
         self::$VIEW     = "/view.php";
         self::$ROUTE    = "/route.php";
 
-        self::$APPR_CMNT    = self::$BASE . "/src/approve-comment.php";
-        self::$PROC_CMNT    = self::$BASE . "/src/process-comment.php";
-        self::$PROC_LOGIN   = self::$BASE . "/src/process-login.php";
-        self::$PROC_NEW     = self::$BASE . "/src/process-new.php";
-        self::$PROC_SIGNUP  = self::$BASE . "/src/process-signup.php";
-        self::$DBCONNECTION = self::$BASE . "/src/DBConnection.php";
-        self::$BASIC_MODEL  = self::$BASE . "/src/BasicModel.php";
-        self::$POSTS_MODEL  = self::$BASE . "/src/PostsModel.php";
-        self::$USERS_MODEL  = self::$BASE . "/src/UsersModel.php";
-        self::$COMMENTS_MODEL = self::$BASE . "/src/CommentsModel.php";
+        self::$APPR_CMNT    = self::$BASE . "/src/Controllers/approve-comment.php";
+        self::$PROC_CMNT    = self::$BASE . "/src/Controllers/process-comment.php";
+        self::$PROC_LOGIN   = self::$BASE . "/src/Controllers/process-login.php";
+        self::$PROC_NEW     = self::$BASE . "/src/Controllers/process-new.php";
+        self::$PROC_SIGNUP  = self::$BASE . "/src/Controllers/process-signup.php";
         self::$UTILZ        = self::$BASE . "/src/utilz.php";
 
         self::$P404                 = self::$BASE . "/templates/404.php";

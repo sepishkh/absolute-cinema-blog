@@ -2,10 +2,11 @@
 
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$POSTS_MODEL;
-require_once Paths::$COMMENTS_MODEL;
-require_once Paths::$UTILZ;
+require_once dirname(__DIR__) . "/config/config.php";
+
+use AbsCin\Models\PostsModel;
+use AbsCin\Models\UsersModel;
+use AbsCin\Models\CommentsModel;
 
 $dbc = $GLOBALS["DBCON"];
 $pm = new PostsModel($dbc);
@@ -15,12 +16,6 @@ $cm = new CommentsModel($dbc);
 $post_id = (int)$_GET["view"];
 if (!NotEmpty($post_id)) {
     include Paths::$P404;
-    exit();
-}
-
-if ($_GET["delete"] === "true") {
-    $pm->HidePost($post_id);
-    header("Location: " . Paths::$INDEX);
     exit();
 }
 
@@ -43,11 +38,9 @@ if (
 
 if (
     $_GET["delete"] === "true" 
-    && ($user["role"] > 0 || $post["email"] == GetUsername())) {
-    $stmt = $sqldb->pdo->prepare("UPDATE posts
-                            SET hidden=1
-                            WHERE id=:id");
-    $stmt->execute([":id" => $post_id]);
+    && ($user["role"] > 0 
+    || $post["email"] == GetUsername())) {
+    $pm->HidePost($post_id);
     header("Location: " . Paths::$INDEX);
     exit();
 }

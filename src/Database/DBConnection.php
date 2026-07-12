@@ -1,22 +1,17 @@
 <?php
 
+namespace AbsCin\Database;
+
+use PDO;
+
+// TODO: Make this singleton
 class DBConnection {
-    private $host;
-    private $user;
-    private $pass;
-    private $dbname;
-    private $init_script;
-    public $pdo;
+    private $pdo;
     
     public function Connect() {
         if($this->pdo != null) return $this->pdo;
         $dsn = "mysql:host=$this->host;dbname=$this->dbname;charset=utf8mb4";
-        $opts = [
-            PDO::ATTR_EMULATE_PREPARES   => false,
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ];
-        $this->pdo = new PDO($dsn, $this->user, $this->pass, $opts);
+        $this->pdo = new PDO($dsn, $this->user, $this->pass, $this->opts);
         if($this->init_script != null) $this->RunScript($this->init_script);
         return $this->pdo;
     }
@@ -36,12 +31,12 @@ class DBConnection {
         fclose($file);
     }
 
-    public function __construct($host, $user, $pass, $dbname, $init_script = null) {
-        $this->host = $host;
-        $this->user = $user;
-        $this->pass = $pass;
-        $this->dbname = $dbname;
-        $this->init_script = $init_script;
-        $this->Connect();
-    }
+    public function __construct(
+        private string $host,
+        private string $user,
+        private string $pass,
+        private string $dbname,
+        private ?array $opts = null,
+        private ?string $init_script = null
+    ) {}
 }

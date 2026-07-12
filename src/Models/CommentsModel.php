@@ -1,9 +1,8 @@
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$BASIC_MODEL;
+namespace AbsCin\Models;
 
-class CommentsModel extends BasicModel {
+class CommentsModel extends BaseModel {
     public function GetComments($post_id, $appr_list) {
         $appr = "(" . implode(",", $appr_list) . ")";
         $cmd = "SELECT

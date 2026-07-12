@@ -1,7 +1,7 @@
 <div class="footer-container">
 
     <div class="footer-col branding-col">
-        <a href="<?= Paths::$INDEX ?>" class="logo">Absolute<span>Cinema</span></a>
+        <a href="/home" class="logo">Absolute<span>Cinema</span></a>
         <p class="footer-tagline">
             Your personal, framework-free universe for deep cinematic critiques, tracking television arcs, and community discussions.
         </p>
@@ -10,7 +10,7 @@
     <div class="footer-col links-col">
         <h3>Explore</h3>
         <ul class="footer-links-list">
-            <li><a href="<?= Paths::$INDEX ?>">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="#">Movie Reviews</a></li>
             <li><a href="#">TV Shows</a></li>
         </ul>
@@ -19,9 +19,9 @@
     <div class="footer-col links-col">
         <h3>Account</h3>
         <ul class="footer-links-list">
-            <li><a href="<?= Paths::$PROFILE ?>">My Profile Dashboard</a></li>
-            <li><a href="<?= Paths::$LOGIN ?>">Sign In</a></li>
-            <li><a href="<?= Paths::$SIGNUP ?>">Create Account</a></li>
+            <li><a href="/profile">My Profile Dashboard</a></li>
+            <li><a href="/login">Sign In</a></li>
+            <li><a href="/signup">Create Account</a></li>
         </ul>
     </div>
 

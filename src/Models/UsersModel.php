@@ -1,10 +1,10 @@
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$DBCONNECTION;
-require_once Paths::$BASIC_MODEL;
+namespace AbsCin\Models;
 
-class UsersModel extends BasicModel {
+use PDOException;
+
+class UsersModel extends BaseModel {
     public function GetUserByEmail($email) {
         $cmd = "SELECT *
             FROM users

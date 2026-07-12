@@ -2,11 +2,10 @@
 
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$POSTS_MODEL;
-require_once Paths::$USERS_MODEL;
+require_once dirname(__DIR__) . "/config/config.php";
 
-session_start();
+use AbsCin\Models\PostsModel;
+use AbsCin\Models\UsersModel;
 
 function GetUsername() {
     return IsLoggedIn() ? $_SESSION["username"] : null;

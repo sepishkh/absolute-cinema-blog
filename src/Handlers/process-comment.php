@@ -1,8 +1,9 @@
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$COMMENTS_MODEL;
-require_once Paths::$UTILZ;
+
+require_once dirname(__DIR__) . "/config/config.php";
+
+use AbsCin\Models\CommentsModel;
 
 $dbc = $GLOBALS["DBCON"];
 $cm = new CommentsModel($dbc);

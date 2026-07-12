@@ -1,7 +1,6 @@
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$UTILZ;
+require_once dirname(__DIR__) . "/config/config.php";
 
 $fname = $_POST["fname"];
 $lname = $_POST["lname"];

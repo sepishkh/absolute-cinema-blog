@@ -4,9 +4,9 @@
 
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$POSTS_MODEL;
-require_once Paths::$UTILZ;
+require_once dirname(__DIR__) . "/config/config.php";
+
+use AbsCin\Models\PostsModel;
 
 $dbc = $GLOBALS["DBCON"];
 $pm = new PostsModel($dbc);

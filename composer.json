@@ -1,0 +1,18 @@
+{
+    "name": "sepehr/absolute-cinema-blog",
+    "description": "AbsouluteCinema blog written in pure PHP and MySQL",
+    "autoload": {
+        "psr-4": {
+            "AbsCin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sepehr Sheikh",
+            "email": "sepishkh@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/var-dumper": "^8.1"
+    }
+}

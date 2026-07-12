@@ -4,10 +4,10 @@
 
 <?php
 
-require_once "../config/config.php";
-require_once Paths::$POSTS_MODEL;
-require_once Paths::$USERS_MODEL;
-require_once Paths::$UTILZ;
+require_once dirname(__DIR__) . "/config/config.php";
+
+use AbsCin\Models\PostsModel;
+use AbsCin\Models\UsersModel;
 
 $dbc = $GLOBALS["DBCON"];
 $pm = new PostsModel($dbc);
@@ -16,7 +16,6 @@ $um = new UsersModel($dbc);
 if (IsLoggedIn()) {
     $user = $um->GetUserByEmail(GetUsername())->fetch();
     $appr = $_POST["appr"] ?? 1;
-    /* var_dump($user["id"], [$appr]); */
     $posts = $pm->GetPosts(null, [$appr], $user["id"]);
     if ($user["role"] > 0) {
         $appr_admin = $_POST["appr_admin"] ?? 1;
