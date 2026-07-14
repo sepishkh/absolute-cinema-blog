@@ -18,7 +18,9 @@ $opts = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
-$DBCON = new DBConnection("localhost", "blog_access", "password", "abscin_blog", $opts, Paths::$INIT_SCHEMA);
+
+/* $DBCON = new DBConnection("localhost", "blog_access", "password", "abscin_blog", $opts, Paths::$INIT_SCHEMA); */
+DBConnection::Init("localhost", "blog_access", "password", "abscin_blog", $opts, Paths::$INIT_SCHEMA);
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

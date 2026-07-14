@@ -27,10 +27,6 @@ function NotEmpty($var) {
     return !IsEmpty($var);
 }
 
-function CommentTable($post_id) {
-    return "comment_" . $post_id;
-}
-
 function Login($email, $pass) {
     if (IsEmpty($email) || IsEmpty($pass)) return false;
     $dbc = $GLOBALS["DBCON"];
@@ -83,67 +79,3 @@ function IsActive($page) {
     return (($page === $current) ? "active" : "");
 }
 
-function Escape($text) {
-    return htmlspecialchars($text, ENT_HTML5, "UTF-8");
-}
-
-function FormatDate($date) {
-    $d = strtotime($date);
-    return date("M d, Y", $d);
-}
-
-function FullName($fname, $lname) {
-    return Escape($fname . " " . $lname);
-}
-
-function GetCategory($category) {
-    switch ($category) {
-        case 0:
-            return "Movie";
-        case 1:
-            return "TV Show";
-        case 2:
-            return "Theatre";
-        default:
-            return "ERROR";
-    }
-}
-
-function GetRole($role) {
-    switch ($role) {
-        case 2:
-            return "god";
-        case 1:
-            return "admin";
-        case 0:
-            return "user";
-        default:
-            return "ERROR";
-    }
-}
-
-function GetApproval($status) {
-    switch ($status) {
-        case -1:
-            return "Disapproved";
-        case 0:
-            return "Waiting for approval";
-        case 1:
-            return "Approved";
-        default:
-            return "ERROR";
-    }
-}
-
-function GetThumbnail($category) {
-    switch ($category) {
-        case 0:
-            return "🍿";
-        case 1:
-            return "📺";
-        case 2:
-            return "🎭";
-        default:
-            return "ERROR";
-    }
-}

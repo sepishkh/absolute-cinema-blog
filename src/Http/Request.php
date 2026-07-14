@@ -19,14 +19,22 @@ class Request {
         $this->env = $_ENV;
     }
 
-    public function GetMethod() {
+    public function GetMethod(): string {
         return strtolower($this->server["REQUEST_METHOD"]);
     }
 
-    public function GetPath() {
+    public function GetPath(): string {
         $path = $this->server["REQUEST_URI"] ?? '/';
         $pos = strpos($path, '?');
         if($pos === false) return $path;
         return substr($path, 0, $pos);
+    }
+
+    public function GetKey(string $key): ?string {
+        return $this->get[$key];
+    }
+
+    public function Get(): array {
+        return $this->get;
     }
 }

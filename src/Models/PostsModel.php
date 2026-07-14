@@ -18,7 +18,7 @@ class PostsModel extends BaseModel{
         /* var_dump($cmd); */
         $stmt = $this->dbc->Connect()->prepare($cmd);
         $stmt->execute();
-        return $stmt;
+        return $stmt->fetchAll();
     }
 
     public function SetApproval($id, $appr) {

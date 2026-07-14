@@ -4,7 +4,7 @@
     </div>
     <div class="header-row auth-row">
         <?php if ($logged_in) : ?>
-            <a href="/profile" class="btn btn-secondary"> {{username}} </a>
+        <a href="/profile" class="btn btn-secondary"> <?= $username ?> </a>
             <a href="/home?logout=true" class="btn btn-primary">Logout</a>
         <?php else : ?>
             <a href="/login" class="btn btn-secondary">Log In</a>

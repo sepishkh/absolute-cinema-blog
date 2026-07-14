@@ -10,7 +10,7 @@ class Kernel {
     ) {}
 
     public function Handle(Request $request): Response {
-        $response = $this->router->Dispatch($request->GetMethod(), $request->GetPath());
+        $response = $this->router->Dispatch($request);
         return $response;
     }
 }

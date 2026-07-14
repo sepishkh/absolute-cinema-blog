@@ -3,6 +3,7 @@
 namespace AbsCin\Routing;
 
 use AbsCin\Http\Response;
+use AbsCin\Http\Request;
 
 class Router {
     public array $routes = [];
@@ -16,12 +17,14 @@ class Router {
     public function Post(string $path, array $callback) {
         $this->AddRoute("post", $path, $callback);
     }
-    public function Dispatch(string $method, string $uri): Response {
+    public function Dispatch(Request $request): Response {
+        $method = $request->GetMethod();
+        $uri = $request->GetPath();
         if(!isset($this->routes[$method][$uri])) {
             return new Response("404 Not Found", 404);
         }
         [$class, $method] = $this->routes[$method][$uri];
-        $controller = new $class();
+        $controller = new $class($request);
         return $controller->$method();
     }
 }

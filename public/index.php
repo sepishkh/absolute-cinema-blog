@@ -27,20 +27,3 @@ $response = $kernel->Handle($request);
 $response->Send();
 
 /* if (isset($_GET["logout"])) Logout(); */
-
-/* $per_page = 6; */
-/* $page_num = (int)($_GET["page"] ?? 1); */
-/* $offset = ($page_num - 1) * $per_page; */
-
-/* $dbc = $GLOBALS["DBCON"]; */
-/* $pm = new PostsModel($dbc); */
-/* $posts = $pm->GetPosts(null, [1], null, $per_page, $offset); */
-
-/* $val = [ */
-/*     "posts" => $posts, */
-/*     "page_num" => $page_num, */
-/* ]; */
-/* $v = new View("../templates/home.php", $val); */
-/* $v->GetPage(); */
-?>
-
