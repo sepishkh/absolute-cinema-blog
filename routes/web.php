@@ -7,7 +7,7 @@ return [
     "get" => [
         ["/",       [HomeController::class, "Index"]],
         ["/home",   [HomeController::class, "Index"]],
-        ["/view",   [PostController::class, "view"]],
+        ["/view",   [PostController::class, "ViewPost"]],
     ],
     "post" => [
         ["/", [HomeController::class, "index"]],

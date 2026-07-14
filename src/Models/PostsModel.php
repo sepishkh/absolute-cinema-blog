@@ -6,7 +6,7 @@ use PDOException;
 
 class PostsModel extends BaseModel{
     public function GetPosts($id = null, $appr_list = [-1, 0, 1], $author_id = null, $limit = null, $offset = null) {
-        if($id != null) $id = "=" . $id;
+        if($id !== null) $id = "=" . $id;
         $appr = "(" . implode(",", $appr_list) . ")";
         $pagin = "";
         if($author_id !== null) $author_id = "=" . $author_id;

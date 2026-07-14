@@ -9,7 +9,7 @@
 
     <div class="card-details">
         <h2 class="card-title">
-            <a href="<?= Paths::$VIEW . "?view=" . $id ?>"><?= $title ?></a>
+            <a href="/view?<?= $view_url ?>"><?= $title ?></a>
         </h2>
         <?php if ($intro_sw === true) : ?>
             <p class="card-intro"><?= $intro ?></p>

@@ -24,7 +24,7 @@ class CommentsModel extends BaseModel {
         $stmt->execute([
             ":post_id" => $post_id,
         ]);
-        return $stmt;
+        return $stmt->fetchAll;
     }
 
     public function SetApproval($id, $appr) {

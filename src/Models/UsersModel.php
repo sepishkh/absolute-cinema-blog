@@ -13,7 +13,18 @@ class UsersModel extends BaseModel {
         $user_stmt->execute([
             ":email" => $email,
         ]);
-        return $user_stmt;
+        return $user_stmt->fetchAll();
+    }
+
+    public function GetUserById($id) {
+        $cmd = "SELECT *
+            FROM users
+            WHERE id=:id";
+        $user_stmt = $this->dbc->Connect()->prepare($cmd);
+        $user_stmt->execute([
+            ":id" => $id,
+        ]);
+        return $user_stmt->fetchAll();
     }
 
     public function InsertUser($fname, $lname, $email, $pass, $role, $creation_date) {

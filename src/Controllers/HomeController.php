@@ -12,9 +12,7 @@ use AbsCin\Utilz;
 class HomeController extends BaseController {
     private PostsModel $pm;
 
-    public function __construct(
-        private Request $request,
-    ) {
+    public function __construct(private Request $request) {
         $dbc = DBConnection::GetInstance();
         $this->pm = new PostsModel($dbc);
     }
@@ -43,8 +41,9 @@ class HomeController extends BaseController {
                     /* "email" => "", */
                     /* "full_name" => "", */
                     "date" => $post["creation_date"],
-                    "date_formatted" => $post["creation_date"],
-                    "post_actions_sw" => false,
+                    "date_formatted" => Utilz::FormatDate($post["creation_date"]),
+                    "view_url" => http_build_query(["id" => $post["id"]]),
+                    /* "post_actions_sw" => false, */
                 ]
             );
             $articles .= $card->Render();
@@ -59,8 +58,8 @@ class HomeController extends BaseController {
                 "content" => (new View(
                     "home/home", 
                     [
-                        "next_page" => "?" . http_build_query($next_get),
-                        "prev_page" => "?" . http_build_query($prev_get),
+                        "next_page" => http_build_query($next_get),
+                        "prev_page" => http_build_query($prev_get),
                         "posts" => $articles,
                     ]
                 ))->Render(),
