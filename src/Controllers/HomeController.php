@@ -12,9 +12,8 @@ use AbsCin\Utilz;
 class HomeController extends BaseController {
     private PostsModel $pm;
 
-    public function __construct(private Request $request) {
-        $dbc = DBConnection::GetInstance();
-        $this->pm = new PostsModel($dbc);
+    protected function Init() {
+        $this->pm = new PostsModel($this->dbc);
     }
 
     public function Index(): Response {
@@ -52,7 +51,7 @@ class HomeController extends BaseController {
         $prev_get = array_replace($get, ["page" => max(1, $page - 1)]);
         $next_get = array_replace($get, ["page" => $page + 1]);
         $response = $this->Execute(
-            "layouts/main", 
+            "layouts/main",
             [
                 "title" => "AbsoluteCinema Blog",
                 "content" => (new View(

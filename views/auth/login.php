@@ -1,18 +1,11 @@
-<div class="auth-card">
+<div class="auth-card auth-container">
 
     <div class="auth-header">
         <h1>Welcome Back</h1>
         <p>Log in to manage your movie reviews and join the community discussion.</p>
     </div>
 
-    <?php if (isset($_GET["status"])) : ?>
-        <div class="alert-box alert-danger">
-            <div class="alert-icon">⚠</div>
-            <div class="alert-content">
-                <p class="alert-title">Login Failed</p>
-            </div>
-        </div>
-    <?php endif; ?>
+    <?= $alert_box ?>
     <form action="<?= Paths::$ROUTE . "?action=login" ?>" method="POST" class="auth-form">
         <div class="form-group">
             <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
@@ -30,7 +23,7 @@
     </form>
 
     <div class="auth-footer">
-        <p>New to the platform? <a href="<?= Paths::$SIGNUP ?>">Create an account instead</a></p>
+        <p>New to the platform? <a href="/signup">Create an account instead</a></p>
     </div>
 
 </div>

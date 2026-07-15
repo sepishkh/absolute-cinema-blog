@@ -3,24 +3,21 @@
 namespace AbsCin\Controllers;
 
 use AbsCin\Http\Response;
-use AbsCin\Http\Request;
 use AbsCin\Models\PostsModel;
 use AbsCin\Models\UsersModel;
 use AbsCin\Models\CommentsModel;
-use AbsCin\Database\DBConnection;
 use AbsCin\Views\View;
 use AbsCin\Utilz;
 
-class PostController {
+class PostController extends BaseController{
     private PostsModel $pm;
     private UsersModel $um;
     private CommentsModel $cm;
 
-    public function __construct(private Request $request) {
-        $dbc = DBConnection::GetInstance();
-        $this->pm = new PostsModel($dbc);
-        $this->um = new UsersModel($dbc);
-        $this->cm = new CommentsModel($dbc);
+    protected function Init() {
+        $this->pm = new PostsModel($this->dbc);
+        $this->um = new UsersModel($this->dbc);
+        $this->cm = new CommentsModel($this->dbc);
     }
 
     public function ViewPost(): Response {
@@ -59,8 +56,8 @@ class PostController {
                 "partials/comment-card",
                 [
                     "avatar" => substr($cmnt["fname"], 0, 1), 
-                    "full_name" => FullName($cmnt["fname"], $user["lname"]),
-                    "date_formatted" => FormatDate($cmnt["creation_date"]),
+                    "full_name" => Utilz::FullName($cmnt["fname"], $user["lname"]),
+                    "date_formatted" => Utilz::FormatDate($cmnt["creation_date"]),
                     "body" => $cmnt["body"],
                     "id" => $cmnt["cid"],
                     "post_id" => $post_id,

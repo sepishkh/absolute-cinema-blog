@@ -1,40 +1,10 @@
-<div class="auth-card">
+<div class="auth-card auth-container">
     <div class="auth-header">
         <h1>Join AbsoluteCinema</h1>
         <p>Create an account to start reviewing your favorite movies and TV shows.</p>
     </div>
 
-    <?php if (isset($_GET["status"])) : ?>
-        <?php if ($_GET["status"] === "success") : ?>
-            <div class="alert-box alert-success">
-                <div class="alert-icon">✔</div>
-                <div class="alert-content">
-                    <p class="alert-title">Success!</p>
-                    <p>Your account has been created. Go to <a href="<?= Paths::$LOGIN ?>">Login</a> page.</p>
-                </div>
-            </div>
-        <?php elseif ($_GET["status"] == "23000") : ?>
-            <div class="alert-box alert-danger">
-                <div class="alert-icon">⚠</div>
-                <div class="alert-content">
-                    <p class="alert-title">Registration Failed</p>
-                    <ul class="alert-list">
-                        <li>Email Already registered</li>
-                    </ul>
-                </div>
-            </div>
-        <?php else : ?>
-            <div class="alert-box alert-danger">
-                <div class="alert-icon">⚠</div>
-                <div class="alert-content">
-                    <p class="alert-title">Registration Failed</p>
-                    <ul class="alert-list">
-                        <li>Error</li>
-                    </ul>
-                </div>
-            </div>
-        <?php endif ?>
-    <?php endif ?>
+    <?= $alert_box ?>
     <form action="<?= Paths::$ROUTE . "?action=signup" ?>" method="POST" class="auth-form">
 
         <div class="form-row-split">
@@ -63,6 +33,7 @@
     </form>
 
     <div class="auth-footer">
-        <p>Already have an account? <a href="<?= Paths::$LOGIN ?>">Log In instead</a></p>
+        <p>Already have an account? <a href="/login">Log In instead</a></p>
     </div>
 </div>
+
