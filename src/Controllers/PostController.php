@@ -20,7 +20,7 @@ class PostController extends BaseController{
         $this->cm = new CommentsModel($this->dbc);
     }
 
-    public function ViewPost(): Response {
+    public function View(): Response {
         $post_id = (int)$this->request->GetKey("id");
         $post = $this->pm->GetPosts($post_id)[0];
         $author = $this->um->GetUserById($post["author_id"])[0];
@@ -102,18 +102,79 @@ class PostController extends BaseController{
         );
         $content = $view->Render();
         return new Response($content);
-}
+    }
 
-public function AllPosts(): Response {
+    public function New(): Response {
+        $status = $this->request->GetKey("status");
+        $alert_info = match($status) {
+            default => ["danger", "⚠", "Review Submission Failed", "Error Creating Post"],
+        };
+        $view = new View(
+            "layouts/main",
+            [
+                "title" => "New Post",
+                "content" => (new View(
+                    "post/new",
+                    [
+                        "alert_box" => ($status == null) ? "" : (new View(
+                            "partials/alert-box",
+                            [
+                                "result" => $alert_info[0],
+                                "icon" => $alert_info[1],
+                                "status" => $alert_info[2],
+                                "message" => $alert_info[3],
+                            ]
+                        ))->Render(),
+                    ]
+                ))->Render(),
+            ]
+        );
+        $content = $view->Render();
+        return new Response($content);
+    }
 
-}
+    public function Edit(): Response {
+        $status = $this->request->GetKey("status");
+        $alert_info = match($status) {
+            default => ["danger", "⚠", "Review Submission Failed", "Error Creating Post"],
+        };
+        $post_id = (int)$this->request->GetKey("id");
+        $post = $this->pm->GetPosts($post_id)[0];
+        $view = new View(
+            "layouts/main",
+            [
+                "title" => "New Post",
+                "content" => (new View(
+                    "post/new",
+                    [
+                        "alert_box" => ($status == null) ? "" : (new View(
+                            "partials/alert-box",
+                            [
+                                "result" => $alert_info[0],
+                                "icon" => $alert_info[1],
+                                "status" => $alert_info[2],
+                                "message" => $alert_info[3],
+                            ]
+                        ))->Render(),
+                        "post" => [
+                            "title" => Utilz::Escape($post["title"]),
+                            "intro" => Utilz::Escape($post["intro"]), 
+                            "body" => Utilz::Escape($post["body"]),
+                            "category" => $post["category"],
+                            /* "id" => $post_id, */
+                            /* "date" => $post["creation_date"], */
+                            /* "date_formatted" => Utilz::FormatDate($post["creation_date"]), */
+                            /* "thumbnail" => Utilz::GetThumbnail($post["category"]), */
+                        ],
+                    ]
+                ))->Render(),
+            ]
+        );
+        $content = $view->Render();
+        return new Response($content);
+    }
 
-public function Categories(): Response {
+    public function Categories(): Response {
 
-}
-
-public function NewPost(): Response {
-
-}
-
+    }
 }

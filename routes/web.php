@@ -8,9 +8,11 @@ return [
     "get" => [
         ["/",       [HomeController::class, "Index"]],
         ["/home",   [HomeController::class, "Index"]],
-        ["/view",   [PostController::class, "ViewPost"]],
+        ["/view",   [PostController::class, "View"]],
+        ["/new",    [PostController::class, "New"]],
+        ["/edit",   [PostController::class, "Edit"]],
         ["/login",  [AuthController::class, "Login"]],
-        ["/signup",  [AuthController::class, "Signup"]],
+        ["/signup", [AuthController::class, "Signup"]],
     ],
     "post" => [
         ["/", [HomeController::class, "index"]],

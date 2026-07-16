@@ -39,7 +39,7 @@ class AuthController extends BaseController {
 
     public function Signup(): Response {
         $status = $this->request->GetKey("status");
-        $box_info = match($status) {
+        $alert_info = match($status) {
             "success" => ["success", "✔", "Success!", "Your account has been created. Go to <a href='/login'>Login</a> page."],
             "23000" => ["danger", "⚠", "Registration Failed", "Email Already registered"],
             default => ["danger", "⚠", "Registration Failed", "Error"],
@@ -54,10 +54,10 @@ class AuthController extends BaseController {
                         "alert_box" => ($status == null) ? "" : (new View(
                             "partials/alert-box",
                             [
-                                "result" => $box_info[0],
-                                "icon" => $box_info[1],
-                                "status" => $box_info[2],
-                                "message" => $box_info[3],
+                                "result" => $alert_info[0],
+                                "icon" => $alert_info[1],
+                                "status" => $alert_info[2],
+                                "message" => $alert_info[3],
                             ]
                         ))->Render(),
                     ]
