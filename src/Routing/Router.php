@@ -11,12 +11,23 @@ class Router {
     public function AddRoute(string $method, string $path, array $callback) {
         $this->routes[$method][$path] = $callback;
     }
+
     public function Get(string $path, array $callback) {
         $this->AddRoute("get", $path, $callback);
     }
+
     public function Post(string $path, array $callback) {
         $this->AddRoute("post", $path, $callback);
     }
+
+    public function __construct(array $routes = []) {
+        foreach($routes as $method => $list) {
+            foreach($list as $route) {
+                $this->AddRoute($method, ...$route);
+            }
+        }
+    }
+
     public function Dispatch(Request $request): Response {
         $method = $request->GetMethod();
         $uri = $request->GetPath();

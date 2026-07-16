@@ -13,14 +13,8 @@ use AbsCin\Routing\Router;
 use AbsCin\Controllers\HomeController;
 use AbsCin\Controllers\PostController;
 
-$router = new Router();
 $routes = include ROOT_PATH . "/routes/web.php";
-foreach($routes as $method => $list) {
-    foreach($list as $route) {
-        $router->AddRoute($method, ...$route);
-    }
-}
-
+$router = new Router($routes);
 $kernel = new Kernel($router);
 $request = new Request();
 $response = $kernel->Handle($request);
