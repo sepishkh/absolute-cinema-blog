@@ -2,7 +2,8 @@
 
 use AbsCin\Controllers\HomeController;
 use AbsCin\Controllers\PostController;
-use AbsCin\Controllers\AuthController;
+use AbsCin\Controllers\LoginController;
+use AbsCin\Controllers\SignupController;
 use AbsCin\Controllers\ProfileController;
 
 return [
@@ -12,11 +13,12 @@ return [
         ["/view",   [PostController::class, "View"]],
         ["/new",    [PostController::class, "New"]],
         ["/edit",   [PostController::class, "Edit"]],
-        ["/login",  [AuthController::class, "Login"]],
-        ["/signup", [AuthController::class, "Signup"]],
+        ["/login",  [LoginController::class, "LoginPage"]],
+        ["/signup", [SignupController::class, "SignupPage"]],
         ["/profile",[ProfileController::class, "Profile"]],
     ],
     "post" => [
-        ["/", [HomeController::class, "index"]],
+        ["/login", [LoginController::class, "Login"]],
+        ["/signup", [SignupController::class, "Signup"]],
     ]
 ];

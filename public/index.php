@@ -16,7 +16,7 @@ use AbsCin\Controllers\PostController;
 $routes = include ROOT_PATH . "/routes/web.php";
 $router = new Router($routes);
 $kernel = new Kernel($router);
-$request = new Request();
+$request = Request::CreateFromGlobals();
 $response = $kernel->Handle($request);
 $response->Send();
 

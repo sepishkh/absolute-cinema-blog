@@ -6,18 +6,19 @@
     </div>
 
     <?= $alert_box ?>
-    <form action="<?= Paths::$ROUTE . "?action=login" ?>" method="POST" class="auth-form">
+
+    <form method="POST" class="auth-form">
         <div class="form-group">
             <label for="login_email">Email Address <span class="required-asterisk">*</span></label>
             <input type="email" id="login_email" name="email"
-                placeholder="you@example.com" required autocomplete="email">
+                placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="form-group">
             <div class="label-row">
                 <label for="login_password">Password <span class="required-asterisk">*</span></label>
             </div>
             <input type="password" id="login_password" name="password"
-                placeholder="Enter your account password" required autocomplete="current-password">
+                placeholder="Enter your account password" autocomplete="current-password">
         </div>
         <button type="submit" class="btn btn-primary btn-block auth-submit-btn">Log In</button>
     </form>

@@ -7,11 +7,21 @@ class Response {
         private $content = "",
         private $status = 200,
         private $headers = [],
-    ) {
-        http_response_code($status);
+    ) {}
+
+    private function SendHeaders(): void {
+        http_response_code($this->status);
+        foreach($this->headers as $key => $value) {
+            header("$key: $value", false, $this->status);
+        }
+    }
+
+    private function SendContent(): void {
+        echo($this->content);
     }
 
     public function Send() {
-        echo($this->content);
+        $this->SendHeaders();
+        $this->SendContent();
     }
 }
